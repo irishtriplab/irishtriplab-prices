@@ -1,249 +1,188 @@
 {
-  "updatedAt": "2026-08-19T17:58:13.546Z",
+  "updatedAt": "2026-08-19T18:09:32.759Z",
   "prices": {
-    "LON": {
-      "name": "London",
-      "months": {}
-    },
-    "EDI": {
-      "name": "Edinburgh",
-      "months": {}
-    },
-    "GLA": {
-      "name": "Glasgow",
-      "months": {}
-    },
-    "MAN": {
-      "name": "Manchester",
-      "months": {}
-    },
-    "LPL": {
-      "name": "Liverpool",
-      "months": {}
-    },
-    "BRS": {
-      "name": "Bristol",
-      "months": {}
-    },
-    "CWL": {
-      "name": "Cardiff",
-      "months": {}
-    },
-    "BHX": {
-      "name": "Birmingham",
-      "months": {}
-    },
-    "BRU": {
-      "name": "Brussels",
-      "months": {}
-    },
-    "PAR": {
-      "name": "Paris",
-      "months": {}
-    },
-    "AMS": {
-      "name": "Amsterdam",
-      "months": {}
-    },
-    "BER": {
-      "name": "Berlin",
-      "months": {}
-    },
-    "CGN": {
-      "name": "Cologne",
-      "months": {}
-    },
-    "VIE": {
-      "name": "Vienna",
-      "months": {}
-    },
-    "PRG": {
-      "name": "Prague",
-      "months": {}
-    },
-    "WAW": {
-      "name": "Warsaw",
-      "months": {}
-    },
-    "KRK": {
-      "name": "Kraków",
-      "months": {}
-    },
-    "BUD": {
-      "name": "Budapest",
-      "months": {}
-    },
-    "BTS": {
-      "name": "Bratislava",
-      "months": {}
-    },
-    "TLL": {
-      "name": "Tallinn",
-      "months": {}
-    },
-    "CPH": {
-      "name": "Copenhagen",
-      "months": {}
-    },
-    "LIS": {
-      "name": "Lisbon",
-      "months": {}
-    },
-    "OPO": {
-      "name": "Porto",
-      "months": {}
-    },
-    "FAO": {
-      "name": "Faro / Algarve",
-      "months": {}
-    },
-    "AGP": {
-      "name": "Malaga",
-      "months": {}
-    },
-    "BCN": {
-      "name": "Barcelona",
-      "months": {}
-    },
-    "MAD": {
-      "name": "Madrid",
-      "months": {}
-    },
-    "ALC": {
-      "name": "Alicante",
-      "months": {}
-    },
-    "SVQ": {
-      "name": "Seville",
-      "months": {}
-    },
-    "PMI": {
-      "name": "Palma",
-      "months": {}
-    },
-    "MAH": {
-      "name": "Minorca",
-      "months": {}
-    },
-    "TFS": {
-      "name": "Tenerife",
-      "months": {}
-    },
-    "ACE": {
-      "name": "Lanzarote",
-      "months": {}
-    },
-    "LPA": {
-      "name": "Gran Canaria",
-      "months": {}
-    },
-    "MIL": {
-      "name": "Milan",
-      "months": {}
-    },
-    "ROM": {
-      "name": "Rome",
-      "months": {}
-    },
-    "NAP": {
-      "name": "Naples",
-      "months": {}
-    },
-    "VCE": {
-      "name": "Venice",
-      "months": {}
-    },
-    "BLQ": {
-      "name": "Bologna",
-      "months": {}
-    },
-    "CAG": {
-      "name": "Cagliari",
-      "months": {}
-    },
-    "BDS": {
-      "name": "Brindisi",
-      "months": {}
-    },
-    "CTA": {
-      "name": "Catania",
-      "months": {}
-    },
-    "NCE": {
-      "name": "Nice",
-      "months": {}
-    },
-    "ATH": {
-      "name": "Athens",
-      "months": {}
-    },
-    "CFU": {
-      "name": "Corfu",
-      "months": {}
-    },
-    "ZTH": {
-      "name": "Zakynthos",
-      "months": {}
-    },
-    "CHQ": {
-      "name": "Chania",
-      "months": {}
-    },
-    "RHO": {
-      "name": "Rhodes",
-      "months": {}
-    },
-    "JTR": {
-      "name": "Santorini",
-      "months": {}
-    },
-    "DBV": {
-      "name": "Dubrovnik",
-      "months": {}
-    },
-    "SPU": {
-      "name": "Split",
-      "months": {}
-    },
-    "ZAD": {
-      "name": "Zadar",
-      "months": {}
-    },
-    "BJV": {
-      "name": "Bodrum",
-      "months": {}
-    },
-    "DLM": {
-      "name": "Dalaman / Fethiye",
-      "months": {}
-    },
-    "IST": {
-      "name": "Istanbul",
-      "months": {}
-    },
-    "PFO": {
-      "name": "Paphos",
-      "months": {}
-    },
-    "MLA": {
-      "name": "Malta",
-      "months": {}
-    },
-    "RAK": {
-      "name": "Marrakesh",
-      "months": {}
+    "ARN": {
+      "name": "ARN",
+      "months": {
+        "2026-10": {
+          "3": {
+            "total": 44,
+            "out": 23,
+            "ret": 21,
+            "date": "2026-10-14T18:20:00"
+          },
+          "7": {
+            "total": 39,
+            "out": 19,
+            "ret": 20,
+            "date": "2026-10-08T08:55:00"
+          }
+        },
+        "2026-09": {
+          "14": {
+            "total": 40,
+            "out": 20,
+            "ret": 20,
+            "date": "2026-09-30T18:20:00"
+          }
+        }
+      }
     },
     "AGA": {
       "name": "Agadir",
-      "months": {}
+      "months": {
+        "2026-09": {
+          "3": {
+            "total": 60,
+            "out": 30,
+            "ret": 30,
+            "date": "2026-09-28T05:45:00"
+          },
+          "14": {
+            "total": 58,
+            "out": 28,
+            "ret": 30,
+            "date": "2026-09-21T05:45:00"
+          }
+        },
+        "2026-10": {
+          "7": {
+            "total": 60,
+            "out": 30,
+            "ret": 30,
+            "date": "2026-10-07T06:20:00"
+          }
+        }
+      }
     },
-    "FEZ": {
-      "name": "Fes",
-      "months": {}
+    "AMS": {
+      "name": "Amsterdam",
+      "months": {
+        "2026-09": {
+          "3": {
+            "total": 60,
+            "out": 30,
+            "ret": 30,
+            "date": "2026-09-19T17:55:00"
+          },
+          "7": {
+            "total": 60,
+            "out": 30,
+            "ret": 30,
+            "date": "2026-09-10T17:50:00"
+          },
+          "14": {
+            "total": 60,
+            "out": 30,
+            "ret": 30,
+            "date": "2026-09-16T18:15:00"
+          }
+        }
+      }
     },
-    "FNC": {
-      "name": "Funchal",
-      "months": {}
+    "AGP": {
+      "name": "Malaga",
+      "months": {
+        "2026-09": {
+          "3": {
+            "total": 61,
+            "out": 30,
+            "ret": 31,
+            "date": "2026-09-14T17:05:00"
+          },
+          "7": {
+            "total": 68,
+            "out": 30,
+            "ret": 38,
+            "date": "2026-09-27T20:30:00"
+          }
+        },
+        "2026-08": {
+          "14": {
+            "total": 60,
+            "out": 29,
+            "ret": 31,
+            "date": "2026-08-24T20:15:00"
+          }
+        }
+      }
+    },
+    "ALC": {
+      "name": "Alicante",
+      "months": {
+        "2026-10": {
+          "3": {
+            "total": 70,
+            "out": 35,
+            "ret": 35,
+            "date": "2026-10-13T18:05:00"
+          },
+          "7": {
+            "total": 68,
+            "out": 33,
+            "ret": 35,
+            "date": "2026-10-06T18:05:00"
+          },
+          "14": {
+            "total": 56,
+            "out": 21,
+            "ret": 35,
+            "date": "2026-10-05T21:25:00"
+          }
+        }
+      }
+    },
+    "ACE": {
+      "name": "Lanzarote",
+      "months": {
+        "2026-11": {
+          "3": {
+            "total": 92,
+            "out": 46,
+            "ret": 46,
+            "date": "2026-11-16T15:45:00"
+          },
+          "7": {
+            "total": 92,
+            "out": 46,
+            "ret": 46,
+            "date": "2026-11-15T15:50:00"
+          },
+          "14": {
+            "total": 92,
+            "out": 46,
+            "ret": 46,
+            "date": "2026-11-10T16:00:00"
+          }
+        }
+      }
+    },
+    "AHO": {
+      "name": "AHO",
+      "months": {
+        "2026-10": {
+          "3": {
+            "total": 119,
+            "out": 32,
+            "ret": 87,
+            "date": "2026-10-20T11:25:00"
+          },
+          "7": {
+            "total": 117,
+            "out": 32,
+            "ret": 85,
+            "date": "2026-10-20T11:25:00"
+          }
+        },
+        "2026-09": {
+          "14": {
+            "total": 114,
+            "out": 30,
+            "ret": 84,
+            "date": "2026-09-29T11:25:00"
+          }
+        }
+      }
     }
   }
 }
