@@ -116,11 +116,13 @@ async function main() {
 
         const existing = prices[destCode].months[month][range.nights];
         if (!existing || total < existing.total) {
+          const retDate = fare.inbound?.departureDate || null;
           prices[destCode].months[month][range.nights] = {
             total: Math.round(total),
             out: Math.round(outPrice || total / 2),
             ret: Math.round(inPrice || total / 2),
-            date: departDate
+            dateOut: departDate,
+            dateIn: retDate
           };
           console.log(`  ✅ ${destCode} ${month} ${range.nights}n: €${Math.round(total)}`);
         }
