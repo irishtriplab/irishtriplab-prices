@@ -22,6 +22,16 @@ const DEST_NAMES = {
   FEZ:'Fes', FNC:'Funchal'
 };
 
+// Tranches de prix (comme Ryanair le fait sur leur site)
+const PRICE_BUCKETS = [50, 100, 150, 200, 250, 300, 400, 500, 700, 9999];
+
+// Durées
+const DURATION_RANGES = [
+  { from: 2, to: 4,  nights: 3  },
+  { from: 5, to: 9,  nights: 7  },
+  { from: 10, to: 14, nights: 14 }
+];
+
 function formatDate(date) {
   return date.toISOString().split('T')[0];
 }
@@ -30,20 +40,11 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-// Durées à scanner (durationFrom-durationTo)
-// On fait 3 appels : courts (2-4n), moyens (5-9n), longs (10-14n)
-const DURATION_RANGES = [
-  { from: 2, to: 4,  nights: 3  },
-  { from: 5, to: 9,  nights: 7  },
-  { from: 10, to: 14, nights: 14 }
-];
-
-async function fetchFares(durationFrom, durationTo) {
+async function fetchFares(durationFrom, durationTo, priceMax) {
   const today = new Date();
   const end = new Date(today);
   end.setMonth(end.getMonth() + MONTHS_AHEAD);
 
-  // Dates retour = dates aller + durée
   const retFrom = new Date(today);
   retFrom.setDate(retFrom.getDate() + durationFrom);
   const retTo = new Date(end);
@@ -60,14 +61,10 @@ async function fetchFares(durationFrom, durationTo) {
     `&market=en-ie` +
     `&adultPaxCount=1` +
     `&outboundDepartureDaysOfWeek=MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY` +
-    `&outboundDepartureTimeFrom=00:00` +
-    `&outboundDepartureTimeTo=23:59` +
-    `&inboundDepartureTimeFrom=00:00` +
-    `&inboundDepartureTimeTo=23:59` +
-    `&priceValueTo=9999` +
+    `&outboundDepartureTimeFrom=00:00&outboundDepartureTimeTo=23:59` +
+    `&inboundDepartureTimeFrom=00:00&inboundDepartureTimeTo=23:59` +
+    `&priceValueTo=${priceMax}` +
     `&currency=EUR`;
-
-  console.log(`\nFetching ${durationFrom}-${durationTo}n fares...`);
 
   const res = await fetch(url, {
     headers: {
@@ -79,16 +76,9 @@ async function fetchFares(durationFrom, durationTo) {
     }
   });
 
-  console.log(`  Status: ${res.status}`);
-  if (!res.ok) {
-    console.error(`  Error: ${await res.text().then(t => t.substring(0,200))}`);
-    return [];
-  }
-
+  if (!res.ok) return [];
   const data = await res.json();
-  const fares = data.fares || [];
-  console.log(`  Got ${fares.length} fares`);
-  return fares;
+  return data.fares || [];
 }
 
 async function main() {
@@ -96,39 +86,48 @@ async function main() {
   const prices = {};
 
   for (const range of DURATION_RANGES) {
-    const fares = await fetchFares(range.from, range.to);
+    console.log(`\n📦 Fetching ${range.nights}n fares across ${PRICE_BUCKETS.length} price buckets...`);
+    const seen = new Set(); // éviter les doublons entre tranches
 
-    for (const fare of fares) {
-      const destCode = fare.outbound?.arrivalAirport?.iataCode;
-      if (!destCode) continue;
+    for (const priceMax of PRICE_BUCKETS) {
+      const fares = await fetchFares(range.from, range.to, priceMax);
 
-      const total = fare.summary?.price?.value;
-      const outPrice = fare.outbound?.price?.value;
-      const inPrice = fare.inbound?.price?.value;
-      const departDate = fare.outbound?.departureDate;
+      for (const fare of fares) {
+        const destCode = fare.outbound?.arrivalAirport?.iataCode;
+        if (!destCode) continue;
 
-      if (!total || !departDate) continue;
+        const total = fare.summary?.price?.value;
+        const outPrice = fare.outbound?.price?.value;
+        const inPrice = fare.inbound?.price?.value;
+        const departDate = fare.outbound?.departureDate;
 
-      const month = departDate.substring(0, 7);
+        if (!total || !departDate) continue;
 
-      if (!prices[destCode]) {
-        prices[destCode] = { name: DEST_NAMES[destCode] || destCode, months: {} };
+        const key = `${destCode}-${departDate}-${range.nights}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+
+        const month = departDate.substring(0, 7);
+
+        if (!prices[destCode]) {
+          prices[destCode] = { name: DEST_NAMES[destCode] || destCode, months: {} };
+        }
+        if (!prices[destCode].months[month]) prices[destCode].months[month] = {};
+
+        const existing = prices[destCode].months[month][range.nights];
+        if (!existing || total < existing.total) {
+          prices[destCode].months[month][range.nights] = {
+            total: Math.round(total),
+            out: Math.round(outPrice || total / 2),
+            ret: Math.round(inPrice || total / 2),
+            date: departDate
+          };
+          console.log(`  ✅ ${destCode} ${month} ${range.nights}n: €${Math.round(total)}`);
+        }
       }
-      if (!prices[destCode].months[month]) prices[destCode].months[month] = {};
 
-      const existing = prices[destCode].months[month][range.nights];
-      if (!existing || total < existing.total) {
-        prices[destCode].months[month][range.nights] = {
-          total: Math.round(total),
-          out: Math.round(outPrice || total / 2),
-          ret: Math.round(inPrice || total / 2),
-          date: departDate
-        };
-        console.log(`  ✅ ${destCode} ${month} ${range.nights}n: €${Math.round(total)}`);
-      }
+      await sleep(500);
     }
-
-    await sleep(1500);
   }
 
   const output = { updatedAt: new Date().toISOString(), prices };
