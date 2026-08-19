@@ -1,212 +1,176 @@
-const https = require('https');
 const fs = require('fs');
 
-const destinations = [
-  {name:'Agadir', code:'AGA'},
-  {name:'Alghero', code:'AHO'},
-  {name:'Alicante', code:'ALC'},
-  {name:'Amsterdam', code:'AMS'},
-  {name:'Athens', code:'ATH'},
-  {name:'Barcelona', code:'BCN'},
-  {name:'Barcelona Girona', code:'GRO'},
-  {name:'Barcelona Reus', code:'REU'},
-  {name:'Bari', code:'BRI'},
-  {name:'Basel', code:'BSL'},
-  {name:'Berlin', code:'BER'},
-  {name:'Birmingham', code:'BHX'},
-  {name:'Bodrum', code:'BJV'},
-  {name:'Bologna', code:'BLQ'},
-  {name:'Bratislava', code:'BTS'},
-  {name:'Brindisi', code:'BDS'},
-  {name:'Bristol', code:'BRS'},
-  {name:'Brussels Charleroi', code:'CRL'},
-  {name:'Brussels', code:'BRU'},
-  {name:'Bucharest', code:'OTP'},
-  {name:'Budapest', code:'BUD'},
-  {name:'Burgas', code:'BOJ'},
-  {name:'Cagliari', code:'CAG'},
-  {name:'Cardiff', code:'CWL'},
-  {name:'Chania', code:'CHQ'},
-  {name:'Cluj', code:'CLJ'},
-  {name:'Cologne', code:'CGN'},
-  {name:'Copenhagen', code:'CPH'},
-  {name:'Corfu', code:'CFU'},
-  {name:'Dalaman', code:'DLM'},
-  {name:'Dubrovnik', code:'DBV'},
-  {name:'East Midlands', code:'EMA'},
-  {name:'Edinburgh', code:'EDI'},
-  {name:'Faro', code:'FAO'},
-  {name:'Fuerteventura', code:'FUE'},
-  {name:'Gdansk', code:'GDN'},
-  {name:'Glasgow', code:'GLA'},
-  {name:'Gran Canaria', code:'LPA'},
-  {name:'Ibiza', code:'IBZ'},
-  {name:'Katowice', code:'KTW'},
-  {name:'Kos', code:'KGS'},
-  {name:'Krakow', code:'KRK'},
-  {name:'Lanzarote', code:'ACE'},
-  {name:'Leeds Bradford', code:'LBA'},
-  {name:'Lisbon', code:'LIS'},
-  {name:'Liverpool', code:'LPL'},
-  {name:'London Gatwick', code:'LGW'},
-  {name:'London Luton', code:'LTN'},
-  {name:'London Stansted', code:'STN'},
-  {name:'Luxembourg', code:'LUX'},
-  {name:'Madeira Funchal', code:'FNC'},
-  {name:'Madrid', code:'MAD'},
-  {name:'Malaga', code:'AGP'},
-  {name:'Malta', code:'MLA'},
-  {name:'Manchester', code:'MAN'},
-  {name:'Marrakesh', code:'RAK'},
-  {name:'Marseille', code:'MRS'},
-  {name:'Menorca', code:'MAH'},
-  {name:'Milan Bergamo', code:'BGY'},
-  {name:'Milan Malpensa', code:'MXP'},
-  {name:'Naples', code:'NAP'},
-  {name:'Newcastle', code:'NCL'},
-  {name:'Nice', code:'NCE'},
-  {name:'Olbia', code:'OLB'},
-  {name:'Palermo', code:'PMO'},
-  {name:'Palma', code:'PMI'},
-  {name:'Paphos', code:'PFO'},
-  {name:'Paris Beauvais', code:'BVA'},
-  {name:'Pisa', code:'PSA'},
-  {name:'Porto', code:'OPO'},
-  {name:'Poznan', code:'POZ'},
-  {name:'Prague', code:'PRG'},
-  {name:'Rabat', code:'RBA'},
-  {name:'Rhodes', code:'RHO'},
-  {name:'Riga', code:'RIX'},
-  {name:'Rome', code:'FCO'},
-  {name:'Rzeszow', code:'RZE'},
-  {name:'Salzburg', code:'SZG'},
-  {name:'Santorini', code:'JTR'},
-  {name:'Seville', code:'SVQ'},
-  {name:'Sofia', code:'SOF'},
-  {name:'Split', code:'SPU'},
-  {name:'Stockholm', code:'ARN'},
-  {name:'Tallinn', code:'TLL'},
-  {name:'Tenerife South', code:'TFS'},
-  {name:'Thessaloniki', code:'SKG'},
-  {name:'Tirana', code:'TIA'},
-  {name:'Toulouse', code:'TLS'},
-  {name:'Turin', code:'TRN'},
-  {name:'Valencia', code:'VLC'},
-  {name:'Venice', code:'VCE'},
-  {name:'Verona', code:'VRN'},
-  {name:'Vienna', code:'VIE'},
-  {name:'Vilnius', code:'VNO'},
-  {name:'Warsaw Modlin', code:'WMI'},
-  {name:'Wroclaw', code:'WRO'},
-  {name:'Zadar', code:'ZAD'},
-  {name:'Zagreb', code:'ZAG'},
-  {name:'Zakynthos', code:'ZTH'},
+// === CONFIG ===
+const ORIGIN = 'DUB';
+const NIGHTS = [3, 7, 14]; // durées à récupérer
+const MONTHS_AHEAD = 4;    // fenêtre glissante : aujourd'hui + 4 mois
+
+// Toutes les destinations Ryanair depuis Dublin
+const DESTINATIONS = [
+  'LON','EDI','GLA','MAN','LPL','BRS','CWL','BHX', // UK
+  'BRU','PAR','AMS','BER','CGN','VIE','PRG',        // Europe centrale
+  'WAW','KRK','BUD','BTS','TLL','CPH',              // Europe est/nord
+  'LIS','OPO','FAO','AGP','BCN','MAD','ALC',        // Ibérique
+  'SVQ','PMI','MAH','TFS','ACE','LPA',              // Espagne îles
+  'MIL','ROM','NAP','VCE','BLQ','CAG','BDS','CTA', // Italie
+  'NCE',                                            // France
+  'ATH','CFU','ZTH','CHQ','RHO','JTR',             // Grèce
+  'DBV','SPU','ZAD',                               // Croatie
+  'BJV','DLM','IST',                               // Turquie
+  'PFO','MLA',                                     // Chypre/Malte
+  'RAK','AGA','FEZ','FNC'                          // Maroc/Madeira
 ];
 
-const NIGHTS = [3, 7, 14];
+// Mapping code → nom lisible
+const DEST_NAMES = {
+  LON:'London', EDI:'Edinburgh', GLA:'Glasgow', MAN:'Manchester',
+  LPL:'Liverpool', BRS:'Bristol', CWL:'Cardiff', BHX:'Birmingham',
+  BRU:'Brussels', PAR:'Paris', AMS:'Amsterdam', BER:'Berlin',
+  CGN:'Cologne', VIE:'Vienna', PRG:'Prague', WAW:'Warsaw',
+  KRK:'Kraków', BUD:'Budapest', BTS:'Bratislava', TLL:'Tallinn',
+  CPH:'Copenhagen', LIS:'Lisbon', OPO:'Porto', FAO:'Faro / Algarve',
+  AGP:'Malaga', BCN:'Barcelona', MAD:'Madrid', ALC:'Alicante',
+  SVQ:'Seville', PMI:'Palma', MAH:'Minorca', TFS:'Tenerife',
+  ACE:'Lanzarote', LPA:'Gran Canaria', MIL:'Milan', ROM:'Rome',
+  NAP:'Naples', VCE:'Venice', BLQ:'Bologna', CAG:'Cagliari',
+  BDS:'Brindisi', CTA:'Catania', NCE:'Nice', ATH:'Athens',
+  CFU:'Corfu', ZTH:'Zakynthos', CHQ:'Chania', RHO:'Rhodes',
+  JTR:'Santorini', DBV:'Dubrovnik', SPU:'Split', ZAD:'Zadar',
+  BJV:'Bodrum', DLM:'Dalaman / Fethiye', IST:'Istanbul',
+  PFO:'Paphos', MLA:'Malta', RAK:'Marrakesh', AGA:'Agadir',
+  FEZ:'Fes', FNC:'Funchal'
+};
 
-function fetchJSON(url) {
-  return new Promise((resolve, reject) => {
-    const options = {
-      headers: {
-        'Accept': 'application/json',
-        'User-Agent': 'Mozilla/5.0 (compatible; PriceBot/1.0)',
-      }
-    };
-    https.get(url, options, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        try { resolve(JSON.parse(data)); }
-        catch(e) { reject(e); }
-      });
-    }).on('error', reject);
-  });
+// === HELPERS ===
+function formatDate(date) {
+  return date.toISOString().split('T')[0];
+}
+
+function getDateRange() {
+  const today = new Date();
+  const end = new Date(today);
+  end.setMonth(end.getMonth() + MONTHS_AHEAD);
+  return { from: formatDate(today), to: formatDate(end) };
 }
 
 function sleep(ms) {
-  return new Promise(r => setTimeout(r, ms));
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-// Get next 3 months
-function getNextMonths() {
-  const months = [];
-  const now = new Date();
-  for (let i = 1; i <= 3; i++) {
-    const d = new Date(now.getFullYear(), now.getMonth() + i, 1);
-    months.push(d.toISOString().slice(0, 7));
-  }
-  return months;
-}
+// === FETCH RYANAIR FARFND API ===
+async function fetchFares(nights) {
+  const { from, to } = getDateRange();
 
-async function getCheapestOneWay(from, to, month) {
-  const url = `https://www.ryanair.com/api/farfnd/v4/oneWayFares?departureAirportIataCode=${from}&arrivalAirportIataCode=${to}&outboundDepartureDateFrom=${month}-01&outboundDepartureDateTo=${month}-28&currency=EUR&priceValueTo=999`;
-  try {
-    const data = await fetchJSON(url);
-    if (data.fares && data.fares.length > 0) {
-      const prices = data.fares
-        .filter(f => f.summary?.price?.value)
-        .map(f => ({ price: f.summary.price.value, date: f.outbound?.departureDate }));
-      prices.sort((a, b) => a.price - b.price);
-      return prices[0] || null;
+  // Calcul des dates de retour (outbound + nights)
+  const returnFrom = new Date(from);
+  returnFrom.setDate(returnFrom.getDate() + nights);
+  const returnTo = new Date(to);
+  returnTo.setDate(returnTo.getDate() + nights);
+
+  const url = `https://services-api.ryanair.com/farfnd/3/roundTripFares?` +
+    `departureAirportIataCode=${ORIGIN}` +
+    `&language=en` +
+    `&market=en-ie` +
+    `&limit=200` +
+    `&offset=0` +
+    `&outboundDepartureDateFrom=${from}` +
+    `&outboundDepartureDateTo=${to}` +
+    `&inboundDepartureDateFrom=${formatDate(returnFrom)}` +
+    `&inboundDepartureDateTo=${formatDate(returnTo)}` +
+    `&priceValueTo=9999` +
+    `&currency=EUR`;
+
+  console.log(`\nFetching ${nights}n fares (${from} → ${to})...`);
+
+  const res = await fetch(url, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+      'Accept': 'application/json',
+      'Accept-Language': 'en-IE,en;q=0.9',
+      'Origin': 'https://www.ryanair.com',
+      'Referer': 'https://www.ryanair.com/'
     }
-  } catch(e) {}
-  return null;
+  });
+
+  if (!res.ok) {
+    console.error(`API error ${res.status} for ${nights}n`);
+    return [];
+  }
+
+  const data = await res.json();
+  return data.fares || [];
 }
 
+// === MAIN ===
 async function main() {
-  const months = getNextMonths();
+  console.log('🚀 IrishTripLab Price Fetcher starting...');
+  console.log(`📅 Date range: today + ${MONTHS_AHEAD} months`);
+  console.log(`🌍 Destinations: ${DESTINATIONS.length}`);
+
   const prices = {};
-  const updatedAt = new Date().toISOString();
 
-  console.log(`Fetching prices for months: ${months.join(', ')}`);
-  console.log(`Destinations: ${destinations.length}`);
+  // Init structure
+  for (const code of DESTINATIONS) {
+    prices[code] = {
+      name: DEST_NAMES[code] || code,
+      months: {}
+    };
+  }
 
-  for (const dest of destinations) {
-    prices[dest.code] = { name: dest.name, months: {} };
+  // Fetch pour chaque durée
+  for (const nights of NIGHTS) {
+    const fares = await fetchFares(nights);
+    console.log(`✅ Got ${fares.length} fares for ${nights}n`);
 
-    for (const month of months) {
-      prices[dest.code].months[month] = {};
+    for (const fare of fares) {
+      const destCode = fare.outbound?.arrivalAirport?.iataCode;
+      if (!destCode || !DESTINATIONS.includes(destCode)) continue;
 
-      const outbound = await getCheapestOneWay('DUB', dest.code, month);
-      if (!outbound) {
-        await sleep(300);
-        continue;
+      const total = fare.summary?.price?.value;
+      const outPrice = fare.outbound?.price?.value;
+      const inPrice = fare.inbound?.price?.value;
+      const departDate = fare.outbound?.departureDate;
+
+      if (!total || !departDate) continue;
+
+      const month = departDate.substring(0, 7); // "2026-09"
+
+      if (!prices[destCode].months[month]) {
+        prices[destCode].months[month] = {};
       }
 
-      for (const nights of NIGHTS) {
-        const retDate = new Date(outbound.date);
-        retDate.setDate(retDate.getDate() + nights);
-        const retFrom = new Date(retDate); retFrom.setDate(retFrom.getDate() - 2);
-        const retTo = new Date(retDate); retTo.setDate(retTo.getDate() + 2);
-
-        const retUrl = `https://www.ryanair.com/api/farfnd/v4/oneWayFares?departureAirportIataCode=${dest.code}&arrivalAirportIataCode=DUB&outboundDepartureDateFrom=${retFrom.toISOString().slice(0,10)}&outboundDepartureDateTo=${retTo.toISOString().slice(0,10)}&currency=EUR`;
-        
-        try {
-          const retData = await fetchJSON(retUrl);
-          let returnPrice = 0;
-          if (retData.fares?.length > 0) {
-            const retPrices = retData.fares.filter(f => f.summary?.price?.value).map(f => f.summary.price.value);
-            returnPrice = Math.min(...retPrices);
-          }
-          prices[dest.code].months[month][nights] = {
-            total: Math.round(outbound.price + returnPrice),
-            out: Math.round(outbound.price),
-            ret: Math.round(returnPrice),
-            date: outbound.date
-          };
-          console.log(`✅ ${dest.name} ${month} ${nights}n: €${Math.round(outbound.price + returnPrice)}`);
-        } catch(e) {}
-
-        await sleep(200);
+      // Garder le prix le moins cher pour cette durée/mois
+      const existing = prices[destCode].months[month][nights];
+      if (!existing || total < existing.total) {
+        prices[destCode].months[month][nights] = {
+          total: Math.round(total),
+          out: Math.round(outPrice || total / 2),
+          ret: Math.round(inPrice || total / 2),
+          date: departDate
+        };
+        console.log(`  ✅ ${destCode} ${month} ${nights}n: €${Math.round(total)}`);
       }
-      await sleep(300);
+    }
+
+    // Pause entre les requêtes pour éviter le rate limiting
+    if (nights !== NIGHTS[NIGHTS.length - 1]) {
+      console.log('⏳ Waiting 2s...');
+      await sleep(2000);
     }
   }
 
-  const output = { updatedAt, prices };
+  // Output
+  const output = {
+    updatedAt: new Date().toISOString(),
+    prices
+  };
+
   fs.writeFileSync('prices.json', JSON.stringify(output, null, 2));
-  console.log(`\n✅ Done! prices.json updated at ${updatedAt}`);
+  console.log(`\n✅ Done! prices.json updated at ${output.updatedAt}`);
+  console.log(`📊 Stats: ${Object.keys(prices).length} destinations`);
 }
 
-main().catch(console.error);
+main().catch(err => {
+  console.error('❌ Fatal error:', err);
+  process.exit(1);
+});
