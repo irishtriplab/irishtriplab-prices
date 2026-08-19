@@ -1,154 +1,168 @@
 const fs = require('fs');
 
 const ORIGIN = 'DUB';
+const NIGHTS = [3, 7, 14];
 const MONTHS_AHEAD = 4;
 
-const DEST_NAMES = {
-  STN:'London', EDI:'Edinburgh', GLA:'Glasgow', MAN:'Manchester',
-  LPL:'Liverpool', BRS:'Bristol', CWL:'Cardiff', BHX:'Birmingham',
-  EMA:'East Midlands', BRU:'Brussels', CRL:'Brussels Charleroi',
-  CDG:'Paris', AMS:'Amsterdam', BER:'Berlin', CGN:'Cologne',
-  VIE:'Vienna', PRG:'Prague', WAW:'Warsaw', KRK:'Kraków',
-  BUD:'Budapest', BTS:'Bratislava', TLL:'Tallinn', CPH:'Copenhagen',
-  LIS:'Lisbon', OPO:'Porto', FAO:'Faro / Algarve', AGP:'Malaga',
-  BCN:'Barcelona', MAD:'Madrid', ALC:'Alicante', SVQ:'Seville',
-  PMI:'Palma', MAH:'Minorca', TFS:'Tenerife', ACE:'Lanzarote',
-  LPA:'Gran Canaria', MXP:'Milan', FCO:'Rome', NAP:'Naples',
-  VCE:'Venice', BLQ:'Bologna', CAG:'Cagliari', BDS:'Brindisi',
-  CTA:'Catania', NCE:'Nice', ATH:'Athens', CFU:'Corfu',
-  ZTH:'Zakynthos', CHQ:'Chania', RHO:'Rhodes', JTR:'Santorini',
-  DBV:'Dubrovnik', SPU:'Split', ZAD:'Zadar', BJV:'Bodrum',
-  DLM:'Dalaman / Fethiye', IST:'Istanbul', PFO:'Paphos',
-  MLA:'Malta', RAK:'Marrakesh', AGA:'Agadir', FEZ:'Fes', FNC:'Funchal'
-};
-
-const DURATION_RANGES = [
-  { from: 2, to: 4,  nights: 3  },
-  { from: 5, to: 9,  nights: 7  },
-  { from: 10, to: 14, nights: 14 }
+const DESTINATIONS = [
+  { code: 'STN', name: 'London' },
+  { code: 'EDI', name: 'Edinburgh' },
+  { code: 'GLA', name: 'Glasgow' },
+  { code: 'MAN', name: 'Manchester' },
+  { code: 'LPL', name: 'Liverpool' },
+  { code: 'BRS', name: 'Bristol' },
+  { code: 'CWL', name: 'Cardiff' },
+  { code: 'BHX', name: 'Birmingham' },
+  { code: 'CRL', name: 'Brussels' },
+  { code: 'CDG', name: 'Paris' },
+  { code: 'AMS', name: 'Amsterdam' },
+  { code: 'BER', name: 'Berlin' },
+  { code: 'CGN', name: 'Cologne' },
+  { code: 'VIE', name: 'Vienna' },
+  { code: 'PRG', name: 'Prague' },
+  { code: 'WAW', name: 'Warsaw' },
+  { code: 'KRK', name: 'Kraków' },
+  { code: 'BUD', name: 'Budapest' },
+  { code: 'BTS', name: 'Bratislava' },
+  { code: 'TLL', name: 'Tallinn' },
+  { code: 'CPH', name: 'Copenhagen' },
+  { code: 'LIS', name: 'Lisbon' },
+  { code: 'OPO', name: 'Porto' },
+  { code: 'FAO', name: 'Faro / Algarve' },
+  { code: 'AGP', name: 'Malaga' },
+  { code: 'BCN', name: 'Barcelona' },
+  { code: 'MAD', name: 'Madrid' },
+  { code: 'ALC', name: 'Alicante' },
+  { code: 'SVQ', name: 'Seville' },
+  { code: 'PMI', name: 'Palma' },
+  { code: 'MAH', name: 'Minorca' },
+  { code: 'TFS', name: 'Tenerife' },
+  { code: 'ACE', name: 'Lanzarote' },
+  { code: 'LPA', name: 'Gran Canaria' },
+  { code: 'MXP', name: 'Milan' },
+  { code: 'FCO', name: 'Rome' },
+  { code: 'NAP', name: 'Naples' },
+  { code: 'VCE', name: 'Venice' },
+  { code: 'BLQ', name: 'Bologna' },
+  { code: 'CAG', name: 'Cagliari' },
+  { code: 'BDS', name: 'Brindisi' },
+  { code: 'CTA', name: 'Catania' },
+  { code: 'NCE', name: 'Nice' },
+  { code: 'ATH', name: 'Athens' },
+  { code: 'CFU', name: 'Corfu' },
+  { code: 'ZTH', name: 'Zakynthos' },
+  { code: 'CHQ', name: 'Chania' },
+  { code: 'RHO', name: 'Rhodes' },
+  { code: 'JTR', name: 'Santorini' },
+  { code: 'DBV', name: 'Dubrovnik' },
+  { code: 'SPU', name: 'Split' },
+  { code: 'ZAD', name: 'Zadar' },
+  { code: 'BJV', name: 'Bodrum' },
+  { code: 'DLM', name: 'Dalaman / Fethiye' },
+  { code: 'IST', name: 'Istanbul' },
+  { code: 'PFO', name: 'Paphos' },
+  { code: 'MLA', name: 'Malta' },
+  { code: 'RAK', name: 'Marrakesh' },
+  { code: 'AGA', name: 'Agadir' },
+  { code: 'FEZ', name: 'Fes' },
+  { code: 'FNC', name: 'Funchal' }
 ];
 
-function formatDate(date) {
-  return date.toISOString().split('T')[0];
-}
+function formatDate(d) { return d.toISOString().split('T')[0]; }
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-async function fetchPage(durationFrom, durationTo, page) {
-  const today = new Date();
-  const end = new Date(today);
-  end.setMonth(end.getMonth() + MONTHS_AHEAD);
-
-  const retFrom = new Date(today);
-  retFrom.setDate(retFrom.getDate() + durationFrom);
-  const retTo = new Date(end);
-  retTo.setDate(retTo.getDate() + durationTo);
-
-  const url = `https://www.ryanair.com/api/farfnd/v4/roundTripFares?` +
-    `departureAirportIataCode=${ORIGIN}` +
-    `&outboundDepartureDateFrom=${formatDate(today)}` +
-    `&outboundDepartureDateTo=${formatDate(end)}` +
-    `&inboundDepartureDateFrom=${formatDate(retFrom)}` +
-    `&inboundDepartureDateTo=${formatDate(retTo)}` +
-    `&durationFrom=${durationFrom}` +
-    `&durationTo=${durationTo}` +
-    `&market=en-ie` +
-    `&adultPaxCount=1` +
-    `&outboundDepartureDaysOfWeek=MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY` +
-    `&outboundDepartureTimeFrom=00:00&outboundDepartureTimeTo=23:59` +
-    `&inboundDepartureTimeFrom=00:00&inboundDepartureTimeTo=23:59` +
-    `&priceValueTo=9999` +
-    `&currency=EUR` +
-    `&page=${page}`;
-
-  const res = await fetch(url, {
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-      'Accept': 'application/json',
-      'Accept-Language': 'en-IE,en;q=0.9',
-      'Origin': 'https://www.ryanair.com',
-      'Referer': 'https://www.ryanair.com/ie/en/fare-finder'
-    }
-  });
-
-  if (!res.ok) return { fares: [], nextPage: null };
-  const data = await res.json();
-  return { fares: data.fares || [], nextPage: data.nextPage ?? null };
-}
-
-async function fetchAllFares(durationFrom, durationTo, nights) {
-  const allFares = [];
-  let page = 0;
-  let pageCount = 0;
-
-  console.log(`\n📦 Fetching ${nights}n fares (paginating)...`);
-
-  while (true) {
-    const { fares, nextPage } = await fetchPage(durationFrom, durationTo, page);
-    allFares.push(...fares);
-    pageCount++;
-    console.log(`  Page ${page}: ${fares.length} fares (total: ${allFares.length})`);
-
-    if (nextPage === null || nextPage === undefined || fares.length === 0) break;
-    page = nextPage;
-    await sleep(400);
+function getMonths() {
+  const months = [];
+  const cursor = new Date();
+  cursor.setDate(1);
+  for (let i = 0; i < MONTHS_AHEAD + 1; i++) {
+    months.push(formatDate(new Date(cursor)));
+    cursor.setMonth(cursor.getMonth() + 1);
   }
+  return months;
+}
 
-  console.log(`  ✅ Total: ${allFares.length} fares in ${pageCount} pages`);
-  return allFares;
+async function fetchCheapestPerDay(origin, dest, month) {
+  const url = `https://www.ryanair.com/api/farfnd/3/oneWayFares/${origin}/${dest}/cheapestPerDay?market=en-ie&outboundMonthOfDate=${month}&currency=EUR`;
+  try {
+    const res = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0',
+        'Accept': 'application/json',
+        'Referer': 'https://www.ryanair.com/'
+      }
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.outbound?.fares || [];
+  } catch(e) { return []; }
 }
 
 async function main() {
   console.log('🚀 IrishTripLab Price Fetcher starting...');
+  const months = getMonths();
+  console.log(`📅 Months: ${months.join(', ')}`);
   const prices = {};
 
-  for (const range of DURATION_RANGES) {
-    const fares = await fetchAllFares(range.from, range.to, range.nights);
-
-    for (const fare of fares) {
-      const destCode = fare.outbound?.arrivalAirport?.iataCode;
-      if (!destCode) continue;
-
-      const total = fare.summary?.price?.value;
-      const outPrice = fare.outbound?.price?.value;
-      const inPrice = fare.inbound?.price?.value;
-      const departDate = fare.outbound?.departureDate;
-      const retDate = fare.inbound?.departureDate || null;
-
-      if (!total || !departDate) continue;
-
-      const month = departDate.substring(0, 7);
-
-      if (!prices[destCode]) {
-        prices[destCode] = { name: DEST_NAMES[destCode] || destCode, months: {} };
+  for (const dest of DESTINATIONS) {
+    // Collecter prix outbound (DUB→DEST) par date
+    const outPrices = {};
+    for (const month of months) {
+      const fares = await fetchCheapestPerDay(ORIGIN, dest.code, month);
+      for (const f of fares) {
+        if (f.price?.value && !f.soldOut) outPrices[f.day] = f.price.value;
       }
-      if (!prices[destCode].months[month]) prices[destCode].months[month] = {};
+      await sleep(200);
+    }
 
-      const existing = prices[destCode].months[month][range.nights];
-      if (!existing || total < existing.total) {
-        prices[destCode].months[month][range.nights] = {
-          total: Math.round(total),
-          out: Math.round(outPrice || total / 2),
-          ret: Math.round(inPrice || total / 2),
-          dateOut: departDate,
-          dateIn: retDate
-        };
-        console.log(`  ✅ ${destCode} ${month} ${range.nights}n: €${Math.round(total)} (${departDate?.substring(0,10)} → ${retDate?.substring(0,10)})`);
+    // Collecter prix retour (DEST→DUB) par date
+    const retPrices = {};
+    for (const month of months) {
+      const fares = await fetchCheapestPerDay(dest.code, ORIGIN, month);
+      for (const f of fares) {
+        if (f.price?.value && !f.soldOut) retPrices[f.day] = f.price.value;
+      }
+      await sleep(200);
+    }
+
+    // Combiner aller + retour pour chaque durée
+    prices[dest.code] = { name: dest.name, months: {} };
+
+    for (const outDate of Object.keys(outPrices).sort()) {
+      const outPrice = outPrices[outDate];
+      const month = outDate.substring(0, 7);
+
+      for (const nights of NIGHTS) {
+        const retDate = new Date(outDate);
+        retDate.setDate(retDate.getDate() + nights);
+        const retDateStr = formatDate(retDate);
+        const retPrice = retPrices[retDateStr];
+        if (!retPrice) continue;
+
+        const total = Math.round(outPrice + retPrice);
+        if (!prices[dest.code].months[month]) prices[dest.code].months[month] = {};
+
+        const existing = prices[dest.code].months[month][nights];
+        if (!existing || total < existing.total) {
+          prices[dest.code].months[month][nights] = {
+            total,
+            out: Math.round(outPrice),
+            ret: Math.round(retPrice),
+            dateOut: outDate,
+            dateIn: retDateStr
+          };
+        }
       }
     }
 
-    await sleep(1000);
+    const found = Object.keys(prices[dest.code].months).length;
+    console.log(`✅ ${dest.code} (${dest.name}): ${found} months`);
   }
 
   const output = { updatedAt: new Date().toISOString(), prices };
   fs.writeFileSync('prices.json', JSON.stringify(output, null, 2));
   console.log(`\n✅ Done! prices.json updated at ${output.updatedAt}`);
-  console.log(`📊 ${Object.keys(prices).length} destinations found`);
+  console.log(`📊 ${Object.keys(prices).length} destinations`);
 }
 
-main().catch(err => {
-  console.error('❌ Fatal:', err);
-  process.exit(1);
-});
+main().catch(err => { console.error('❌', err); process.exit(1); });
