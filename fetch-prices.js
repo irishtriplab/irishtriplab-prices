@@ -6,26 +6,22 @@ const MONTHS_AHEAD = 4;
 const DEST_NAMES = {
   STN:'London', EDI:'Edinburgh', GLA:'Glasgow', MAN:'Manchester',
   LPL:'Liverpool', BRS:'Bristol', CWL:'Cardiff', BHX:'Birmingham',
-  BRU:'Brussels', CDG:'Paris', AMS:'Amsterdam', BER:'Berlin',
-  CGN:'Cologne', VIE:'Vienna', PRG:'Prague', WAW:'Warsaw',
-  KRK:'Kraków', BUD:'Budapest', BTS:'Bratislava', TLL:'Tallinn',
-  CPH:'Copenhagen', LIS:'Lisbon', OPO:'Porto', FAO:'Faro / Algarve',
-  AGP:'Malaga', BCN:'Barcelona', MAD:'Madrid', ALC:'Alicante',
-  SVQ:'Seville', PMI:'Palma', MAH:'Minorca', TFS:'Tenerife',
-  ACE:'Lanzarote', LPA:'Gran Canaria', MXP:'Milan', FCO:'Rome',
-  NAP:'Naples', VCE:'Venice', BLQ:'Bologna', CAG:'Cagliari',
-  BDS:'Brindisi', CTA:'Catania', NCE:'Nice', ATH:'Athens',
-  CFU:'Corfu', ZTH:'Zakynthos', CHQ:'Chania', RHO:'Rhodes',
-  JTR:'Santorini', DBV:'Dubrovnik', SPU:'Split', ZAD:'Zadar',
-  BJV:'Bodrum', DLM:'Dalaman / Fethiye', IST:'Istanbul',
-  PFO:'Paphos', MLA:'Malta', RAK:'Marrakesh', AGA:'Agadir',
-  FEZ:'Fes', FNC:'Funchal'
+  EMA:'East Midlands', BRU:'Brussels', CRL:'Brussels Charleroi',
+  CDG:'Paris', AMS:'Amsterdam', BER:'Berlin', CGN:'Cologne',
+  VIE:'Vienna', PRG:'Prague', WAW:'Warsaw', KRK:'Kraków',
+  BUD:'Budapest', BTS:'Bratislava', TLL:'Tallinn', CPH:'Copenhagen',
+  LIS:'Lisbon', OPO:'Porto', FAO:'Faro / Algarve', AGP:'Malaga',
+  BCN:'Barcelona', MAD:'Madrid', ALC:'Alicante', SVQ:'Seville',
+  PMI:'Palma', MAH:'Minorca', TFS:'Tenerife', ACE:'Lanzarote',
+  LPA:'Gran Canaria', MXP:'Milan', FCO:'Rome', NAP:'Naples',
+  VCE:'Venice', BLQ:'Bologna', CAG:'Cagliari', BDS:'Brindisi',
+  CTA:'Catania', NCE:'Nice', ATH:'Athens', CFU:'Corfu',
+  ZTH:'Zakynthos', CHQ:'Chania', RHO:'Rhodes', JTR:'Santorini',
+  DBV:'Dubrovnik', SPU:'Split', ZAD:'Zadar', BJV:'Bodrum',
+  DLM:'Dalaman / Fethiye', IST:'Istanbul', PFO:'Paphos',
+  MLA:'Malta', RAK:'Marrakesh', AGA:'Agadir', FEZ:'Fes', FNC:'Funchal'
 };
 
-// Tranches de prix (comme Ryanair le fait sur leur site)
-const PRICE_BUCKETS = [50, 100, 150, 200, 250, 300, 400, 500, 700, 9999];
-
-// Durées
 const DURATION_RANGES = [
   { from: 2, to: 4,  nights: 3  },
   { from: 5, to: 9,  nights: 7  },
@@ -40,7 +36,7 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function fetchFares(durationFrom, durationTo, priceMax) {
+async function fetchPage(durationFrom, durationTo, page) {
   const today = new Date();
   const end = new Date(today);
   end.setMonth(end.getMonth() + MONTHS_AHEAD);
@@ -63,8 +59,9 @@ async function fetchFares(durationFrom, durationTo, priceMax) {
     `&outboundDepartureDaysOfWeek=MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY` +
     `&outboundDepartureTimeFrom=00:00&outboundDepartureTimeTo=23:59` +
     `&inboundDepartureTimeFrom=00:00&inboundDepartureTimeTo=23:59` +
-    `&priceValueTo=${priceMax}` +
-    `&currency=EUR`;
+    `&priceValueTo=9999` +
+    `&currency=EUR` +
+    `&page=${page}`;
 
   const res = await fetch(url, {
     headers: {
@@ -76,9 +73,31 @@ async function fetchFares(durationFrom, durationTo, priceMax) {
     }
   });
 
-  if (!res.ok) return [];
+  if (!res.ok) return { fares: [], nextPage: null };
   const data = await res.json();
-  return data.fares || [];
+  return { fares: data.fares || [], nextPage: data.nextPage ?? null };
+}
+
+async function fetchAllFares(durationFrom, durationTo, nights) {
+  const allFares = [];
+  let page = 0;
+  let pageCount = 0;
+
+  console.log(`\n📦 Fetching ${nights}n fares (paginating)...`);
+
+  while (true) {
+    const { fares, nextPage } = await fetchPage(durationFrom, durationTo, page);
+    allFares.push(...fares);
+    pageCount++;
+    console.log(`  Page ${page}: ${fares.length} fares (total: ${allFares.length})`);
+
+    if (nextPage === null || nextPage === undefined || fares.length === 0) break;
+    page = nextPage;
+    await sleep(400);
+  }
+
+  console.log(`  ✅ Total: ${allFares.length} fares in ${pageCount} pages`);
+  return allFares;
 }
 
 async function main() {
@@ -86,50 +105,41 @@ async function main() {
   const prices = {};
 
   for (const range of DURATION_RANGES) {
-    console.log(`\n📦 Fetching ${range.nights}n fares across ${PRICE_BUCKETS.length} price buckets...`);
-    const seen = new Set(); // éviter les doublons entre tranches
+    const fares = await fetchAllFares(range.from, range.to, range.nights);
 
-    for (const priceMax of PRICE_BUCKETS) {
-      const fares = await fetchFares(range.from, range.to, priceMax);
+    for (const fare of fares) {
+      const destCode = fare.outbound?.arrivalAirport?.iataCode;
+      if (!destCode) continue;
 
-      for (const fare of fares) {
-        const destCode = fare.outbound?.arrivalAirport?.iataCode;
-        if (!destCode) continue;
+      const total = fare.summary?.price?.value;
+      const outPrice = fare.outbound?.price?.value;
+      const inPrice = fare.inbound?.price?.value;
+      const departDate = fare.outbound?.departureDate;
+      const retDate = fare.inbound?.departureDate || null;
 
-        const total = fare.summary?.price?.value;
-        const outPrice = fare.outbound?.price?.value;
-        const inPrice = fare.inbound?.price?.value;
-        const departDate = fare.outbound?.departureDate;
+      if (!total || !departDate) continue;
 
-        if (!total || !departDate) continue;
+      const month = departDate.substring(0, 7);
 
-        const key = `${destCode}-${departDate}-${range.nights}`;
-        if (seen.has(key)) continue;
-        seen.add(key);
-
-        const month = departDate.substring(0, 7);
-
-        if (!prices[destCode]) {
-          prices[destCode] = { name: DEST_NAMES[destCode] || destCode, months: {} };
-        }
-        if (!prices[destCode].months[month]) prices[destCode].months[month] = {};
-
-        const existing = prices[destCode].months[month][range.nights];
-        if (!existing || total < existing.total) {
-          const retDate = fare.inbound?.departureDate || null;
-          prices[destCode].months[month][range.nights] = {
-            total: Math.round(total),
-            out: Math.round(outPrice || total / 2),
-            ret: Math.round(inPrice || total / 2),
-            dateOut: departDate,
-            dateIn: retDate
-          };
-          console.log(`  ✅ ${destCode} ${month} ${range.nights}n: €${Math.round(total)}`);
-        }
+      if (!prices[destCode]) {
+        prices[destCode] = { name: DEST_NAMES[destCode] || destCode, months: {} };
       }
+      if (!prices[destCode].months[month]) prices[destCode].months[month] = {};
 
-      await sleep(500);
+      const existing = prices[destCode].months[month][range.nights];
+      if (!existing || total < existing.total) {
+        prices[destCode].months[month][range.nights] = {
+          total: Math.round(total),
+          out: Math.round(outPrice || total / 2),
+          ret: Math.round(inPrice || total / 2),
+          dateOut: departDate,
+          dateIn: retDate
+        };
+        console.log(`  ✅ ${destCode} ${month} ${range.nights}n: €${Math.round(total)} (${departDate?.substring(0,10)} → ${retDate?.substring(0,10)})`);
+      }
     }
+
+    await sleep(1000);
   }
 
   const output = { updatedAt: new Date().toISOString(), prices };
