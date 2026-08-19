@@ -1,37 +1,18 @@
 const fs = require('fs');
 
-// === CONFIG ===
 const ORIGIN = 'DUB';
-const NIGHTS = [3, 7, 14]; // durées à récupérer
-const MONTHS_AHEAD = 4;    // fenêtre glissante : aujourd'hui + 4 mois
+const MONTHS_AHEAD = 4;
 
-// Toutes les destinations Ryanair depuis Dublin
-const DESTINATIONS = [
-  'LON','EDI','GLA','MAN','LPL','BRS','CWL','BHX', // UK
-  'BRU','PAR','AMS','BER','CGN','VIE','PRG',        // Europe centrale
-  'WAW','KRK','BUD','BTS','TLL','CPH',              // Europe est/nord
-  'LIS','OPO','FAO','AGP','BCN','MAD','ALC',        // Ibérique
-  'SVQ','PMI','MAH','TFS','ACE','LPA',              // Espagne îles
-  'MIL','ROM','NAP','VCE','BLQ','CAG','BDS','CTA', // Italie
-  'NCE',                                            // France
-  'ATH','CFU','ZTH','CHQ','RHO','JTR',             // Grèce
-  'DBV','SPU','ZAD',                               // Croatie
-  'BJV','DLM','IST',                               // Turquie
-  'PFO','MLA',                                     // Chypre/Malte
-  'RAK','AGA','FEZ','FNC'                          // Maroc/Madeira
-];
-
-// Mapping code → nom lisible
 const DEST_NAMES = {
-  LON:'London', EDI:'Edinburgh', GLA:'Glasgow', MAN:'Manchester',
+  STN:'London', EDI:'Edinburgh', GLA:'Glasgow', MAN:'Manchester',
   LPL:'Liverpool', BRS:'Bristol', CWL:'Cardiff', BHX:'Birmingham',
-  BRU:'Brussels', PAR:'Paris', AMS:'Amsterdam', BER:'Berlin',
+  BRU:'Brussels', CDG:'Paris', AMS:'Amsterdam', BER:'Berlin',
   CGN:'Cologne', VIE:'Vienna', PRG:'Prague', WAW:'Warsaw',
   KRK:'Kraków', BUD:'Budapest', BTS:'Bratislava', TLL:'Tallinn',
   CPH:'Copenhagen', LIS:'Lisbon', OPO:'Porto', FAO:'Faro / Algarve',
   AGP:'Malaga', BCN:'Barcelona', MAD:'Madrid', ALC:'Alicante',
   SVQ:'Seville', PMI:'Palma', MAH:'Minorca', TFS:'Tenerife',
-  ACE:'Lanzarote', LPA:'Gran Canaria', MIL:'Milan', ROM:'Rome',
+  ACE:'Lanzarote', LPA:'Gran Canaria', MXP:'Milan', FCO:'Rome',
   NAP:'Naples', VCE:'Venice', BLQ:'Bologna', CAG:'Cagliari',
   BDS:'Brindisi', CTA:'Catania', NCE:'Nice', ATH:'Athens',
   CFU:'Corfu', ZTH:'Zakynthos', CHQ:'Chania', RHO:'Rhodes',
@@ -41,46 +22,52 @@ const DEST_NAMES = {
   FEZ:'Fes', FNC:'Funchal'
 };
 
-// === HELPERS ===
 function formatDate(date) {
   return date.toISOString().split('T')[0];
-}
-
-function getDateRange() {
-  const today = new Date();
-  const end = new Date(today);
-  end.setMonth(end.getMonth() + MONTHS_AHEAD);
-  return { from: formatDate(today), to: formatDate(end) };
 }
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-// === FETCH RYANAIR FARFND API ===
-async function fetchFares(nights) {
-  const { from, to } = getDateRange();
+// Durées à scanner (durationFrom-durationTo)
+// On fait 3 appels : courts (2-4n), moyens (5-9n), longs (10-14n)
+const DURATION_RANGES = [
+  { from: 2, to: 4,  nights: 3  },
+  { from: 5, to: 9,  nights: 7  },
+  { from: 10, to: 14, nights: 14 }
+];
 
-  // Calcul des dates de retour (outbound + nights)
-  const returnFrom = new Date(from);
-  returnFrom.setDate(returnFrom.getDate() + nights);
-  const returnTo = new Date(to);
-  returnTo.setDate(returnTo.getDate() + nights);
+async function fetchFares(durationFrom, durationTo) {
+  const today = new Date();
+  const end = new Date(today);
+  end.setMonth(end.getMonth() + MONTHS_AHEAD);
 
-  const url = `https://services-api.ryanair.com/farfnd/3/roundTripFares?` +
+  // Dates retour = dates aller + durée
+  const retFrom = new Date(today);
+  retFrom.setDate(retFrom.getDate() + durationFrom);
+  const retTo = new Date(end);
+  retTo.setDate(retTo.getDate() + durationTo);
+
+  const url = `https://www.ryanair.com/api/farfnd/v4/roundTripFares?` +
     `departureAirportIataCode=${ORIGIN}` +
-    `&language=en` +
+    `&outboundDepartureDateFrom=${formatDate(today)}` +
+    `&outboundDepartureDateTo=${formatDate(end)}` +
+    `&inboundDepartureDateFrom=${formatDate(retFrom)}` +
+    `&inboundDepartureDateTo=${formatDate(retTo)}` +
+    `&durationFrom=${durationFrom}` +
+    `&durationTo=${durationTo}` +
     `&market=en-ie` +
-    `&limit=200` +
-    `&offset=0` +
-    `&outboundDepartureDateFrom=${from}` +
-    `&outboundDepartureDateTo=${to}` +
-    `&inboundDepartureDateFrom=${formatDate(returnFrom)}` +
-    `&inboundDepartureDateTo=${formatDate(returnTo)}` +
+    `&adultPaxCount=1` +
+    `&outboundDepartureDaysOfWeek=MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY` +
+    `&outboundDepartureTimeFrom=00:00` +
+    `&outboundDepartureTimeTo=23:59` +
+    `&inboundDepartureTimeFrom=00:00` +
+    `&inboundDepartureTimeTo=23:59` +
     `&priceValueTo=9999` +
     `&currency=EUR`;
 
-  console.log(`\nFetching ${nights}n fares (${from} → ${to})...`);
+  console.log(`\nFetching ${durationFrom}-${durationTo}n fares...`);
 
   const res = await fetch(url, {
     headers: {
@@ -88,43 +75,32 @@ async function fetchFares(nights) {
       'Accept': 'application/json',
       'Accept-Language': 'en-IE,en;q=0.9',
       'Origin': 'https://www.ryanair.com',
-      'Referer': 'https://www.ryanair.com/'
+      'Referer': 'https://www.ryanair.com/ie/en/fare-finder'
     }
   });
 
+  console.log(`  Status: ${res.status}`);
   if (!res.ok) {
-    console.error(`API error ${res.status} for ${nights}n`);
+    console.error(`  Error: ${await res.text().then(t => t.substring(0,200))}`);
     return [];
   }
 
   const data = await res.json();
-  return data.fares || [];
+  const fares = data.fares || [];
+  console.log(`  Got ${fares.length} fares`);
+  return fares;
 }
 
-// === MAIN ===
 async function main() {
   console.log('🚀 IrishTripLab Price Fetcher starting...');
-  console.log(`📅 Date range: today + ${MONTHS_AHEAD} months`);
-  console.log(`🌍 Destinations: ${DESTINATIONS.length}`);
-
   const prices = {};
 
-  // Init structure
-  for (const code of DESTINATIONS) {
-    prices[code] = {
-      name: DEST_NAMES[code] || code,
-      months: {}
-    };
-  }
-
-  // Fetch pour chaque durée
-  for (const nights of NIGHTS) {
-    const fares = await fetchFares(nights);
-    console.log(`✅ Got ${fares.length} fares for ${nights}n`);
+  for (const range of DURATION_RANGES) {
+    const fares = await fetchFares(range.from, range.to);
 
     for (const fare of fares) {
       const destCode = fare.outbound?.arrivalAirport?.iataCode;
-      if (!destCode || !DESTINATIONS.includes(destCode)) continue;
+      if (!destCode) continue;
 
       const total = fare.summary?.price?.value;
       const outPrice = fare.outbound?.price?.value;
@@ -133,44 +109,35 @@ async function main() {
 
       if (!total || !departDate) continue;
 
-      const month = departDate.substring(0, 7); // "2026-09"
+      const month = departDate.substring(0, 7);
 
-      if (!prices[destCode].months[month]) {
-        prices[destCode].months[month] = {};
+      if (!prices[destCode]) {
+        prices[destCode] = { name: DEST_NAMES[destCode] || destCode, months: {} };
       }
+      if (!prices[destCode].months[month]) prices[destCode].months[month] = {};
 
-      // Garder le prix le moins cher pour cette durée/mois
-      const existing = prices[destCode].months[month][nights];
+      const existing = prices[destCode].months[month][range.nights];
       if (!existing || total < existing.total) {
-        prices[destCode].months[month][nights] = {
+        prices[destCode].months[month][range.nights] = {
           total: Math.round(total),
           out: Math.round(outPrice || total / 2),
           ret: Math.round(inPrice || total / 2),
           date: departDate
         };
-        console.log(`  ✅ ${destCode} ${month} ${nights}n: €${Math.round(total)}`);
+        console.log(`  ✅ ${destCode} ${month} ${range.nights}n: €${Math.round(total)}`);
       }
     }
 
-    // Pause entre les requêtes pour éviter le rate limiting
-    if (nights !== NIGHTS[NIGHTS.length - 1]) {
-      console.log('⏳ Waiting 2s...');
-      await sleep(2000);
-    }
+    await sleep(1500);
   }
 
-  // Output
-  const output = {
-    updatedAt: new Date().toISOString(),
-    prices
-  };
-
+  const output = { updatedAt: new Date().toISOString(), prices };
   fs.writeFileSync('prices.json', JSON.stringify(output, null, 2));
   console.log(`\n✅ Done! prices.json updated at ${output.updatedAt}`);
-  console.log(`📊 Stats: ${Object.keys(prices).length} destinations`);
+  console.log(`📊 ${Object.keys(prices).length} destinations found`);
 }
 
 main().catch(err => {
-  console.error('❌ Fatal error:', err);
+  console.error('❌ Fatal:', err);
   process.exit(1);
 });
