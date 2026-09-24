@@ -1,0 +1,29 @@
+name: Fetch Destination Images
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * 0'  # Une fois par semaine, dimanche à 3h UTC
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run image fetcher
+        run: node fetch-images.js
+
+      - name: Commit images
+        run: |
+          git config --global user.name "ImageBot"
+          git config --global user.email "bot@irishtriplab.com"
+          git add images/
+          git diff --staged --quiet || git commit -m "Update destination images"
+          git push
