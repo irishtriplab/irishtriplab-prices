@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IrishTripLab — Travel from Dublin, made simple</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍀</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-5BNKH584');</script>
+<style>
+:root {
+  --green: #1a472a; --green-mid: #2d6a4f;
+  --cream: #f8f4ef; --cream-dark: #ede8e0;
+  --dark: #111410; --gray: #888580;
+  --border: #e4dfd7; --white: #ffffff;
+  --orange: #c8521a;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--dark); overflow-x:hidden; }
+
+/* NAV */
+nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:0 48px; height:68px; background:rgba(248,244,239,0.95); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); }
+.logo { font-family:'Cormorant Garamond',serif; font-weight:700; font-size:22px; color:var(--green); text-decoration:none; }
+.nav-links { display:flex; align-items:center; gap:28px; }
+.nav-link { font-size:13px; color:var(--gray); text-decoration:none; transition:color 0.15s; }
+.nav-link:hover { color:var(--dark); }
+.nav-cta { background:var(--green); color:white; font-size:13px; font-weight:500; padding:10px 22px; border-radius:100px; border:none; cursor:pointer; text-decoration:none; font-family:'DM Sans',sans-serif; }
+
+/* HERO */
+.hero { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:68px 24px 60px; }
+.eyebrow { font-size:11px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; color:var(--gray); margin-bottom:28px; display:flex; align-items:center; gap:12px; animation:fadeUp 0.7s ease both; }
+.eyebrow::before,.eyebrow::after { content:''; width:28px; height:1px; background:var(--border); }
+h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(44px,6.5vw,86px); font-weight:600; line-height:1.0; letter-spacing:-2px; color:var(--dark); max-width:820px; margin-bottom:24px; animation:fadeUp 0.7s 0.1s ease both; }
+h1 em { font-style:italic; color:var(--green); }
+.hero-sub { font-size:16px; color:var(--gray); font-weight:300; max-width:400px; line-height:1.75; margin-bottom:40px; animation:fadeUp 0.7s 0.2s ease both; }
+.hero-btns { display:flex; gap:10px; justify-content:center; animation:fadeUp 0.7s 0.3s ease both; flex-wrap:wrap; }
+.btn-primary { background:var(--green); color:white; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; padding:14px 28px; border-radius:100px; border:none; cursor:pointer; text-decoration:none; }
+.btn-ghost { background:transparent; color:var(--dark); font-family:'DM Sans',sans-serif; font-size:14px; font-weight:400; padding:14px 24px; border-radius:100px; border:1px solid var(--border); cursor:pointer; text-decoration:none; }
+.hero-stats { display:flex; gap:52px; margin-top:64px; padding-top:44px; border-top:1px solid var(--border); animation:fadeUp 0.7s 0.4s ease both; flex-wrap:wrap; justify-content:center; }
+.stat-num { font-family:'Cormorant Garamond',serif; font-size:34px; font-weight:600; color:var(--dark); line-height:1; margin-bottom:5px; }
+.stat-label { font-size:11px; color:var(--gray); letter-spacing:0.08em; text-transform:uppercase; }
+
+/* SECTIONS */
+.section { padding:100px 24px; }
+.section-inner { max-width:960px; margin:0 auto; }
+.section-eyebrow { font-size:11px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; color:var(--gray); margin-bottom:14px; display:flex; align-items:center; gap:10px; }
+.section-eyebrow::before { content:''; width:20px; height:1px; background:var(--border); }
+.section-title { font-family:'Cormorant Garamond',serif; font-size:clamp(28px,3.5vw,42px); font-weight:600; letter-spacing:-1px; color:var(--dark); line-height:1.1; margin-bottom:8px; }
+.section-sub { font-size:13px; color:var(--gray); font-weight:300; line-height:1.7; margin-bottom:44px; }
+
+/* HOT DEAL */
+.hot-deal-card {
+  border-radius:20px; overflow:hidden; position:relative;
+  max-width:680px; margin:0 auto;
+  border:1px solid var(--border);
+}
+.hot-deal-img { height:280px; position:relative; background:center/cover; }
+.hot-deal-img::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.7) 100%); }
+.hot-deal-badge { position:absolute; top:20px; left:20px; z-index:2; background:var(--orange); color:white; font-size:10px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; padding:7px 16px; border-radius:100px; }
+.hot-deal-body { padding:32px; background:var(--white); }
+.hot-deal-city { font-family:'Cormorant Garamond',serif; font-size:38px; font-weight:700; letter-spacing:-1px; color:var(--dark); margin-bottom:4px; }
+.hot-deal-route { font-size:12px; color:var(--gray); margin-bottom:20px; }
+.hot-deal-price-row { display:flex; align-items:baseline; gap:16px; margin-bottom:8px; }
+.hot-deal-price { font-family:'Cormorant Garamond',serif; font-size:52px; font-weight:700; color:var(--green); line-height:1; letter-spacing:-1px; }
+.hot-deal-price-note { font-size:12px; color:var(--gray); }
+.hot-deal-dates { font-size:12px; color:var(--gray); margin-bottom:24px; }
+.hot-deal-dates strong { color:var(--dark); font-weight:500; }
+.hot-deal-btn { width:100%; background:var(--green); color:white; padding:16px; border-radius:12px; font-size:14px; font-weight:500; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; }
+.hot-deal-disclaimer { font-size:11px; color:var(--gray); text-align:center; margin-top:12px; }
+
+/* MAP SECTION */
+.map-section { background:var(--cream-dark); }
+.europe-map { position:relative; width:100%; max-width:800px; margin:0 auto; }
+.europe-map svg { width:100%; height:auto; }
+.map-dot { cursor:pointer; transition:transform 0.2s; }
+.map-dot:hover { transform:scale(1.4); }
+.map-dot circle { transition:fill 0.2s; }
+.map-dot:hover circle { fill:var(--orange); }
+.map-tooltip { position:absolute; background:var(--dark); color:white; padding:6px 12px; border-radius:8px; font-size:11px; font-weight:500; pointer-events:none; opacity:0; transition:opacity 0.15s; white-space:nowrap; z-index:10; }
+
+/* WEEKENDS */
+.weekends-section { background:var(--white); }
+.weekend-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.weekend-card { border-radius:16px; overflow:hidden; border:1px solid var(--border); transition:transform 0.2s,box-shadow 0.2s; cursor:pointer; }
+.weekend-card:hover { transform:translateY(-3px); box-shadow:0 12px 36px rgba(0,0,0,0.08); }
+.wc-img { height:160px; background:center/cover; position:relative; display:flex; align-items:flex-end; padding:14px; }
+.wc-img::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.65) 100%); }
+.wc-badge { position:relative; z-index:1; font-size:10px; color:rgba(255,255,255,0.85); background:rgba(255,255,255,0.15); backdrop-filter:blur(8px); padding:4px 10px; border-radius:100px; border:1px solid rgba(255,255,255,0.2); }
+.wc-body { padding:18px; background:var(--white); }
+.wc-city { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:600; color:var(--dark); margin-bottom:3px; }
+.wc-route { font-size:11px; color:var(--gray); margin-bottom:10px; }
+.wc-price { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:600; color:var(--green); margin-bottom:3px; }
+.wc-price-note { font-size:10px; color:var(--gray); margin-bottom:12px; }
+.wc-dates { font-size:11px; color:var(--gray); margin-bottom:14px; }
+.wc-btn { width:100%; background:var(--green); color:white; padding:10px; border-radius:8px; font-size:12px; font-weight:500; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; }
+.wc-smart { display:inline-block; font-size:9px; font-weight:600; color:var(--orange); background:rgba(200,82,26,0.08); padding:2px 8px; border-radius:100px; margin-bottom:8px; }
+
+/* DESTINATIONS */
+.dest-section { background:var(--cream); }
+.dest-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.dest-card { border-radius:16px; overflow:hidden; border:1px solid var(--border); cursor:pointer; transition:transform 0.2s,box-shadow 0.2s; }
+.dest-card:hover { transform:translateY(-3px); box-shadow:0 12px 36px rgba(0,0,0,0.08); }
+.dest-img { height:180px; background:center/cover; position:relative; display:flex; align-items:flex-end; padding:14px; }
+.dest-img::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(0,0,0,0.7) 100%); }
+.dest-name { position:relative; z-index:1; font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:700; color:white; letter-spacing:-0.5px; }
+.dest-body { padding:16px; background:var(--white); }
+.dest-country { font-size:11px; color:var(--gray); margin-bottom:10px; }
+.dest-tags { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:12px; }
+.dest-tag { font-size:10px; color:var(--gray); background:var(--cream); padding:3px 9px; border-radius:100px; border:1px solid var(--border); }
+.dest-discover { width:100%; background:transparent; border:1px solid var(--border); color:var(--dark); padding:9px; border-radius:8px; font-size:11px; font-weight:500; cursor:pointer; font-family:'DM Sans',sans-serif; }
+.alert-row { display:flex; gap:6px; margin-top:8px; }
+.alert-input { flex:1; min-width:0; border:1px solid var(--border); border-radius:8px; padding:8px 10px; font-size:11px; font-family:'DM Sans',sans-serif; outline:none; transition:border-color 0.15s; }
+.alert-input:focus { border-color:var(--green); }
+.alert-btn { background:var(--green); color:white; border:none; border-radius:8px; padding:8px 12px; font-size:13px; cursor:pointer; flex-shrink:0; }
+.alert-confirm { margin-top:8px; font-size:11px; color:var(--green); font-weight:500; text-align:center; font-family:'DM Sans',sans-serif; }
+.dest-discover:hover { background:var(--green); color:white; border-color:var(--green); }
+
+/* TRUST */
+.trust-section { background:var(--cream-dark); }
+.trust-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:16px; overflow:hidden; }
+.trust-item { background:var(--white); padding:36px 30px; }
+.trust-num { font-family:'Cormorant Garamond',serif; font-size:44px; font-weight:400; color:var(--cream-dark); line-height:1; margin-bottom:16px; }
+.trust-title { font-family:'Cormorant Garamond',serif; font-size:19px; font-weight:600; color:var(--dark); margin-bottom:9px; }
+.trust-text { font-size:13px; color:var(--gray); line-height:1.7; font-weight:300; }
+
+/* POPUP */
+.popup-overlay { display:none; position:fixed; inset:0; z-index:999; background:rgba(0,0,0,0.85); backdrop-filter:blur(6px); align-items:center; justify-content:center; padding:20px; }
+.popup-overlay.open { display:flex; }
+.popup { background:#111410; border-radius:24px; max-width:680px; width:100%; max-height:90vh; overflow-y:auto; border:1px solid #222; animation:fadeUp 0.3s ease both; }
+.popup-hero { height:260px; border-radius:24px 24px 0 0; position:relative; padding:24px; display:flex; flex-direction:column; justify-content:flex-end; background:center/cover; }
+.popup-hero::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,0) 40%,#111410 100%); border-radius:24px 24px 0 0; }
+.popup-close { position:absolute; top:16px; right:16px; background:rgba(0,0,0,0.5); border:1px solid #333; color:white; width:36px; height:36px; border-radius:50%; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-family:'DM Sans',sans-serif; z-index:1; }
+.popup-city { font-family:'Cormorant Garamond',serif; font-size:48px; font-weight:700; color:white; line-height:1; letter-spacing:-1px; position:relative; z-index:1; }
+.popup-country { font-size:13px; color:rgba(255,255,255,0.5); margin-top:4px; position:relative; z-index:1; }
+.popup-body { padding:32px; }
+.popup-section { margin-bottom:28px; }
+.popup-section-title { font-size:10px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#444; margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+.popup-section-title::after { content:''; flex:1; height:1px; background:#222; }
+.popup-text { font-size:14px; color:#888; line-height:1.8; font-weight:300; }
+.popup-text strong { color:#ccc; font-weight:500; }
+.spots-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.spot { background:#161815; border:1px solid #222; border-radius:12px; padding:16px; display:flex; gap:12px; align-items:flex-start; }
+.spot-icon { font-size:22px; line-height:1; }
+.spot-name { font-size:13px; font-weight:500; color:#ddd; margin-bottom:3px; }
+.spot-desc { font-size:11px; color:#555; line-height:1.5; }
+.tips-list { display:flex; flex-direction:column; gap:10px; }
+.tip { display:flex; gap:12px; align-items:flex-start; }
+.tip-icon { font-size:16px; line-height:1.6; }
+.tip-text { font-size:13px; color:#888; line-height:1.6; }
+.tip-text strong { color:#ccc; }
+.popup-cta { display:flex; gap:10px; margin-top:24px; }
+.popup-cta a { flex:1; padding:14px; border-radius:10px; font-size:13px; font-weight:500; text-align:center; text-decoration:none; font-family:'DM Sans',sans-serif; }
+.cta-sky { background:#0055b3; color:white; }
+.cta-book { background:#00377a; color:white; }
+
+/* FOOTER */
+footer { border-top:1px solid var(--border); padding:32px 48px; display:flex; align-items:center; justify-content:space-between; }
+.footer-logo { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:600; color:var(--green); }
+.footer-note { font-size:11px; color:var(--gray); max-width:500px; text-align:right; }
+
+/* ANIMATIONS */
+@keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+.reveal { opacity:0; transform:translateY(14px); transition:opacity 0.55s ease,transform 0.55s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+/* HAMBURGER MENU */
+.hamburger { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:8px; }
+.hamburger span { width:22px; height:2px; background:var(--dark); border-radius:2px; transition:0.2s; }
+.mobile-menu { display:none; position:fixed; top:68px; left:0; right:0; background:var(--cream); border-bottom:1px solid var(--border); padding:12px 20px 20px; flex-direction:column; gap:2px; z-index:99; box-shadow:0 8px 24px rgba(0,0,0,0.08); }
+.mobile-menu.open { display:flex; }
+.mobile-menu a { padding:14px 4px; font-size:15px; color:var(--dark); text-decoration:none; border-bottom:1px solid var(--border); }
+.mobile-menu a:last-child { border-bottom:none; }
+
+/* MOBILE */
+@media (max-width:700px) {
+  nav { padding:0 20px; }
+  .nav-links .nav-link { display:none; }
+  .hamburger { display:flex; }
+  .weekend-grid,.dest-grid,.trust-grid { grid-template-columns:1fr; }
+  .hero-stats { gap:28px; }
+  footer { padding:24px 20px; flex-direction:column; gap:10px; text-align:center; }
+  .footer-note { text-align:center; }
+}
+
+/* FILTERS */
+.filters-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:28px;padding:14px 18px;background:white;border-radius:14px;border:1px solid var(--border);}
+.filter-group{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+.fl{font-size:11px;color:var(--gray);font-weight:500;margin-right:2px;}
+.fb{font-size:11px;font-family:'DM Sans',sans-serif;font-weight:500;padding:6px 13px;border-radius:100px;border:1px solid var(--border);background:white;color:var(--dark);cursor:pointer;}
+.fb.on{background:var(--green);color:white;border-color:var(--green);}
+.fdiv{width:1px;height:20px;background:var(--border);}
+#dest-count{margin-left:auto;font-size:11px;color:var(--gray);}
+.live-badge{display:inline-block;font-size:9px;font-weight:600;color:var(--green);background:rgba(26,71,42,0.08);padding:2px 8px;border-radius:100px;margin-bottom:3px;}
+.est-badge{display:inline-block;font-size:9px;color:var(--gray);background:var(--cream);padding:2px 8px;border-radius:100px;margin-bottom:3px;}
+@media(max-width:700px){.filters-bar{gap:6px;padding:10px 12px;}.fb{padding:8px 14px;font-size:12px;}.fl{width:100%;margin-bottom:2px;}}
+</style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5BNKH584" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">IrishTripLab 🍀</a>
+  <div class="nav-links">
+    <a href="#weekends" class="nav-link">Weekends</a>
+    <a href="#destinations" class="nav-link">Destinations</a>
+    <a href="#hot-deal" class="nav-link">Hot Deal</a>
+    <a href="#smart-routes" class="nav-link">Smart Routes</a>
+    <a href="#hot-deal" class="nav-cta">🔥 Hot Deal</a>
+  </div>
+  <button class="hamburger" onclick="document.getElementById('mobile-menu').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#weekends" onclick="document.getElementById('mobile-menu').classList.remove('open')">Weekends</a>
+  <a href="#destinations" onclick="document.getElementById('mobile-menu').classList.remove('open')">🌍 Destinations</a>
+  <a href="#hot-deal" onclick="document.getElementById('mobile-menu').classList.remove('open')">🔥 Hot Deal</a>
+  <a href="#smart-routes" onclick="document.getElementById('mobile-menu').classList.remove('open')">🧳 Smart Routes</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="eyebrow">Smart travel from Ireland</div>
+  <h1>Travel from <span style="color:#169b62">Ire</span><span style="color:#aaa">la</span><span style="color:#ff883e">nd</span>,<br>made <em>simple.</em></h1>
+  <p class="hero-sub">We find the best destinations from Dublin. You choose where to go.</p>
+  <div class="hero-btns">
+    <a href="#hot-deal" class="btn-primary">🔥 See Hot Deal</a>
+    <a href="#destinations" class="btn-ghost">🌍 Explore destinations</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">115+</div><div class="stat-label">Destinations</div></div>
+    <div class="stat"><div class="stat-num">Nonstop</div><div class="stat-label">Flights only</div></div>
+    <div class="stat"><div class="stat-num">Weekly</div><div class="stat-label">Updated deals</div></div>
+  </div>
+</section>
+
+
+<!-- WEEKEND ESCAPES -->
+<section class="section weekends-section" id="weekends">
+  <div class="section-inner">
+    <div class="section-eyebrow reveal">No days off needed</div>
+    <h2 class="section-title reveal">Weekend Escapes</h2>
+    <p class="section-sub reveal">Friday evening → Sunday evening. Nonstop flights only. <strong>Flight prices only</strong> — add your hotel on top.</p>
+
+    <div class="weekend-grid">
+      <div class="weekend-card reveal">
+        <div class="wc-img" style="background-image:url('https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/WC_MADRID.jpg'),linear-gradient(135deg,#1a3d2e,#2d6e47);background-size:cover,cover">
+          <span class="wc-badge">Capital · 2h15</span>
+        </div>
+        <div class="wc-body">
+          <div class="wc-city">Madrid</div>
+          <div class="wc-route">Dublin → Madrid · Nonstop · Ryanair</div>
+          <div class="wc-price">€88</div>
+          <div class="wc-price-note">return flight per person</div>
+          <div class="wc-dates">📅 13–15 Nov · Fri eve → Sun eve</div>
+          <div style="display:flex;gap:8px">
+            <button class="wc-btn" style="flex:1" onclick="window.open('https://www.skyscanner.ie/transport/flights/dub/mad/261113/261115/','_blank')">Flights →</button>
+            <button class="wc-btn" style="flex:1;background:#003580" onclick="window.open('https://www.booking.com/searchresults.html?ss=Madrid&checkin=2026-11-13&checkout=2026-11-15&group_adults=2&no_rooms=1','_blank')">🏨 Hotels →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="weekend-card reveal">
+        <div class="wc-img" style="background-image:url('https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/WC_PARIS.jpg'),linear-gradient(135deg,#1a3d2e,#2d6e47);background-size:cover,cover">
+          <span class="wc-badge">City of Light · 1h35</span>
+        </div>
+        <div class="wc-body">
+          <div class="wc-city">Paris</div>
+          <div class="wc-route">Dublin → Paris · Nonstop · Ryanair</div>
+          <div class="wc-price">€80</div>
+          <div class="wc-price-note">return flight per person</div>
+          <div class="wc-dates">📅 13–15 Nov · Fri eve → Sun eve</div>
+          <div style="display:flex;gap:8px">
+            <button class="wc-btn" style="flex:1" onclick="window.open('https://www.skyscanner.ie/transport/flights/dub/pari/261113/261115/','_blank')">Flights →</button>
+            <button class="wc-btn" style="flex:1;background:#003580" onclick="window.open('https://www.booking.com/searchresults.html?ss=Paris&checkin=2026-11-13&checkout=2026-11-15&group_adults=2&no_rooms=1','_blank')">🏨 Hotels →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="weekend-card reveal">
+        <div class="wc-img" style="background-image:url('https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/WC_GLASGOW.jpg'),linear-gradient(135deg,#1a3d2e,#2d6e47);background-size:cover,cover">
+          <span class="wc-badge">Bonus: train to Edinburgh · 1h</span>
+        </div>
+        <div class="wc-body">
+          <div class="wc-city">Glasgow</div>
+          <div class="wc-route">Dublin → Glasgow · Nonstop · Ryanair</div>
+          <div class="wc-price">€44</div>
+          <div class="wc-price-note">return flight per person</div>
+          <div class="wc-dates">📅 20–22 Nov · Fri eve → Sun eve · easy train hop to Edinburgh</div>
+          <div style="display:flex;gap:8px">
+            <button class="wc-btn" style="flex:1" onclick="window.open('https://www.skyscanner.ie/transport/flights/dub/gla/261120/261122/','_blank')">Flights →</button>
+            <button class="wc-btn" style="flex:1;background:#003580" onclick="window.open('https://www.booking.com/searchresults.html?ss=Glasgow&checkin=2026-11-20&checkout=2026-11-22&group_adults=2&no_rooms=1','_blank')">🏨 Hotels →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="weekend-card reveal">
+        <div class="wc-img" style="background-image:url('https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/WC_NICE.jpg'),linear-gradient(135deg,#1a3d2e,#2d6e47);background-size:cover,cover">
+          <span class="wc-badge">Riviera · 2h35</span>
+        </div>
+        <div class="wc-body">
+          <div class="wc-city">Nice</div>
+          <div class="wc-route">Dublin → Nice · Nonstop · Ryanair</div>
+          <div class="wc-price">€72</div>
+          <div class="wc-price-note">return flight per person</div>
+          <div class="wc-dates">📅 13–15 Nov · Fri eve → Sun eve</div>
+          <div style="display:flex;gap:8px">
+            <button class="wc-btn" style="flex:1" onclick="window.open('https://www.skyscanner.ie/transport/flights/dub/nce/261113/261115/','_blank')">Flights →</button>
+            <button class="wc-btn" style="flex:1;background:#003580" onclick="window.open('https://www.booking.com/searchresults.html?ss=Nice&checkin=2026-11-13&checkout=2026-11-15&group_adults=2&no_rooms=1','_blank')">🏨 Hotels →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="weekend-card reveal">
+        <div class="wc-img" style="background-image:url('https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/WC_MILAN.jpg'),linear-gradient(135deg,#1a3d2e,#2d6e47);background-size:cover,cover">
+          <span class="wc-badge">Fashion capital · 2h35</span>
+        </div>
+        <div class="wc-body">
+          <div class="wc-city">Milan</div>
+          <div class="wc-route">Dublin → Milan · Nonstop · Ryanair</div>
+          <div class="wc-price">€87</div>
+          <div class="wc-price-note">return flight per person</div>
+          <div class="wc-dates">📅 6–8 Nov · Fri eve → Sun eve</div>
+          <div style="display:flex;gap:8px">
+            <button class="wc-btn" style="flex:1" onclick="window.open('https://www.skyscanner.ie/transport/flights/dub/mila/261106/261108/','_blank')">Flights →</button>
+            <button class="wc-btn" style="flex:1;background:#003580" onclick="window.open('https://www.booking.com/searchresults.html?ss=Milan&checkin=2026-11-06&checkout=2026-11-08&group_adults=2&no_rooms=1','_blank')">🏨 Hotels →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p style="text-align:center;font-size:12px;color:var(--gray);margin-top:20px;">Flight prices only · Verify live prices on Skyscanner · Prices change daily</p>
+  </div>
+</section>
+
+<!-- DESTINATIONS -->
+<section class="section dest-section" id="destinations">
+  <div class="section-inner">
+    <div class="section-eyebrow reveal">Discover</div>
+    <h2 class="section-title reveal">All destinations from Dublin</h2>
+    <p class="section-sub reveal">Click any destination to discover tips, must-sees and how to get there.</p>
+    <div class="search-wrap" style="position:relative;max-width:420px;width:100%;margin-bottom:20px;box-sizing:border-box">
+      <input type="text" id="dest-search" placeholder="🔍 Search city or country" autocomplete="off"
+        style="width:100%;padding:14px 44px 14px 18px;border:1px solid var(--border);border-radius:100px;font-size:16px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;-webkit-appearance:none"
+        oninput="onSearchInput(this.value)" onfocus="onSearchInput(this.value)" />
+      <button type="button" id="dest-search-clear" onclick="clearSearch()" style="display:none;position:absolute;right:8px;top:50%;transform:translateY(-50%);background:var(--border);color:var(--dark);border:none;width:28px;height:28px;border-radius:50%;font-size:15px;line-height:1;cursor:pointer;align-items:center;justify-content:center">✕</button>
+      <div id="search-suggestions" style="display:none;position:absolute;top:calc(100% + 6px);left:0;right:0;background:white;border:1px solid var(--border);border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,0.12);max-height:min(320px, 60vh);overflow-y:auto;z-index:50;-webkit-overflow-scrolling:touch"></div>
+    </div>
+    <div class="filters-bar">
+  <div class="filter-group">
+    <span class="fl">Sort</span>
+    <button class="fb on" onclick="doSort('price-asc',this)">💸 Cheapest</button>
+    <button class="fb" onclick="doSort('rating',this)">⭐ Best rated</button>
+  </div>
+  <div class="fdiv"></div>
+  <div class="filter-group">
+    <span class="fl">Budget</span>
+    <button class="fb on" onclick="doBudget('all',this)">All</button>
+    <button class="fb" onclick="doBudget(100,this)">Under €100</button>
+    <button class="fb" onclick="doBudget(200,this)">Under €200</button>
+    <button class="fb" onclick="doBudget(300,this)">Under €300</button>
+  </div>
+  <div class="fdiv"></div>
+  <div class="filter-group">
+    <span class="fl">Month</span>
+    <button class="fb on" onclick="doMonth('any',this)">Any</button>
+    <button class="fb" onclick="doMonth('2026-09',this)">Sep</button>
+    <button class="fb" onclick="doMonth('2026-10',this)">Oct</button>
+    <button class="fb" onclick="doMonth('2026-11',this)">Nov</button>
+    <button class="fb" onclick="doMonth('2026-12',this)">Dec</button>
+  </div>
+  <div class="fdiv"></div>
+  <div class="filter-group">
+    <span class="fl">Nights</span>
+    <button class="fb on" onclick="doNights('any',this)">Any</button>
+    <button class="fb" onclick="doNights('3',this)">3n</button>
+    <button class="fb" onclick="doNights('7',this)">7n</button>
+    <button class="fb" onclick="doNights('14',this)">14n</button>
+  </div>
+  <div class="fdiv"></div>
+  <div class="filter-group">
+    <span class="fl">Departs</span>
+    <button class="fb on" onclick="doDay('any',this)">Any</button>
+    <button class="fb" onclick="doDay('1',this)">Mon</button>
+    <button class="fb" onclick="doDay('2',this)">Tue</button>
+    <button class="fb" onclick="doDay('3',this)">Wed</button>
+    <button class="fb" onclick="doDay('4',this)">Thu</button>
+    <button class="fb" onclick="doDay('5',this)">Fri</button>
+    <button class="fb" onclick="doDay('6',this)">Sat</button>
+    <button class="fb" onclick="doDay('0',this)">Sun</button>
+  </div>
+  <span id="dest-count"></span>
+</div>
+<div class="dest-grid" id="dest-grid"></div>
+  </div>
+</section>
+
+<!-- HOT DEAL -->
+<section class="section" id="hot-deal" style="background:var(--cream-dark)">
+  <div class="section-inner">
+    <div class="section-eyebrow reveal">Updated weekly</div>
+    <h2 class="section-title reveal">🔥 Hot Deal of the Week</h2>
+    <p class="section-sub reveal">One flight deal from Dublin, verified on Google Flights. Flight price only — add your hotel on top.</p>
+
+    <div class="hot-deal-card reveal">
+      <div class="hot-deal-img" style="background-image:url('https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/BEIJING.jpg'),linear-gradient(135deg,#1a3d2e,#2d6e47);background-size:cover,cover">
+        <div class="hot-deal-badge">🔥 Deal of the week</div>
+      </div>
+      <div class="hot-deal-body">
+        <div class="hot-deal-city">Beijing</div>
+        <div class="hot-deal-route">Dublin → Beijing · Nonstop · China</div>
+        <div class="hot-deal-price-row">
+          <div class="hot-deal-price">~€829</div>
+          <div class="hot-deal-price-note">total per person · flight + hotel</div>
+        </div>
+        <div class="hot-deal-dates">📅 <strong>3–14 November 2026</strong> · 11 nights · flight ~€554pp · 🏨 hotel ~€275pp (~€25/night) on Trip.com</div>
+        <div style="display:flex;gap:10px">
+          <button class="hot-deal-btn" style="flex:1" onclick="window.open('https://www.skyscanner.ie/transport/flights/dub/bjs/261103/261114/','_blank')">Find flight →</button>
+          <button class="hot-deal-btn" style="flex:1;background:#00377a" onclick="window.open('https://www.trip.com/hotels/list?city=1&optionName=Beijing&checkIn=2026-11-03&checkOut=2026-11-14&directSearch=0&optionType=City&optionId=1&crn=1&adult=2&children=0&isDomestic=1','_blank')">🏨 Find hotel →</button>
+        </div>
+      </div>
+    </div>
+    <p class="hot-deal-disclaimer">Flight ~€560pp on Skyscanner · 🏨 Hotel ~€220pp on Trip.com (better value than Booking for China) · Total ~€780pp based on 2 sharing · Prices change daily</p>
+  </div>
+</section>
+
+<!-- SMART ROUTES -->
+<section class="section" id="smart-routes" style="background:var(--dark)">
+  <div class="section-inner">
+    <div class="section-eyebrow reveal" style="color:#444">🧳 The hack nobody tells you about</div>
+    <h2 class="section-title reveal" style="color:white">Smart Routes</h2>
+    <p class="section-sub reveal" style="color:#777">Fly somewhere cheap, drive a little, discover somewhere incredible. Real routes, tested by us.</p>
+
+    <div class="reveal" style="max-width:680px;margin:0 auto;background:#161815;border-radius:20px;overflow:hidden;border:1px solid #222;cursor:pointer" onclick="openDestinationPopup('Montenegro')">
+      <div style="height:240px;background:url('https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/MONTENEGRO.jpg') center/cover;position:relative;display:flex;align-items:flex-end;padding:24px">
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.8) 100%)"></div>
+        <div style="position:relative;z-index:1;width:100%">
+          <div style="display:inline-block;background:rgba(200,82,26,0.9);color:white;font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:6px 14px;border-radius:100px;margin-bottom:12px">🧳 Smart Route</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:700;color:white;letter-spacing:-1px">Montenegro</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:4px">via Dubrovnik · fly + drive</div>
+        </div>
+      </div>
+      <div style="padding:24px">
+        <p style="font-size:13px;color:#888;line-height:1.7;font-weight:300;margin-bottom:16px">No direct flights from Dublin to Montenegro — but that's exactly the secret. Fly to Dubrovnik, rent a cheap car, and 30 minutes later you're crossing into one of Europe's most underrated countries.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span style="font-size:10px;color:#666;background:#1a1d18;padding:4px 10px;border-radius:100px;border:1px solid #2a2d28">Kotor Bay</span>
+          <span style="font-size:10px;color:#666;background:#1a1d18;padding:4px 10px;border-radius:100px;border:1px solid #2a2d28">Sveti Stefan</span>
+          <span style="font-size:10px;color:#666;background:#1a1d18;padding:4px 10px;border-radius:100px;border:1px solid #2a2d28">Lake Skadar</span>
+        </div>
+        <button style="width:100%;margin-top:16px;background:transparent;border:1px solid #333;color:#aaa;padding:12px;border-radius:10px;font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif">🗺️ Discover this route →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="section trust-section">
+  <div class="section-inner">
+    <div class="section-eyebrow reveal">How it works</div>
+    <h2 class="section-title reveal">No tricks. Just trips.</h2>
+    <div class="trust-grid" style="margin-top:44px">
+      <div class="trust-item reveal">
+        <div class="trust-num">01</div>
+        <div class="trust-title">Inspiration first</div>
+        <div class="trust-text">Discover where you can go from Dublin. Real destinations, real tips, from someone who's been there.</div>
+      </div>
+      <div class="trust-item reveal">
+        <div class="trust-num">02</div>
+        <div class="trust-title">Live prices on Skyscanner</div>
+        <div class="trust-text">We redirect to Skyscanner and Booking.com for live prices. No fake deals, no hidden fees.</div>
+      </div>
+      <div class="trust-item reveal">
+        <div class="trust-num">03</div>
+        <div class="trust-title">Made for Ireland</div>
+        <div class="trust-text">Built for everyone living in Ireland. Real routes, real airlines, real experience.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">IrishTripLab 🍀</div>
+  <div class="footer-note">Flight prices verified regularly but change daily. Always check live prices on Skyscanner. © 2026 IrishTripLab</div>
+</footer>
+
+<!-- POPUPS CONTAINER -->
+<div class="popup-overlay" id="popup-montenegro" onclick="closePopup('montenegro')">
+  <div class="popup" onclick="event.stopPropagation()">
+    <div class="popup-hero" style="background-image:url('https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/MONTENEGRO.jpg'),linear-gradient(135deg,#1a3d2e,#2d6e47);background-size:cover,cover">
+      <button class="popup-close" onclick="closePopup('montenegro')">✕</button>
+      <div class="popup-city">Montenegro</div>
+      <div class="popup-country">🧳 Smart Route via Dubrovnik · No direct flights, worth every minute of driving</div>
+    </div>
+    <div class="popup-body">
+
+      <div class="popup-section">
+        <div class="popup-section-title">The Route</div>
+        <p class="popup-text">There's no direct flight from Dublin to Montenegro — but that's exactly why most Irish travellers miss out on one of Europe's most underrated countries. <strong>Fly into Dubrovnik</strong>, rent a cheap car at the airport, and 30-40 minutes of coastal driving later you're crossing the border at Herceg Novi. From there, the Bay of Kotor opens up — and it's one of the most beautiful drives in Europe.</p>
+      </div>
+
+      <div class="popup-section">
+        <div class="popup-section-title">Must see · Kotor & Perast</div>
+        <div class="spots-grid">
+          <div class="spot"><div class="spot-icon">🏘️</div><div><div class="spot-name">Kotor Old Town</div><div class="spot-desc">Medieval walled town inside a stunning fjord-like bay</div></div></div>
+          <div class="spot"><div class="spot-icon">🐍</div><div><div class="spot-name">Serpentines of Kotor</div><div class="spot-desc">Legendary hairpin road climbing the mountain — drive it yourself</div></div></div>
+          <div class="spot"><div class="spot-icon">🍹</div><div><div class="spot-name">Horizont Bar</div><div class="spot-desc">Up in the mountains above Kotor — the entire bay laid out beneath you. One of the best views in the Balkans.</div></div></div>
+          <div class="spot"><div class="spot-icon">⛪</div><div><div class="spot-name">Perast</div><div class="spot-desc">Tiny baroque town next to Kotor — boat out to Our Lady of the Rocks islet</div></div></div>
+        </div>
+      </div>
+
+      <div class="popup-section">
+        <div class="popup-section-title">Where we ate · Kotor</div>
+        <div class="spots-grid">
+          <div class="spot"><div class="spot-icon">🥪</div><div><div class="spot-name">XL Sandwich</div><div class="spot-desc">Exactly what the name says — huge, excellent sandwiches. Great cheap lunch.</div></div></div>
+          <div class="spot"><div class="spot-icon">🍝</div><div><div class="spot-name">Spaghetti and Wine Bar</div><div class="spot-desc">Properly good Italian food at very fair prices — a real find in Kotor.</div></div></div>
+        </div>
+      </div>
+
+      <div class="popup-section">
+        <div class="popup-section-title">Beyond Kotor</div>
+        <div class="spots-grid">
+          <div class="spot"><div class="spot-icon">🚤</div><div><div class="spot-name">Lake Skadar boat tour</div><div class="spot-desc">Around €15 for a boat tour of the largest lake in Southern Europe — stunning and peaceful</div></div></div>
+          <div class="spot"><div class="spot-icon">🏝️</div><div><div class="spot-name">Sveti Stefan</div><div class="spot-desc">Iconic islet resort — one of the most photographed views in the Adriatic</div></div></div>
+          <div class="spot"><div class="spot-icon">🫒</div><div><div class="spot-name">Restaurant Olive</div><div class="spot-desc">Right by Sveti Stefan — superb view, relaxed chill atmosphere. Perfect spot to slow down.</div></div></div>
+        </div>
+      </div>
+
+      <div class="popup-section">
+        <div class="popup-section-title">Practical tips</div>
+        <div class="tips-list">
+          <div class="tip"><div class="tip-icon">🚗</div><div class="tip-text"><strong>Rent in Dubrovnik:</strong> car hire is cheap and the drive itself is part of the experience.</div></div>
+          <div class="tip"><div class="tip-icon">🛂</div><div class="tip-text"><strong>Border crossing:</strong> straightforward with an Irish passport, usually just a few minutes.</div></div>
+          <div class="tip"><div class="tip-icon">🐍</div><div class="tip-text"><strong>Serpentines:</strong> not for nervous drivers, but the views from the top are unforgettable.</div></div>
+          <div class="tip"><div class="tip-icon">📅</div><div class="tip-text"><strong>Best time:</strong> May-June or September — warm, swimmable, without peak summer crowds.</div></div>
+        </div>
+      </div>
+
+      <div class="popup-section" style="background:#161815;border-radius:12px;padding:16px;margin-bottom:0">
+        <div style="font-size:11px;color:#555;margin-bottom:8px">HOW TO GET THERE</div>
+        <div style="font-size:13px;color:#aaa;line-height:1.7">Fly Dublin → Dubrovnik · 🚗 Rent a car at the airport · 🛂 Drive 30-40min to the border at Herceg Novi · 📍 Continue to Kotor (20min further)</div>
+      </div>
+
+      <div class="popup-cta">
+        <a href="https://www.skyscanner.ie/transport/flights/dub/dbv/" target="_blank" class="cta-sky">Find flights to Dubrovnik</a>
+        <a href="https://www.booking.com/searchresults.html?ss=Kotor&group_adults=2&order=price" target="_blank" class="cta-book">🏨 Find hotels in Kotor</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="popups-container"></div>
+
+<script>
+const destinations = [
+  // UK
+  { name:"London", code:"STN", country:"United Kingdom", time:"1h20", budget:"€350-550", bestTime:"Year-round", worthIt:4, tags:["Culture","Shopping","Theatre"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/STN.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+london&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=London&group_adults=2&order=price", why:"London needs no introduction — one of the world's greatest cities, just over an hour from Dublin. Many of the best museums are completely free.", spots:[{e:"🏛️",n:"British Museum",d:"World-class museum — completely free"},{e:"🎭",n:"West End",d:"Best theatre in the world"},{e:"🌿",n:"Hyde Park",d:"Perfect for a picnic or morning run"},{e:"🍺",n:"Borough Market",d:"Best food market in London"}], tips:[{e:"🚇",t:"<strong>Oyster Card:</strong> get one at the airport — much cheaper than single tickets."},{e:"🆓",t:"<strong>Free museums:</strong> British Museum, Natural History, V&A, Tate Modern."},{e:"🏨",t:"<strong>Stay in Zone 2:</strong> much cheaper than Zone 1."}] },
+  { name:"Edinburgh", code:"EDI", country:"Scotland", time:"1h05", budget:"€280-420", bestTime:"Apr-Jun, Sep-Oct", worthIt:5, tags:["Castle","Whisky","History"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/EDI.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+edinburgh&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Edinburgh&group_adults=2&order=price", why:"Edinburgh is one of the most dramatic cities in Europe — the castle, Arthur's Seat, incredible whisky bars and a world-class food scene.", spots:[{e:"🏰",n:"Edinburgh Castle",d:"Iconic castle dominating the city skyline"},{e:"🥾",n:"Arthur's Seat",d:"Extinct volcano — 1h hike, incredible views"},{e:"🥃",n:"Scotch Whisky Experience",d:"Best intro to Scotch whisky"},{e:"🌿",n:"Holyrood Park",d:"Wild park in the heart of the city"}], tips:[{e:"🚶",t:"<strong>Very walkable:</strong> Old Town and New Town both easy on foot."},{e:"🥃",t:"<strong>Whisky bars:</strong> The Scotch Malt Whisky Society is worth a visit."},{e:"🎭",t:"<strong>Fringe Festival:</strong> avoid August — prices triple."}] },
+  { name:"Glasgow", code:"GLA", country:"Scotland", time:"1h", budget:"€250-380", bestTime:"May-Sep", worthIt:4, tags:["Music","Culture","Nightlife"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/GLA.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+glasgow&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Glasgow&group_adults=2&order=price", why:"Glasgow is Scotland's most vibrant city — incredible music scene, world-class museums and great nightlife. Much cheaper than Edinburgh.", spots:[{e:"🎨",n:"Kelvingrove Museum",d:"World-class free museum"},{e:"🎵",n:"King Tuts",d:"Legendary music venue"},{e:"🏘️",n:"Merchant City",d:"Best area for food and bars"},{e:"🚂",n:"Loch Lomond day trip",d:"45min away — stunning Highlands"}], tips:[{e:"🆓",t:"<strong>Free museums:</strong> Kelvingrove, Riverside Museum — all free."},{e:"🍺",t:"<strong>Pub culture:</strong> Glasgow has some of the best pubs in Scotland."},{e:"💰",t:"<strong>Affordable:</strong> much cheaper than Edinburgh."}] },
+  { name:"Manchester", code:"MAN", country:"England", time:"1h", budget:"€250-380", bestTime:"Year-round", worthIt:4, tags:["Football","Music","Culture"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/MAN.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+manchester&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Manchester&group_adults=2&order=price", why:"Manchester is England's most exciting city outside London — birthplace of the Industrial Revolution, legendary football clubs and world-class music heritage.", spots:[{e:"⚽",n:"Old Trafford / Etihad",d:"Tour both legendary football stadiums"},{e:"🎵",n:"Northern Quarter",d:"Indie music heartland"},{e:"🏛️",n:"Manchester Art Gallery",d:"World-class free gallery"},{e:"🏙️",n:"Spinningfields",d:"Best restaurants and bars"}], tips:[{e:"🚇",t:"<strong>Metrolink:</strong> trams connect the whole city cheaply."},{e:"🆓",t:"<strong>Free museums:</strong> Science and Industry Museum — free."},{e:"🏨",t:"<strong>Stay near Piccadilly:</strong> central, good transport links."}] },
+  { name:"Liverpool", code:"LPL", country:"England", time:"1h", budget:"€240-360", bestTime:"Year-round", worthIt:4, tags:["Beatles","Football","Culture"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/LPL.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+liverpool&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Liverpool&group_adults=2&order=price", why:"Liverpool is one of England's most culturally rich cities — birthplace of The Beatles, home of two legendary football clubs and a stunning waterfront.", spots:[{e:"🎵",n:"The Cavern Club",d:"Where The Beatles played 292 times"},{e:"⚽",n:"Anfield",d:"Tour Liverpool FC's legendary ground"},{e:"🌊",n:"Albert Dock",d:"Beautiful Victorian waterfront"},{e:"🏛️",n:"Tate Liverpool",d:"World-class free gallery"}], tips:[{e:"🎵",t:"<strong>Beatles tour:</strong> Magical Mystery Bus Tour covers all the key sites."},{e:"🆓",t:"<strong>Free museums:</strong> Walker Art Gallery, World Museum."},{e:"🚌",t:"<strong>Easy to walk:</strong> city centre is very compact."}] },
+  { name:"Bristol", code:"BRS", country:"England", time:"1h", budget:"€260-390", bestTime:"May-Sep", worthIt:4, tags:["Art","Music","Food"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/BRS.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+bristol&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Bristol&group_adults=2&order=price", why:"Bristol is England's most creative city — home of Banksy, incredible street art, vibrant music scene and some of the best independent restaurants in the UK.", spots:[{e:"🎨",n:"Banksy street art",d:"Spot original Banksy works around Stokes Croft"},{e:"🌉",n:"Clifton Suspension Bridge",d:"Brunel's iconic bridge"},{e:"🎵",n:"Harbourside",d:"Lively waterfront with great bars"},{e:"🍽️",n:"Stokes Croft",d:"Best independent restaurants"}], tips:[{e:"🎨",t:"<strong>Banksy tip:</strong> download a street art map — originals hidden around the city."},{e:"🌊",t:"<strong>Day trip:</strong> Bath is just 15min by train."}] },
+  { name:"Cardiff", code:"CWL", country:"Wales", time:"1h", budget:"€230-350", bestTime:"May-Sep", worthIt:3, tags:["Castle","Rugby","Culture"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/CWL.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+cardiff&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Cardiff&group_adults=2&order=price", why:"Cardiff is a charming compact capital — a castle in the city centre, great food, friendly locals and easy access to stunning Welsh countryside.", spots:[{e:"🏰",n:"Cardiff Castle",d:"Medieval castle right in the city centre"},{e:"🏉",n:"Principality Stadium",d:"Iconic rugby stadium"},{e:"🛍️",n:"Victorian Arcades",d:"Beautiful covered shopping arcades"},{e:"🌿",n:"Brecon Beacons",d:"Stunning national park 1h away"}], tips:[{e:"💰",t:"<strong>Very affordable:</strong> one of the cheapest UK capitals."},{e:"🏉",t:"<strong>Match day:</strong> a Six Nations game is an unforgettable experience."}] },
+  { name:"Birmingham", code:"BHX", country:"England", time:"1h", budget:"€240-360", bestTime:"Year-round", worthIt:3, tags:["Food","Culture","Shopping"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/BHX.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+birmingham&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Birmingham&group_adults=2&order=price", why:"Birmingham is the UK's second city — incredible food (the original Balti Triangle!), a vibrant arts scene and great nightlife.", spots:[{e:"🍛",n:"Balti Triangle",d:"Birthplace of the Balti curry"},{e:"🏛️",n:"Birmingham Museum",d:"World-class free museum"},{e:"🛍️",n:"Bullring",d:"Iconic shopping centre with Selfridges"},{e:"🎭",n:"Brindleyplace",d:"Canal-side restaurants and bars"}], tips:[{e:"🍛",t:"<strong>Balti tip:</strong> Al Frash or Shabab in the Balti Triangle."},{e:"💰",t:"<strong>Good value:</strong> much cheaper than London."}] },
+  // Western Europe
+  { name:"Brussels", code:"CRL", country:"Belgium", time:"1h45", budget:"€300-450", bestTime:"Apr-Oct", worthIt:4, tags:["Beer","Chocolate","Day trips"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/CRL.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+brussels&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Brussels&group_adults=2&order=price", why:"Brussels is one of Europe's most underrated capitals — the best beer in the world, amazing food and great connections to Bruges, Ghent and Amsterdam.", spots:[{e:"🏛️",n:"Grand Place",d:"One of Europe's most beautiful squares"},{e:"🍺",n:"Delirium Café",d:"3000+ beers on the menu"},{e:"🏘️",n:"Bruges day trip",d:"Perfectly preserved medieval city, 1h by train"},{e:"🍫",n:"Chocolate",d:"Belgian chocolate shops everywhere"}], tips:[{e:"🚂",t:"<strong>Day trips:</strong> Bruges (1h), Ghent (30min), Amsterdam (2h)."},{e:"🍺",t:"<strong>Belgian beer:</strong> try a Trappist beer — Chimay, Westmalle, Orval."}] },
+  { name:"Amsterdam", code:"AMS", country:"Netherlands", time:"1h40", budget:"€380-560", bestTime:"Apr-May, Sep-Oct", worthIt:4, tags:["Canals","Bikes","Nightlife"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/AMS.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+amsterdam&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Amsterdam&group_adults=2&order=price", why:"Amsterdam is endlessly charming — canals, bikes, world-class museums and a buzzing food scene. Book hotels early as prices spike.", spots:[{e:"🎨",n:"Rijksmuseum",d:"World-class art — book tickets in advance"},{e:"🚲",n:"Jordaan",d:"Best neighbourhood — canals, boutiques, cafés"},{e:"🌷",n:"Keukenhof",d:"Tulip gardens (Apr–May only)"},{e:"🍺",n:"Heineken Experience",d:"Fun brewery tour"}], tips:[{e:"🚲",t:"<strong>Rent a bike:</strong> the only way to truly experience Amsterdam."},{e:"🏨",t:"<strong>Book early:</strong> hotels fill up fast and prices spike."}] },
+  { name:"Berlin", code:"BER", country:"Germany", time:"2h10", budget:"€300-450", bestTime:"May-Sep", worthIt:5, tags:["Techno","History","Art"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/BER.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+berlin&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Berlin&group_adults=2&order=price", why:"Berlin is unlike any other European city — raw, creative, relentless. The nightlife is legendary, the history is heavy, the food scene is world-class.", spots:[{e:"🧱",n:"East Side Gallery",d:"1.3km of Berlin Wall covered in murals"},{e:"🏛️",n:"Brandenburg Gate",d:"Iconic — beautiful at night"},{e:"🎶",n:"Kreuzberg",d:"Best neighbourhood for bars and nightlife"},{e:"🌿",n:"Tiergarten",d:"Huge central park"}], tips:[{e:"🌙",t:"<strong>Nightlife:</strong> Berghain is famous but Tresor or Watergate are easier to get into."},{e:"💰",t:"<strong>Budget city:</strong> €5 currywurst, €3 beers — great value."}] },
+  { name:"Cologne", code:"CGN", country:"Germany", time:"1h55", budget:"€280-420", bestTime:"Year-round", worthIt:4, tags:["Cathedral","Beer","Culture"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/CGN.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+cologne&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Cologne&group_adults=2&order=price", why:"Cologne is one of Europe's most underrated cities — stunning cathedral, great beer culture and consistently cheap flights from Dublin.", spots:[{e:"⛪",n:"Cologne Cathedral",d:"UNESCO site — climb the tower for epic views"},{e:"🍺",n:"Früh am Dom",d:"Best Kölsch beer right next to the cathedral"},{e:"🌉",n:"Hohenzollern Bridge",d:"Love locks bridge — great Rhine views"},{e:"🏛️",n:"Altstadt",d:"Old town, perfect for an evening stroll"}], tips:[{e:"🍺",t:"<strong>Kölsch rule:</strong> served in 200ml glasses — they keep bringing them until you put your coaster on top."},{e:"💡",t:"<strong>Bonus:</strong> Düsseldorf is only 30min by train."}] },
+  { name:"Vienna", code:"VIE", country:"Austria", time:"2h30", budget:"€350-520", bestTime:"Apr-Jun, Sep-Oct", worthIt:5, tags:["Music","Art","Coffee"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/VIE.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+vienna&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Vienna&group_adults=2&order=price", why:"Vienna is one of Europe's most cultured cities — imperial palaces, world-class opera, incredible coffee houses. Also 1h from Bratislava by train.", spots:[{e:"🏰",n:"Schönbrunn Palace",d:"Habsburg imperial palace — stunning gardens"},{e:"🎶",n:"Vienna State Opera",d:"World's finest opera house"},{e:"☕",n:"Café Central",d:"Legendary Viennese coffee house"},{e:"🎨",n:"Kunsthistorisches Museum",d:"World-class art museum"}], tips:[{e:"🚂",t:"<strong>Bratislava hack:</strong> 1h by train — two capitals for one flight price."},{e:"🎶",t:"<strong>Opera tip:</strong> standing room tickets from €4 — genuine opera for almost nothing."}] },
+  { name:"Prague", code:"PRG", country:"Czech Republic", time:"2h30", budget:"€280-420", bestTime:"Apr-Jun, Sep-Oct", worthIt:5, tags:["Medieval","Beer","Nightlife"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/PRG.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+prague&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Prague&group_adults=2&order=price", why:"Prague is one of Europe's most beautiful cities — a perfectly preserved medieval old town, the world's cheapest good beer and legendary nightlife.", spots:[{e:"🏰",n:"Prague Castle",d:"Largest ancient castle in the world"},{e:"🌉",n:"Charles Bridge",d:"Gothic bridge with stunning city views"},{e:"🏘️",n:"Old Town Square",d:"Medieval astronomical clock"},{e:"🍺",n:"Vinohrady",d:"Best bars and restaurants neighbourhood"}], tips:[{e:"🍺",t:"<strong>Cheapest beer:</strong> €1-2 for a pint of excellent Czech beer."},{e:"🚇",t:"<strong>Metro:</strong> cheap and covers the whole city."}] },
+  { name:"Budapest", code:"BUD", country:"Hungary", time:"2h45", budget:"€260-400", bestTime:"Apr-Jun, Sep-Oct", worthIt:5, tags:["Baths","Nightlife","Architecture"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/BUD.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+budapest&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Budapest&group_adults=2&order=price", why:"Budapest is one of Europe's most underrated gems — thermal baths, ruin bars, stunning Danube views and incredible architecture at very affordable prices.", spots:[{e:"🛁",n:"Széchenyi Baths",d:"Iconic outdoor thermal baths — unmissable"},{e:"🍺",n:"Ruin Bars",d:"Szimpla Kert — bars in abandoned buildings"},{e:"🏰",n:"Buda Castle",d:"Hilltop castle with panoramic views"},{e:"🌉",n:"Chain Bridge",d:"Beautiful suspension bridge over the Danube"}], tips:[{e:"💰",t:"<strong>Very affordable:</strong> one of Europe's best value capitals."},{e:"🛁",t:"<strong>Baths tip:</strong> go in the morning to avoid crowds."}] },
+  { name:"Bratislava", code:"BTS", country:"Slovakia", time:"2h30", budget:"€230-350", bestTime:"Apr-Oct", worthIt:4, tags:["Charming","Cheap","Vienna nearby"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/BTS.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+bratislava&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Bratislava&group_adults=2&order=price", why:"Bratislava is one of Europe's best kept secrets — tiny, charming, incredibly cheap, and Vienna is just 1 hour away by train.", spots:[{e:"🏰",n:"Bratislava Castle",d:"Panoramic views over the Danube"},{e:"🏘️",n:"Old Town",d:"Cobblestone streets, great cafés and bars"},{e:"🚂",n:"Vienna day trip",d:"1h by train — two capitals!"},{e:"🍺",n:"Čerešňový sad",d:"Best craft beer bar in the city"}], tips:[{e:"💰",t:"<strong>Very cheap:</strong> meals €8-12, beers €2."},{e:"🚂",t:"<strong>Vienna hack:</strong> take the train on Saturday, back Sunday morning."}] },
+  { name:"Tallinn", code:"TLL", country:"Estonia", time:"3h", budget:"€250-380", bestTime:"May-Sep", worthIt:5, tags:["Medieval","Charming","Affordable"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/TLL.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+tallinn&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Tallinn&group_adults=2&order=price", why:"Tallinn is one of Europe's best preserved medieval cities — cobblestone streets, gothic towers, great craft beer and cheap accommodation.", spots:[{e:"🏰",n:"Old Town",d:"UNESCO heritage site — like stepping into the Middle Ages"},{e:"🗼",n:"Toompea Hill",d:"Upper town with panoramic views"},{e:"🍺",n:"Telliskivi",d:"Hip creative district, best bars"},{e:"🎨",n:"Kalamaja",d:"Cool neighbourhood, colourful wooden houses"}], tips:[{e:"💰",t:"<strong>Very cheap:</strong> dinner for €10-15."},{e:"🌡️",t:"<strong>April weather:</strong> cold (5-12°C). Bring a jacket."}] },
+  { name:"Kraków", code:"KRK", country:"Poland", time:"2h45", budget:"€240-360", bestTime:"May-Sep", worthIt:5, tags:["Medieval","History","Food"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/KRK.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+krakow&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Krakow&group_adults=2&order=price", why:"Kraków is Poland's most beautiful city — a perfectly preserved medieval centre, the Wawel Royal Castle and easy access to Auschwitz.", spots:[{e:"🏰",n:"Wawel Castle",d:"Royal castle on a hill above the city"},{e:"🏘️",n:"Rynek Główny",d:"Europe's largest medieval market square"},{e:"🕍",n:"Kazimierz",d:"Jewish quarter — fascinating history and great bars"},{e:"🏛️",n:"Auschwitz",d:"1.5h away — an essential, sobering visit"}], tips:[{e:"💰",t:"<strong>Extremely affordable:</strong> one of the cheapest cities in Europe."},{e:"🍺",t:"<strong>Bar culture:</strong> Kazimierz has the best bars and restaurants."}] },
+  { name:"Warsaw", code:"WMI", country:"Poland", time:"2h45", budget:"€250-380", bestTime:"May-Sep", worthIt:4, tags:["History","Food","Culture"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/WMI.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+warsaw&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Warsaw&group_adults=2&order=price", why:"Warsaw is a city of incredible resilience — almost completely destroyed in WWII and rebuilt from scratch. Fascinating history, great food.", spots:[{e:"🏘️",n:"Old Town",d:"Rebuilt brick by brick after WWII — UNESCO site"},{e:"🏛️",n:"POLIN Museum",d:"World's best Jewish history museum"},{e:"🌿",n:"Łazienki Park",d:"Beautiful royal park with lake palace"},{e:"🎵",n:"Praga district",d:"Hipster neighbourhood, best nightlife"}], tips:[{e:"💰",t:"<strong>Very affordable:</strong> meals €5-10, beers €2."},{e:"🚌",t:"<strong>Modlin airport:</strong> it's ~40km from Warsaw — factor in the shuttle bus (~€10, 40min)."}] },
+  { name:"Gdansk", code:"GDN", country:"Poland", time:"2h35", budget:"€220-340", bestTime:"May-Sep", worthIt:4, tags:["Coastal","History","Amber"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/GDN.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+gdansk&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Gdansk&group_adults=2&order=price", why:"Gdansk is Poland's Baltic gem — a beautifully restored Hanseatic old town, sandy beaches nearby and the birthplace of Solidarity.", spots:[{e:"🏘️",n:"Long Market",d:"Colourful Hanseatic merchant houses"},{e:"⚓",n:"Gdansk Shipyard",d:"Birthplace of the Solidarity movement"},{e:"🏖️",n:"Sopot beach",d:"20min away — Poland's most famous seaside resort"},{e:"💎",n:"Amber Museum",d:"Poland is the world's amber capital"}], tips:[{e:"💰",t:"<strong>Very affordable:</strong> one of the cheapest coastal breaks in Europe."},{e:"🚋",t:"<strong>Tram to Sopot:</strong> easy day trip, ~20 minutes."}] },
+  { name:"Katowice", code:"KTW", country:"Poland", time:"2h35", budget:"€200-320", bestTime:"May-Sep", worthIt:3, tags:["Industrial","Culture","Budget"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/KTW.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+katowice&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Katowice&group_adults=2&order=price", why:"Katowice is Poland's reinvented industrial capital — post-industrial architecture turned into culture, and a great budget gateway to southern Poland.", spots:[{e:"🎭",n:"NOSPR Concert Hall",d:"Striking modern architecture, world-class acoustics"},{e:"⛏️",n:"Guido Coal Mine",d:"Underground museum in a real former mine"},{e:"🏛️",n:"Silesian Museum",d:"Built into a former mine complex"},{e:"🚂",n:"Kraków day trip",d:"Just over an hour by train"}], tips:[{e:"💰",t:"<strong>Cheapest base:</strong> use it as a budget gateway to Kraków."},{e:"🚂",t:"<strong>Train tip:</strong> frequent, fast trains to Kraków and Wroclaw."}] },
+  { name:"Wroclaw", code:"WRO", country:"Poland", time:"2h40", budget:"€220-340", bestTime:"May-Sep", worthIt:4, tags:["Medieval","Bridges","Dwarves"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/WRO.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+wroclaw&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Wroclaw&group_adults=2&order=price", why:"Wroclaw is one of Poland's prettiest cities — a colourful market square, over 100 bridges, and hundreds of tiny bronze dwarf statues hidden around town.", spots:[{e:"🏘️",n:"Market Square",d:"One of the most colourful in Europe"},{e:"🌉",n:"Tumski Bridge",d:"Cathedral Island, over 100 bridges in the city"},{e:"🗿",n:"Wroclaw Dwarves",d:"350+ tiny bronze statues hidden across the city"},{e:"🌸",n:"Japanese Garden",d:"Peaceful escape inside Szczytnicki Park"}], tips:[{e:"💰",t:"<strong>Great value:</strong> cheaper than Kraków, just as beautiful."},{e:"🗿",t:"<strong>Dwarf hunting:</strong> grab a map and turn a walk into a game."}] },
+  { name:"Poznan", code:"POZ", country:"Poland", time:"2h30", budget:"€220-340", bestTime:"May-Sep", worthIt:3, tags:["Medieval","Food","Underrated"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/POZ.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+poznan&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Poznan&group_adults=2&order=price", why:"Poznan is one of Poland's most underrated cities — a beautiful renaissance old town without the crowds of Kraków.", spots:[{e:"🏘️",n:"Old Market Square",d:"Renaissance houses and a famous goat clock tower"},{e:"🐐",n:"Town Hall goats",d:"Two mechanical goats butt heads at noon daily"},{e:"⛪",n:"Poznan Cathedral",d:"Poland's oldest cathedral, on Cathedral Island"},{e:"🍺",n:"Ostrów Tumski",d:"Poznan's cathedral island, birthplace of Poland"}], tips:[{e:"💰",t:"<strong>Underrated pick:</strong> same charm as Kraków, fraction of the tourists."},{e:"🐐",t:"<strong>Noon show:</strong> don't miss the mechanical goats at the town hall."}] },
+  { name:"Lublin", code:"LUZ", country:"Poland", time:"2h55", budget:"€220-340", bestTime:"May-Sep", worthIt:3, tags:["Medieval","History","Underrated"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/LUZ.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+lublin&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Lublin&group_adults=2&order=price", why:"Lublin is eastern Poland's hidden gem — a stunning old town, a hilltop castle, and one of the most authentic, least touristy cities in the country.", spots:[{e:"🏰",n:"Lublin Castle",d:"Medieval keep with a striking Orthodox chapel inside"},{e:"🏘️",n:"Old Town",d:"Cobbled streets, colourful facades, far fewer crowds"},{e:"🎓",n:"Cracow Gate",d:"One of the city's original medieval gates"},{e:"🌳",n:"Saski Garden",d:"Lublin's oldest public park"}], tips:[{e:"💰",t:"<strong>Very affordable:</strong> among the cheapest city breaks in Poland."},{e:"🚶",t:"<strong>Off the tourist trail:</strong> genuinely local, not touristy."}] },
+  { name:"Bydgoszcz", code:"BZG", country:"Poland", time:"2h40", budget:"€200-320", bestTime:"May-Sep", worthIt:3, tags:["Riverside","Underrated","Budget"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/BZG.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+bydgoszcz&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Bydgoszcz&group_adults=2&order=price", why:"Bydgoszcz is one of Poland's most overlooked cities — a pretty riverside old town along the Brda, and a genuinely cheap base to explore.", spots:[{e:"🌊",n:"Mill Island",d:"Riverside island in the historic centre"},{e:"🏘️",n:"Grodzka Street",d:"Leaning granaries reflected in the river"},{e:"🎭",n:"Philharmonic Hall",d:"One of Poland's best concert venues"},{e:"🚶",n:"Old Market",d:"Compact, colourful, easy to explore in a day"}], tips:[{e:"💰",t:"<strong>Cheapest of the bunch:</strong> a genuine budget find."},{e:"🚶",t:"<strong>Compact centre:</strong> easily walkable in an afternoon."}] },
+  { name:"Szczecin", code:"SZZ", country:"Poland", time:"2h20", budget:"€220-340", bestTime:"May-Sep", worthIt:3, tags:["Castle","Riverside","Underrated"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/SZZ.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+szczecin&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Szczecin&group_adults=2&order=price", why:"Szczecin sits right on the German border by the Oder river — a Ducal castle, striking modern architecture and one of Poland's shortest flights from Dublin.", spots:[{e:"🏰",n:"Ducal Castle",d:"Renaissance castle of the Pomeranian dukes"},{e:"🏛️",n:"Philharmonic Hall",d:"Award-winning glass architecture"},{e:"⚓",n:"Waly Chrobrego",d:"Grand riverside terraces overlooking the Oder"},{e:"🌳",n:"Kasprowicz Park",d:"One of Europe's largest city parks"}], tips:[{e:"",t:"<strong>Shortest hop:</strong> one of the quickest flights from Dublin to Poland."},{e:"🚶",t:"<strong>Riverside walks:</strong> the Waly Chrobrego terraces are stunning at sunset."}] },
+  { name:"Rzeszow", code:"RZE", country:"Poland", time:"3h05", budget:"€240-360", bestTime:"May-Sep", worthIt:3, tags:["Underrated","Food","Gateway"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/RZE.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+rzeszow&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Rzeszow&group_adults=2&order=price", why:"Rzeszow is a compact, walkable city in southeastern Poland — a good-value base and the gateway to the Bieszczady mountains.", spots:[{e:"🏘️",n:"Market Square",d:"Colourful, compact, with an underground tourist route below"},{e:"🕳️",n:"Underground Route",d:"Medieval cellars running beneath the old town"},{e:"⛪",n:"Rzeszów Castle",d:"Renaissance castle in the historic centre"},{e:"⛰️",n:"Bieszczady Mountains",d:"Poland's wildest national park, a day trip away"}], tips:[{e:"💰",t:"<strong>Great value base:</strong> less touristy, genuinely affordable."},{e:"⛰️",t:"<strong>Nature nearby:</strong> the Bieszczady mountains are a rewarding day trip."}] },
+  { name:"Lodz", code:"LCJ", country:"Poland", time:"2h35", budget:"€220-340", bestTime:"May-Sep", worthIt:3, tags:["Industrial","Art","Underrated"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/LCJ.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+lodz&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Lodz&group_adults=2&order=price", why:"Lodz is Poland's former textile capital reinvented — grand industrial-era mansions, huge murals, and one of the country's best film and design scenes.", spots:[{e:"🏭",n:"Manufaktura",d:"Former textile factory turned huge culture and shopping complex"},{e:"🎨",n:"Piotrkowska Street",d:"Europe's longest commercial street, full of murals and cafes"},{e:"🎬",n:"Museum of Cinematography",d:"Poland's film heritage, in a former factory owner's palace"},{e:"🖼️",n:"Urban murals",d:"One of Europe's best outdoor street art scenes"}], tips:[{e:"💰",t:"<strong>Underrated city break:</strong> huge scale, low prices, few tourists."},{e:"🎨",t:"<strong>Mural walk:</strong> Piotrkowska Street alone is worth a slow afternoon."}] },
+  { name:"Copenhagen", code:"CPH", country:"Denmark", time:"2h20", budget:"€450-650", bestTime:"May-Aug", worthIt:4, tags:["Design","Food","Hygge"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/CPH.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+copenhagen&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Copenhagen&group_adults=2&order=price", why:"Copenhagen is Scandinavia's most accessible city — world-class design, incredible food, Nyhavn harbour and the happiest people in the world.", spots:[{e:"🌈",n:"Nyhavn",d:"Iconic colourful harbourfront"},{e:"🎡",n:"Tivoli Gardens",d:"World's second oldest amusement park"},{e:"🚲",n:"Cycling city",d:"Best cycling infrastructure in the world"},{e:"🍽️",n:"Torvehallerne",d:"Amazing food market"}], tips:[{e:"💸",t:"<strong>Expensive city:</strong> budget €80-100/day minimum."},{e:"🚲",t:"<strong>Rent a bike:</strong> the best way to see the city like a local."}] },
+  // Iberia
+  { name:"Lisbon", code:"LIS", country:"Portugal", time:"2h55", budget:"€320-480", bestTime:"Apr-Jun, Sep-Oct", worthIt:5, tags:["Warm","Trendy","Food"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/LIS.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+lisbon&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Lisbon&group_adults=2&order=price", why:"Lisbon is one of Europe's most exciting cities — hilly, beautiful, with incredible food, great nightlife and a warm Atlantic vibe.", spots:[{e:"🚋",n:"Tram 28",d:"Iconic yellow tram through the historic hills"},{e:"🏰",n:"São Jorge Castle",d:"Medieval castle with panoramic views"},{e:"🎵",n:"Fado in Alfama",d:"Traditional Portuguese music"},{e:"🏖️",n:"Cascais",d:"Beautiful coastal town 40min by train"}], tips:[{e:"🍽️",t:"<strong>Pastel de nata:</strong> the original custard tart at Pastéis de Belém."},{e:"☀️",t:"<strong>April:</strong> 18-22°C, perfect weather before the summer crowds."}] },
+  { name:"Porto", code:"OPO", country:"Portugal", time:"2h20", budget:"€300-450", bestTime:"Apr-Oct", worthIt:5, tags:["Wine","Charming","Food"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/OPO.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+porto&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Porto&group_adults=2&order=price", why:"Porto is one of Europe's most charming cities — azulejo tiles, port wine cellars, stunning bridges and incredible seafood.", spots:[{e:"🍷",n:"Port Wine Cellars",d:"Vila Nova de Gaia — free tastings across the river"},{e:"🌉",n:"Dom Luís Bridge",d:"Iconic double-deck iron bridge"},{e:"🏘️",n:"Ribeira",d:"UNESCO waterfront — stunning at sunset"},{e:"📚",n:"Livraria Lello",d:"World's most beautiful bookshop"}], tips:[{e:"🍷",t:"<strong>Port wine:</strong> take a free tour at Sandeman or Graham's."},{e:"📅",t:"<strong>Book early:</strong> flights fill up fast — Porto is very popular from Dublin."}] },
+  { name:"Faro / Algarve", code:"FAO", country:"Portugal", time:"2h40", budget:"€300-460", bestTime:"Apr-Jun, Sep-Oct", worthIt:5, tags:["Beach","Cliffs","Seafood"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/FAO.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+faro&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Algarve&group_adults=2&order=price", why:"The Algarve is Portugal's most spectacular coastline — dramatic golden cliffs, turquoise water and some of Europe's best beaches.", spots:[{e:"🏖️",n:"Praia da Marinha",d:"Most stunning beach on the Algarve"},{e:"🚣",n:"Benagil Cave",d:"Famous sea cave — take a kayak tour"},{e:"🏘️",n:"Lagos old town",d:"Beautiful whitewashed streets and harbour"},{e:"⛵",n:"Sagres",d:"End of the world — dramatic cliffs"}], tips:[{e:"🚗",t:"<strong>Rent a car:</strong> essential to reach the best beaches."},{e:"☀️",t:"<strong>Best April-June:</strong> warm, uncrowded, affordable."}] },
+  { name:"Malaga", code:"AGP", country:"Spain", time:"2h45", budget:"€300-450", bestTime:"Apr-Jun, Sep-Oct", worthIt:5, tags:["Beach","Tapas","Sun"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/AGP.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+malaga&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Malaga&group_adults=2&order=price", why:"Malaga is the best value sun destination from Dublin — beaches, tapas, Picasso's birthplace and easy access to Andalusia.", spots:[{e:"🏖️",n:"La Malagueta",d:"Main city beach — 5 min walk from centre"},{e:"🏰",n:"Alcazaba",d:"Moorish fortress with stunning views"},{e:"🎨",n:"Picasso Museum",d:"Birthplace of Picasso"},{e:"🍷",n:"El Palo",d:"Best seafood restaurants"}], tips:[{e:"☀️",t:"<strong>Best months:</strong> May–June and September–October."},{e:"🍽️",t:"<strong>Food tip:</strong> espetos — fresh sardines grilled on the beach."}] },
+  { name:"Barcelona", code:"BCN", country:"Spain", time:"2h40", budget:"€380-560", bestTime:"Apr-Jun, Sep-Oct", worthIt:4, tags:["Architecture","Beach","Nightlife"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/BCN.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+barcelona&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Barcelona&group_adults=2&order=price", why:"Barcelona is one of Europe's most iconic cities — Gaudí architecture, great beaches, world-class food and nightlife that goes until 6am.", spots:[{e:"🏛️",n:"Sagrada Família",d:"Gaudí's masterpiece — book months in advance"},{e:"🏖️",n:"Barceloneta Beach",d:"City beach — great for swimming"},{e:"🛍️",n:"La Boqueria",d:"Iconic food market on Las Ramblas"},{e:"🎨",n:"Park Güell",d:"Gaudí's mosaic park — stunning views"}], tips:[{e:"🎨",t:"<strong>Book Gaudí sites:</strong> Sagrada Família, Park Güell — tickets sell out weeks ahead."},{e:"⚠️",t:"<strong>Getting expensive:</strong> accommodation has risen significantly — book early."}] },
+  { name:"Madrid", code:"MAD", country:"Spain", time:"2h25", budget:"€320-480", bestTime:"Apr-Jun, Sep-Nov", worthIt:5, tags:["Art","Food","Nightlife"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/MAD.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+madrid&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Madrid&group_adults=2&order=price", why:"Madrid is Europe's highest capital and one of its most vibrant — world-class art museums, incredible tapas culture and nightlife that never stops.", spots:[{e:"🎨",n:"Prado Museum",d:"One of the world's greatest art museums"},{e:"🌿",n:"Retiro Park",d:"Beautiful royal park"},{e:"🍖",n:"La Latina",d:"Best neighbourhood for tapas"},{e:"⚽",n:"Bernabéu",d:"Real Madrid's legendary stadium"}], tips:[{e:"🎨",t:"<strong>Prado tip:</strong> free entry Monday-Saturday 6-8pm."},{e:"🌙",t:"<strong>Late city:</strong> lunch at 3pm, dinner at 10pm — embrace Spanish time."}] },
+  { name:"Alicante", code:"ALC", country:"Spain", time:"2h40", budget:"€280-420", bestTime:"Apr-Oct", worthIt:4, tags:["Beach","Sun","Castle"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/ALC.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+alicante&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Alicante&group_adults=2&order=price", why:"Alicante is one of Spain's most underrated coastal cities — a stunning castle, great beaches and excellent tapas.", spots:[{e:"🏰",n:"Castillo de Santa Bárbara",d:"Hilltop castle — free lift up, amazing views"},{e:"🏖️",n:"Postiguet Beach",d:"City beach right next to the old town"},{e:"🍷",n:"El Barrio",d:"Old town — best bars and tapas"},{e:"🚂",n:"TRAM to Benidorm",d:"Scenic coastal tram — great day trip"}], tips:[{e:"🏰",t:"<strong>Castle tip:</strong> free entry and the views are spectacular."},{e:"☀️",t:"<strong>Year-round sun:</strong> 300+ sunny days per year."}] },
+  { name:"Seville", code:"SVQ", country:"Spain", time:"2h45", budget:"€320-480", bestTime:"Mar-May, Sep-Nov", worthIt:5, tags:["Flamenco","History","Tapas"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/SVQ.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+seville&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Seville&group_adults=2&order=price", why:"Seville is Spain's most passionate city — flamenco in the streets, tapas culture at its finest and a stunning cathedral.", spots:[{e:"🏛️",n:"Alcázar Palace",d:"UNESCO palace — Game of Thrones filming location"},{e:"⛪",n:"Seville Cathedral",d:"World's largest Gothic cathedral"},{e:"💃",n:"Flamenco show",d:"Tablao El Arenal — authentic flamenco"},{e:"🌸",n:"Maria Luisa Park",d:"Stunning park with Plaza de España"}], tips:[{e:"☀️",t:"<strong>Avoid July–August:</strong> 40°C+ heat. April/May or October are perfect."},{e:"🍺",t:"<strong>Tapas culture:</strong> free tapas with every drink in many bars."}] },
+  { name:"Palma", code:"PMI", country:"Spain · Mallorca", time:"2h40", budget:"€340-500", bestTime:"Apr-Jun, Sep-Oct", worthIt:4, tags:["Beach","Cathedral","Nightlife"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/PMI.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+palma+mallorca&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Palma&group_adults=2&order=price", why:"Mallorca is more than just a party island — Palma has a stunning Gothic cathedral, excellent restaurants and beautiful beaches.", spots:[{e:"⛪",n:"La Seu Cathedral",d:"Stunning Gothic cathedral right on the seafront"},{e:"🏖️",n:"Playa de Muro",d:"Best beach on the island"},{e:"🏘️",n:"Deià Village",d:"Picturesque mountain village"},{e:"🛥️",n:"Cap de Formentor",d:"Dramatic cliffs and a stunning lighthouse"}], tips:[{e:"💰",t:"<strong>Stay outside Palma:</strong> much better value."},{e:"☀️",t:"<strong>April:</strong> 18-22°C, far fewer crowds than summer."}] },
+  { name:"Minorca", code:"MAH", country:"Spain", time:"2h50", budget:"€330-490", bestTime:"May-Sep", worthIt:4, tags:["Beaches","Quiet","Nature"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/MAH.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+menorca&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Menorca&group_adults=2&order=price", why:"Minorca is the quieter, more unspoilt cousin of Mallorca — pristine white beaches and a relaxed pace of life.", spots:[{e:"🏖️",n:"Cala Turqueta",d:"One of Spain's most beautiful beaches"},{e:"🏛️",n:"Ciutadella",d:"Beautiful historic port town"},{e:"🌿",n:"Camí de Cavalls",d:"360km coastal trail"},{e:"🏺",n:"Naveta des Tudons",d:"3000 year old prehistoric tomb"}], tips:[{e:"🚗",t:"<strong>Rent a car:</strong> essential — best beaches only accessible by car."},{e:"😌",t:"<strong>Quiet island:</strong> perfect for switching off."}] },
+  { name:"Tenerife", code:"TFS", country:"Spain · Canaries", time:"4h", budget:"€350-520", bestTime:"Year-round", worthIt:4, tags:["Sun","Volcano","Beach"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/TFS.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+tenerife&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Tenerife&group_adults=2&order=price", why:"Tenerife is Europe's year-round sun destination — Mount Teide volcano, black sand beaches and non-stop sunshine even in winter.", spots:[{e:"🌋",n:"Mount Teide",d:"Spain's highest peak — cable car to 3500m"},{e:"🏖️",n:"Playa de Las Teresitas",d:"Golden sand beach near Santa Cruz"},{e:"🌿",n:"Anaga Forest",d:"Ancient laurel forest — incredible hiking"},{e:"🏘️",n:"La Orotava",d:"Beautiful colonial town"}], tips:[{e:"🌞",t:"<strong>Year-round sun:</strong> warm even in winter — great for escaping Irish weather."},{e:"🚗",t:"<strong>Rent a car:</strong> the island is large — public transport is slow."}] },
+  { name:"Lanzarote", code:"ACE", country:"Spain · Canaries", time:"3h45", budget:"€330-490", bestTime:"Year-round", worthIt:4, tags:["Volcanic","Sun","Beach"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/ACE.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+lanzarote&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Lanzarote&group_adults=2&order=price", why:"Lanzarote is unlike anywhere else — a volcanic moonscape, golden beaches and incredible art installations.", spots:[{e:"🌋",n:"Timanfaya National Park",d:"Volcanic landscape — geysers and lava fields"},{e:"🎨",n:"Jameos del Agua",d:"César Manrique's cave art installation"},{e:"🏖️",n:"Papagayo Beaches",d:"Stunning golden sand beaches in the south"},{e:"🌵",n:"La Geria",d:"Vineyards growing in volcanic craters"}], tips:[{e:"🌞",t:"<strong>Year-round destination:</strong> even January is warm and sunny."},{e:"🎨",t:"<strong>Manrique route:</strong> visit all his installations — unique art experience."}] },
+  { name:"Gran Canaria", code:"LPA", country:"Spain · Canaries", time:"4h05", budget:"€340-500", bestTime:"Year-round", worthIt:4, tags:["Beach","Dunes","Nightlife"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/LPA.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+gran+canaria&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Gran+Canaria&group_adults=2&order=price", why:"Gran Canaria is a continent in miniature — sand dunes, lush forests, mountain villages and great beaches all on one island.", spots:[{e:"🏖️",n:"Maspalomas Dunes",d:"Sahara-like sand dunes"},{e:"🏘️",n:"Las Palmas Old Town",d:"Beautiful colonial architecture"},{e:"🌿",n:"Roque Nublo",d:"Best hiking on the island"},{e:"🎉",n:"Playa del Inglés",d:"Best nightlife on the island"}], tips:[{e:"🌞",t:"<strong>Best weather:</strong> south of the island is sunnier and drier."},{e:"🏖️",t:"<strong>Maspalomas tip:</strong> walk into the dunes away from the crowds."}] },
+  // Italy
+  { name:"Milan", code:"MXP", country:"Italy", time:"2h35", budget:"€320-480", bestTime:"Apr-Jun, Sep-Oct", worthIt:4, tags:["Fashion","Food","Design"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/MXP.jpg", photoPos:"center 40%", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+milan&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Milan&group_adults=2&order=price", why:"Milan is Italy's most modern city — fashion, design, incredible food and aperitivo culture.", spots:[{e:"🎨",n:"The Last Supper",d:"Leonardo da Vinci's masterpiece — book months ahead"},{e:"⛪",n:"Duomo di Milano",d:"The magnificent Gothic cathedral"},{e:"🛍️",n:"Navigli District",d:"Canal neighbourhood, best for aperitivo"},{e:"🏔️",n:"Lake Como",d:"1h by train — one of Italy's most scenic spots"}], tips:[{e:"🍸",t:"<strong>Aperitivo:</strong> pay for a drink (€8-10) and get free food. Best deal in Italy."},{e:"🚌",t:"<strong>Bergamo airport:</strong> bus to Milan centre €6, runs all night."}] },
+  { name:"Rome", code:"FCO", country:"Italy", time:"2h45", budget:"€350-520", bestTime:"Apr-Jun, Sep-Oct", worthIt:5, tags:["History","Food","Art"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/FCO.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+rome&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Rome&group_adults=2&order=price", why:"Rome is the eternal city — 3000 years of history, the Colosseum, the Vatican and the best pizza and pasta in the world.", spots:[{e:"🏛️",n:"Colosseum",d:"World's most iconic ancient monument — book ahead"},{e:"🏛️",n:"Vatican Museums",d:"Sistine Chapel — book months in advance"},{e:"⛲",n:"Trevi Fountain",d:"Go at dawn to avoid the crowds"},{e:"🌿",n:"Trastevere",d:"Best neighbourhood for food and atmosphere"}], tips:[{e:"🎟️",t:"<strong>Book everything:</strong> Colosseum, Vatican — all sell out."},{e:"⛲",t:"<strong>Trevi tip:</strong> go before 8am — magical without the crowds."}] },
+  { name:"Paris", code:"BVA", country:"France", time:"1h35", budget:"€400-600", bestTime:"Apr-Jun, Sep-Oct", worthIt:5, tags:["Romance","Food","Fashion"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/BVA.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+paris&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Paris&group_adults=2&order=price", why:"Paris is one of the best trips from Dublin — close, cheap when you book early, and endlessly rewarding. Walk along the Seine, eat a croissant in Montmartre.", spots:[{e:"🗼",n:"Eiffel Tower",d:"Go at night — the light show every hour is free"},{e:"🎨",n:"Le Marais",d:"Best neighbourhood for food, art and vibes"},{e:"🛶",n:"Seine at dusk",d:"Walk from Notre-Dame to Pont Neuf"},{e:"🥐",n:"Montmartre",d:"Sacré-Coeur and best croissants in the city"}], tips:[{e:"🚌",t:"<strong>Beauvais airport:</strong> it's ~1h15 from central Paris by shuttle bus — factor that into your trip time."},{e:"💰",t:"<strong>Budget tip:</strong> picnic by the Seine with bread, cheese and wine. €10 and magical."}] },
+  { name:"Naples", code:"NAP", country:"Italy", time:"2h55", budget:"€300-450", bestTime:"Apr-Jun, Sep-Oct", worthIt:5, tags:["Pizza","Pompeii","Amalfi"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/NAP.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+naples&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Naples&group_adults=2&order=price", why:"Naples is the birthplace of pizza and one of Europe's most intense cities. Use it as a base for Pompeii, the Amalfi Coast and Capri.", spots:[{e:"🍕",n:"Spaccanapoli",d:"Best street food and pizza in the world"},{e:"🏛️",n:"Pompeii",d:"Ancient city — 30min by train"},{e:"🌊",n:"Amalfi Coast",d:"Italy's most scenic coastal drive"},{e:"🏝️",n:"Capri",d:"Glamorous island, 45min by ferry"}], tips:[{e:"🍕",t:"<strong>Pizza tip:</strong> L'Antica Pizzeria da Michele — €5."},{e:"⚠️",t:"<strong>Stay aware:</strong> watch your belongings in crowded areas."}] },
+  { name:"Venice", code:"VCE", country:"Italy", time:"2h30", budget:"€400-580", bestTime:"Mar-May, Sep-Oct", worthIt:5, tags:["Canals","Art","Romantic"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/VCE.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+venice&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Venice&group_adults=2&order=price", why:"Venice is like nowhere else on Earth — a city built on water, with no cars, stunning Gothic architecture and one of the world's great romantic experiences.", spots:[{e:"🎭",n:"St Mark's Square",d:"Stunning piazza — go at dawn, no crowds"},{e:"🚣",n:"Gondola ride",d:"€80 for 30min — worth it once"},{e:"🏘️",n:"Dorsoduro",d:"Best neighbourhood — locals still live here"},{e:"🖼️",n:"Gallerie dell'Accademia",d:"Best Venetian painting collection"}], tips:[{e:"⏰",t:"<strong>Go early:</strong> St Mark's Square is rammed by 10am."},{e:"💰",t:"<strong>Budget tip:</strong> cicchetti (Venetian tapas) at a bacaro — much cheaper than restaurants."}] },
+  { name:"Bologna", code:"BLQ", country:"Italy", time:"2h40", budget:"€300-450", bestTime:"Apr-Jun, Sep-Oct", worthIt:5, tags:["Food","University","Culture"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/BLQ.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+bologna&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Bologna&group_adults=2&order=price", why:"Bologna is Italy's food capital — the original Bolognese, mortadella and the best trattorias in the country. Fewer tourists than Rome or Florence.", spots:[{e:"🍝",n:"Quadrilatero Market",d:"Medieval food market — gelato, cheese, cured meats"},{e:"🏛️",n:"Piazza Maggiore",d:"Stunning main square"},{e:"📚",n:"University district",d:"World's oldest university"},{e:"🗼",n:"Two Towers",d:"Medieval towers — climb for views"}], tips:[{e:"🍝",t:"<strong>Food tip:</strong> eat tagliatelle al ragù — NOT spaghetti Bolognese."},{e:"🚂",t:"<strong>Day trip to Florence:</strong> just 35min by high-speed train."}] },
+  { name:"Cagliari", code:"CAG", country:"Italy · Sardinia", time:"2h50", budget:"€320-480", bestTime:"Apr-Jun, Sep-Oct", worthIt:4, tags:["Beaches","Food","History"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/CAG.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+cagliari&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Cagliari&group_adults=2&order=price", why:"Sardinia is one of Italy's most beautiful islands — incredible beaches, great food and a fascinating old town.", spots:[{e:"🏖️",n:"Poetto Beach",d:"8km of white sand right outside the city"},{e:"🏰",n:"Castello District",d:"Medieval hilltop neighbourhood"},{e:"🦩",n:"Molentargius Park",d:"Flamingos right next to the city"},{e:"🍝",n:"Marina District",d:"Best area for Sardinian food"}], tips:[{e:"🍽️",t:"<strong>Sardinian food:</strong> porceddu, culurgiones pasta, bottarga — unmissable."},{e:"☀️",t:"<strong>April:</strong> 18-22°C, perfect beach weather without summer crowds."}] },
+  { name:"Brindisi", code:"BDS", country:"Italy · Puglia", time:"2h55", budget:"€300-450", bestTime:"May-Sep", worthIt:4, tags:["Puglia","Beaches","Food"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/BDS.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+brindisi&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Brindisi&group_adults=2&order=price", why:"Puglia is one of Italy's most authentic regions. Brindisi is your gateway to trulli villages, incredible food and beautiful Adriatic beaches.", spots:[{e:"🏘️",n:"Alberobello",d:"UNESCO trulli village — unique cone-shaped houses"},{e:"🏖️",n:"Torre Canne",d:"Beautiful Adriatic beach"},{e:"🏰",n:"Ostuni",d:"The White City — stunning hilltop town"},{e:"🍝",n:"Lecce",d:"Baroque city, 30min away"}], tips:[{e:"🚗",t:"<strong>Rent a car:</strong> essential to explore Puglia."},{e:"🍽️",t:"<strong>Food heaven:</strong> orecchiette, burrata, focaccia, fresh seafood."}] },
+  // Greece
+  { name:"Athens", code:"ATH", country:"Greece", time:"3h30", budget:"€320-480", bestTime:"Apr-Jun, Sep-Oct", worthIt:5, tags:["History","Food","Culture"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/ATH.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+athens&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Athens&group_adults=2&order=price", why:"Athens is one of the world's oldest cities — the Acropolis, incredible food, a vibrant street art scene and easy access to the Greek islands.", spots:[{e:"🏛️",n:"Acropolis",d:"Most important ancient monument in the Western world"},{e:"🏘️",n:"Monastiraki",d:"Best neighbourhood for food and bars"},{e:"🌿",n:"National Garden",d:"Peaceful green oasis"},{e:"🛒",n:"Athens Central Market",d:"Incredible meat and fish market"}], tips:[{e:"⏰",t:"<strong>Acropolis tip:</strong> go at opening time (8am) to avoid heat and crowds."},{e:"🍽️",t:"<strong>Food scene:</strong> rooftop restaurants with Acropolis views — stunning at night."}] },
+  { name:"Corfu", code:"CFU", country:"Greece", time:"3h15", budget:"€300-450", bestTime:"Apr-Oct", worthIt:4, tags:["Beaches","Olive trees","Villages"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/CFU.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+corfu&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Corfu&group_adults=2&order=price", why:"Corfu is the most lush and green of the Greek islands — covered in olive trees, with a beautiful Venetian old town and stunning beaches.", spots:[{e:"🏛️",n:"Corfu Old Town",d:"UNESCO Venetian old town"},{e:"🏖️",n:"Paleokastritsa",d:"Most stunning beach on the island"},{e:"🌿",n:"Achillion Palace",d:"19th century palace with incredible gardens"},{e:"🍷",n:"Benitses Village",d:"Authentic fishing village, best local tavernas"}], tips:[{e:"🚗",t:"<strong>Rent a car:</strong> essential to explore the island."},{e:"💰",t:"<strong>Stay in the countryside:</strong> much better value than in town."}] },
+  { name:"Zakynthos", code:"ZTH", country:"Greece", time:"3h30", budget:"€300-450", bestTime:"May-Sep", worthIt:5, tags:["Shipwreck Beach","Turquoise","Islands"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/ZTH.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+zakynthos&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Zakynthos&group_adults=2&order=price", why:"Zakynthos has one of the most photographed beaches in the world — Navagio Shipwreck Beach. Incredible turquoise water and a relaxed vibe.", spots:[{e:"⚓",n:"Navagio Beach",d:"The famous shipwreck beach — only accessible by boat"},{e:"🐢",n:"Loggerhead Turtles",d:"Sea turtles nest here"},{e:"🌊",n:"Blue Caves",d:"Sea caves with electric blue water"},{e:"🏘️",n:"Zakynthos Town",d:"Venetian architecture, good restaurants"}], tips:[{e:"🚗",t:"<strong>Rent a car:</strong> essential — island is spread out."},{e:"⛵",t:"<strong>Boat trips:</strong> book a day boat trip to Navagio — around €25pp."}] },
+  { name:"Chania", code:"CHQ", country:"Greece · Crete", time:"3h45", budget:"€320-480", bestTime:"Apr-Oct", worthIt:5, tags:["Old town","Beaches","Gorges"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/CHQ.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+chania+crete&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Chania&group_adults=2&order=price", why:"Chania is arguably the most beautiful town in Greece — the Venetian harbour, incredible food and easy access to Crete's best beaches.", spots:[{e:"⚓",n:"Venetian Harbour",d:"The iconic lighthouse — magical at sunset"},{e:"🚶",n:"Old Town",d:"Get lost in the maze of streets"},{e:"🏖️",n:"Elafonisi",d:"Pink sand beach — one of Europe's most beautiful"},{e:"🥾",n:"Samaria Gorge",d:"Epic 16km gorge hike"}], tips:[{e:"🍽️",t:"<strong>Food scene:</strong> Cretan cuisine is incredible — try dakos and fresh seafood."},{e:"📅",t:"<strong>April:</strong> warm (18-22°C), uncrowded. Perfect timing."}] },
+  { name:"Rhodes", code:"RHO", country:"Greece", time:"3h45", budget:"€320-480", bestTime:"May-Oct", worthIt:4, tags:["Medieval city","Beaches","History"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/RHO.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+rhodes&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Rhodes&group_adults=2&order=price", why:"Rhodes has it all — a UNESCO medieval old town, great beaches, good nightlife and consistent sunshine.", spots:[{e:"🏰",n:"Rhodes Old Town",d:"Best preserved medieval town in Europe"},{e:"🏖️",n:"Lindos",d:"Stunning village with acropolis and beautiful beach"},{e:"🌊",n:"Anthony Quinn Bay",d:"Famous crystal clear bay"},{e:"🌅",n:"Ialyssos",d:"Best sunset spot on the island"}], tips:[{e:"🚗",t:"<strong>Rent a scooter:</strong> best way to explore — around €15/day."},{e:"💰",t:"<strong>April:</strong> cheaper and uncrowded compared to summer."}] },
+  { name:"Santorini", code:"JTR", country:"Greece", time:"3h45", budget:"€450-650", bestTime:"May-Jun, Sep-Oct", worthIt:4, tags:["Views","Romantic","Volcano"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/JTR.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+santorini&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Santorini&group_adults=2&order=price", why:"Santorini is one of the most iconic destinations in the world — white-washed cliffs above the caldera and incredible sunsets.", spots:[{e:"🌅",n:"Oia sunset",d:"Most photographed sunset in the world"},{e:"🌋",n:"Caldera cruise",d:"Boat trip around the volcanic caldera"},{e:"🏖️",n:"Perissa Beach",d:"Black sand beach — unique experience"},{e:"🍷",n:"Assyrtiko wine",d:"Local volcanic wine"}], tips:[{e:"💸",t:"<strong>Expensive:</strong> one of Greece's priciest islands — budget carefully."},{e:"🌅",t:"<strong>Oia tip:</strong> get there 2 hours before sunset to get a good spot."}] },
+  // Croatia
+  { name:"Dubrovnik", code:"DBV", country:"Croatia", time:"2h50", budget:"€350-520", bestTime:"Apr-Jun, Sep-Oct", worthIt:5, tags:["Old town","Adriatic","Game of Thrones"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/DBV.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+dubrovnik&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Dubrovnik&group_adults=2&order=price", why:"Dubrovnik is one of Europe's most beautiful cities — the walled old town and the Adriatic views. April is the best time to go before the crowds arrive.", spots:[{e:"🏰",n:"City Walls",d:"Walk the 2km walls — do it early morning"},{e:"🚡",n:"Cable Car",d:"Ride up Mount Srđ for panoramic views"},{e:"🏝️",n:"Lokrum Island",d:"15min ferry — peacocks and swimming spots"},{e:"🎬",n:"Game of Thrones spots",d:"King's Landing filming locations"}], tips:[{e:"⏰",t:"<strong>Go early:</strong> the old town gets extremely crowded by 10am."},{e:"💰",t:"<strong>April is cheaper:</strong> prices double in July-August."}] },
+  { name:"Split", code:"SPU", country:"Croatia", time:"2h45", budget:"€300-450", bestTime:"May-Sep", worthIt:5, tags:["Adriatic","Islands","History"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/SPU.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+split&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Split&group_adults=2&order=price", why:"Split is Croatia's most vibrant city — the Diocletian's Palace old town is still inhabited, ferries to beautiful islands and brilliant nightlife.", spots:[{e:"🏛️",n:"Diocletian's Palace",d:"Lived-in Roman palace — bars and restaurants inside"},{e:"🏝️",n:"Hvar island",d:"1h ferry — Croatia's most glamorous island"},{e:"🏖️",n:"Bačvice Beach",d:"City beach — famous for picigin ball game"},{e:"🌊",n:"Brač island",d:"Zlatni Rat — Croatia's most famous beach"}], tips:[{e:"⛴️",t:"<strong>Ferry base:</strong> Split is the best base for island hopping."},{e:"💰",t:"<strong>Old town tip:</strong> avoid tourist traps inside the palace walls."}] },
+  { name:"Zadar", code:"ZAD", country:"Croatia", time:"2h45", budget:"€300-450", bestTime:"May-Sep", worthIt:4, tags:["Old town","Adriatic","National Parks"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/ZAD.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+zadar&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Zadar&group_adults=2&order=price", why:"Zadar is one of Croatia's best kept secrets — a Roman old town, incredible sunsets and easy access to Plitvice Lakes.", spots:[{e:"🌅",n:"Sea Organ",d:"Musical instrument powered by the sea"},{e:"🏛️",n:"Roman Forum",d:"2000 year old forum in the middle of the city"},{e:"🌊",n:"Plitvice Lakes",d:"UNESCO national park, 1.5h away"},{e:"🏖️",n:"Sakarun Beach",d:"Most beautiful beach near Zadar"}], tips:[{e:"🌅",t:"<strong>Sunset:</strong> Alfred Hitchcock called it the most beautiful in the world."},{e:"💰",t:"<strong>Cheaper than Split/Dubrovnik:</strong> great value."}] },
+  // Turkey
+  { name:"Bodrum", code:"BJV", country:"Turkey", time:"4h10", budget:"€280-420", bestTime:"May-Oct", worthIt:5, tags:["Beach","Turquoise","Nightlife"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/BJV.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+bodrum&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Bodrum&group_adults=2&order=price", why:"Bodrum is Turkey's most glamorous resort town — turquoise bays, whitewashed houses, a crusader castle and some of the best seafood you'll ever eat.", spots:[{e:"🏰",n:"Bodrum Castle",d:"Crusader fortress right on the harbour"},{e:"⛵",n:"Gulet Cruise",d:"Day trip on a traditional wooden boat"},{e:"🏖️",n:"Bitez Beach",d:"Best beach near town, calm waters"},{e:"🌙",n:"Bodrum Marina",d:"Evening walk along the harbour"}], tips:[{e:"💰",t:"<strong>Very affordable:</strong> meals €5-10, beers €3."},{e:"🛂",t:"<strong>Visa:</strong> Irish passport holders need an e-visa (~€18)."}] },
+  { name:"Dalaman / Fethiye", code:"DLM", country:"Turkey", time:"4h15", budget:"€290-430", bestTime:"May-Oct", worthIt:5, tags:["Turquoise Coast","Sailing","Nature"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/DLM.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+dalaman&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Fethiye&group_adults=2&order=price", why:"The Turquoise Coast around Fethiye is one of Turkey's most beautiful regions — stunning bays, ancient Lycian ruins and sailing trips at Turkish prices.", spots:[{e:"⛵",n:"Ölüdeniz",d:"Famous blue lagoon"},{e:"🪂",n:"Paragliding",d:"Babadag Mountain — incredible views"},{e:"🏛️",n:"Kayaköy",d:"Ghost village — abandoned Greek town"},{e:"🚤",n:"12 Islands Cruise",d:"Full day boat trip"}], tips:[{e:"💰",t:"<strong>Turkish prices:</strong> dinner €8-12, beer €3. Excellent value."},{e:"🛂",t:"<strong>E-visa required:</strong> get it online before you go (~€18)."}] },
+  // Cyprus
+  { name:"Paphos", code:"PFO", country:"Cyprus", time:"4h15", budget:"€340-500", bestTime:"Apr-Oct", worthIt:4, tags:["Beach","History","Warm"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/PFO.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+paphos&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Paphos&group_adults=2&order=price", why:"Paphos is Cyprus at its best — ancient ruins right on the seafront, gorgeous beaches and warm weather from April.", spots:[{e:"🏛️",n:"Paphos Archaeological Park",d:"UNESCO Roman mosaics right on the harbour"},{e:"🏖️",n:"Coral Bay",d:"Best beach near Paphos"},{e:"🗿",n:"Tombs of the Kings",d:"Ancient necropolis carved into the rock"},{e:"🌊",n:"Aphrodite's Rock",d:"Legendary birthplace of Aphrodite"}], tips:[{e:"🚗",t:"<strong>Rent a car:</strong> essential — drive on the left like Ireland."},{e:"🗣️",t:"<strong>English spoken everywhere:</strong> Cyprus was a British colony."}] },
+  // Malta
+  { name:"Malta", code:"MLA", country:"Malta", time:"3h10", budget:"€360-540", bestTime:"Apr-Jun, Sep-Oct", worthIt:4, tags:["History","Beaches","English"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/MLA.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+malta&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Malta&group_adults=2&order=price", why:"Malta is a tiny island with an enormous history — Valletta is one of Europe's smallest and most impressive capitals.", spots:[{e:"🏛️",n:"Valletta",d:"Europe's smallest capital — stunning baroque"},{e:"🌊",n:"Blue Lagoon",d:"Most beautiful swimming spot in Malta"},{e:"🏰",n:"Mdina",d:"Silent City — ancient walled capital"},{e:"🎭",n:"St Julian's",d:"Best area for nightlife and restaurants"}], tips:[{e:"🗣️",t:"<strong>English speaking:</strong> Malta was a British colony."},{e:"⛵",t:"<strong>Ferry to Gozo:</strong> quieter sister island for a day trip."}] },
+  // Nice
+  { name:"Nice", code:"NCE", country:"France", time:"2h35", budget:"€420-620", bestTime:"Apr-Jun, Sep-Oct", worthIt:4, tags:["Riviera","Beach","Monaco"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/NCE.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+nice&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Nice&group_adults=2&order=price", why:"Nice is the capital of the French Riviera — one of Europe's most glamorous destinations. Monaco is 30min by train.", spots:[{e:"🏖️",n:"Promenade des Anglais",d:"The iconic seafront boulevard"},{e:"🎨",n:"Vieux-Nice",d:"Old town with colourful baroque buildings"},{e:"🎰",n:"Monaco",d:"30min by train — the most extravagant place in Europe"},{e:"🏘️",n:"Èze Village",d:"Perched hilltop medieval village"}], tips:[{e:"🚂",t:"<strong>Day trips:</strong> Monaco (€4), Cannes (€7), Antibes (€5)."},{e:"💰",t:"<strong>Eat in the old town:</strong> socca (chickpea pancake) for €3."}] },
+  // Morocco
+  { name:"Marrakesh", code:"RAK", country:"Morocco", time:"3h25", budget:"€270-410", bestTime:"Mar-May, Sep-Nov", worthIt:5, tags:["Souks","Medina","Exotic"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/RAK.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+marrakech&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Marrakech&group_adults=2&order=price", why:"Marrakesh is unlike anywhere else — the chaotic souks, stunning riads, the famous Djemaa el-Fna square and the Atlas Mountains nearby.", spots:[{e:"🛒",n:"Djemaa el-Fna",d:"The world's greatest open-air theatre"},{e:"🕌",n:"Koutoubia Mosque",d:"Iconic minaret — visible from everywhere"},{e:"🌿",n:"Majorelle Garden",d:"Stunning botanical garden and YSL Museum"},{e:"🏔️",n:"Atlas Mountains",d:"1h away — snow-capped peaks and Berber villages"}], tips:[{e:"🛒",t:"<strong>Bargaining:</strong> always negotiate in the souks — start at 30% of asking price."},{e:"🛂",t:"<strong>No visa needed:</strong> Irish passport holders can enter Morocco visa-free."}] },
+  { name:"Agadir", code:"AGA", country:"Morocco", time:"3h30", budget:"€270-410", bestTime:"Year-round", worthIt:4, tags:["Beach","Sun","Affordable"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/AGA.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+agadir&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Agadir&group_adults=2&order=price", why:"Agadir is Morocco's beach capital — long sandy beaches, guaranteed sunshine and incredible value. Your money goes much further than in Spain or Greece.", spots:[{e:"🏖️",n:"Agadir Beach",d:"10km of golden sand"},{e:"🕌",n:"Agadir Oufella",d:"Ancient kasbah with panoramic views"},{e:"🛒",n:"Souk El Had",d:"Biggest market in Agadir"},{e:"🏙️",n:"Marina Agadir",d:"Modern marina with great restaurants"}], tips:[{e:"💰",t:"<strong>Excellent value:</strong> meals €5-8, fresh juice €1."},{e:"🛂",t:"<strong>No visa needed:</strong> Irish passport holders can enter Morocco visa-free."}] },
+  // Madeira
+  { name:"Funchal", code:"FNC", country:"Portugal · Madeira", time:"3h10", budget:"€430-620", bestTime:"Year-round", worthIt:4, tags:["Nature","Levadas","Flowers"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/FNC.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+funchal+madeira&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Funchal+Madeira&group_adults=2&order=price", why:"Madeira is one of the most spectacular islands in the Atlantic — lush green mountains, dramatic cliffs and incredible hiking year-round.", spots:[{e:"🥾",n:"Levada walks",d:"Ancient irrigation channels turned hiking trails"},{e:"🚡",n:"Monte Cable Car",d:"Ride up, toboggan back down — unforgettable"},{e:"🌺",n:"Botanical Garden",d:"Stunning gardens overlooking Funchal bay"},{e:"🏔️",n:"Pico do Arieiro",d:"Drive up to 1800m — above the clouds"}], tips:[{e:"🚗",t:"<strong>Rent a car:</strong> essential — the island is mountainous."},{e:"🌡️",t:"<strong>Climate:</strong> 20-22°C year-round — great all year."}] },
+  { name:"East Midlands", code:"EMA", country:"United Kingdom", time:"1h10", budget:"€150-250", bestTime:"Year-round", worthIt:2, tags:["Countryside","Castles","Budget"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/EMA.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+east+midlands&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=East+Midlands&group_adults=2&order=price", why:"East Midlands opens up Nottingham, the Peak District and Sherwood Forest — proper English countryside, minus the crowds.", spots:[{e:"🌲",n:"Sherwood Forest",d:"Robin Hood's ancient oak woodland"},{e:"🏰",n:"Nottingham Castle",d:"Restored museum and gallery"},{e:"⛰️",n:"Peak District",d:"England's first national park, 1h away"}], tips:[{e:"🌲",t:"<strong>Sherwood tip:</strong> the Major Oak is 800+ years old."},{e:"💰",t:"<strong>Great value:</strong> one of the cheapest UK routes."}] },
+  { name:"Leeds-Bradford", code:"LBA", country:"United Kingdom", time:"1h15", budget:"€150-250", bestTime:"Year-round", worthIt:3, tags:["Yorkshire","History","Countryside"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/LBA.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+leeds-bradford&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Leeds-Bradford&group_adults=2&order=price", why:"Leeds is Yorkshire's buzzing capital — great food, independent shopping, and the Dales on the doorstep.", spots:[{e:"🏛️",n:"Leeds Art Gallery",d:"Free, excellent Victorian and modern collection"},{e:"🌳",n:"Yorkshire Dales",d:"Dramatic countryside, 1h away"},{e:"🛍️",n:"Victoria Quarter",d:"Ornate Victorian shopping arcades"}], tips:[{e:"🍺",t:"<strong>Food scene:</strong> Leeds has one of the best in the north of England."},{e:"🚂",t:"<strong>Dales day trip:</strong> easy by train from Leeds station."}] },
+  { name:"Newcastle", code:"NCL", country:"United Kingdom", time:"1h05", budget:"€150-250", bestTime:"Year-round", worthIt:3, tags:["Nightlife","Coast","History"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/NCL.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+newcastle&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Newcastle&group_adults=2&order=price", why:"Newcastle mixes big nightlife energy with a genuinely striking riverside and easy access to Hadrian's Wall.", spots:[{e:"🌉",n:"Tyne Bridge",d:"Iconic riverside landmark, best at night"},{e:"🏛️",n:"Hadrian's Wall",d:"Roman frontier, day trip away"},{e:"🎨",n:"BALTIC",d:"Contemporary art in a converted flour mill"}], tips:[{e:"🌃",t:"<strong>Quayside at night:</strong> the bridges lit up are stunning."},{e:"🏛️",t:"<strong>Hadrian's Wall:</strong> rent a car or join a tour."}] },
+  { name:"Newquay", code:"NQY", country:"United Kingdom", time:"1h35", budget:"€180-280", bestTime:"Jun-Sep", worthIt:3, tags:["Beach","Surf","Coast"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/NQY.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+newquay&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Newquay&group_adults=2&order=price", why:"Newquay is Cornwall's surf capital — proper sandy beaches, cliff walks and a laid-back coastal vibe rare on a short flight.", spots:[{e:"🏄",n:"Fistral Beach",d:"One of the UK's best surf beaches"},{e:"🐚",n:"Coastal path",d:"Dramatic clifftop walking trails"},{e:"🍦",n:"Padstow",d:"Foodie fishing village, short drive away"}], tips:[{e:"🏄",t:"<strong>Surf lessons:</strong> widely available for beginners."},{e:"☀️",t:"<strong>Best months:</strong> June-September for warmer sea."}] },
+  { name:"Brussels Zaventem", code:"BRU", country:"Belgium", time:"1h30", budget:"€200-320", bestTime:"Year-round", worthIt:4, tags:["Chocolate","History","Beer"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/BRU.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+brussels+zaventem&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Brussels+Zaventem&group_adults=2&order=price", why:"Brussels Zaventem lands you close to the Grand Place, chocolate shops on every corner, and the best beer culture in Europe.", spots:[{e:"🏛️",n:"Grand Place",d:"Stunning gothic guild houses, UNESCO site"},{e:"🍫",n:"Chocolate shops",d:"World-famous Belgian pralines everywhere"},{e:"🍺",n:"Delirium Café",d:"2000+ beers on the menu"}], tips:[{e:"🍺",t:"<strong>Beer tip:</strong> try a Trappist beer at a proper café."},{e:"🍟",t:"<strong>Frites:</strong> always eat them from a friterie, never a restaurant."}] },
+  { name:"Luxembourg", code:"LUX", country:"Luxembourg", time:"1h30", budget:"€220-340", bestTime:"Apr-Oct", worthIt:3, tags:["Castles","Countryside","Wealthy"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/LUX.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+luxembourg&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Luxembourg&group_adults=2&order=price", why:"Luxembourg City is a fairytale of fortified cliffs, deep gorges and old-town charm — a rich little country most people skip.", spots:[{e:"🏰",n:"Bock Casemates",d:"Underground fortress tunnels"},{e:"🌉",n:"Adolphe Bridge",d:"Iconic stone bridge over the gorge"},{e:"🍷",n:"Moselle Valley",d:"Wine region, short drive away"}], tips:[{e:"🚊",t:"<strong>Free public transport:</strong> the whole country, all modes."},{e:"🏰",t:"<strong>Casemates tip:</strong> bring a jacket, it's cool underground."}] },
+  { name:"Biarritz", code:"BIQ", country:"France", time:"1h50", budget:"€250-380", bestTime:"May-Sep", worthIt:4, tags:["Surf","Beach","Basque"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/BIQ.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+biarritz&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Biarritz&group_adults=2&order=price", why:"Biarritz is the elegant heart of French Basque Country — grand belle-époque architecture right above world-class surf beaches.", spots:[{e:"🏄",n:"Grande Plage",d:"Iconic surf beach in the town centre"},{e:"🏛️",n:"Basque Country",d:"Distinct culture, food and language"},{e:"🐟",n:"San Sebastián",d:"45min away, Spain's tapas capital"}], tips:[{e:"🏄",t:"<strong>Surf lessons:</strong> plenty of schools for beginners."},{e:"🍽️",t:"<strong>Basque food:</strong> pintxos are the local tapas."}] },
+  { name:"Carcassonne", code:"CCF", country:"France", time:"1h45", budget:"€200-320", bestTime:"Apr-Oct", worthIt:4, tags:["Medieval","Castles","Wine"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/CCF.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+carcassonne&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Carcassonne&group_adults=2&order=price", why:"Carcassonne's walled medieval city looks like something out of a fairytale — Europe's largest fortified city, still lived in.", spots:[{e:"🏰",n:"La Cité",d:"Double-walled medieval fortress city"},{e:"🍷",n:"Languedoc wine",d:"Some of France's best-value wine region"},{e:"🌉",n:"Pont Vieux",d:"Old bridge with fortress views"}], tips:[{e:"🏰",t:"<strong>Stay late:</strong> the fortress is magical once day-trippers leave."},{e:"🍷",t:"<strong>Wine tip:</strong> Languedoc offers superb value."}] },
+  { name:"Grenoble", code:"GNB", country:"France", time:"2h00", budget:"€250-380", bestTime:"Jun-Sep", worthIt:4, tags:["Mountains","Alps","Outdoors"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/GNB.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+grenoble&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Grenoble&group_adults=2&order=price", why:"Grenoble sits ringed by the French Alps — cable cars straight from the city centre into genuinely dramatic mountain scenery.", spots:[{e:"🚡",n:"Bastille cable car",d:"Iconic 'bubble' cars straight up the mountain"},{e:"⛰️",n:"Chartreuse Massif",d:"Alpine hiking on the doorstep"},{e:"🏛️",n:"Old town",d:"Charming, walkable historic centre"}], tips:[{e:"🚡",t:"<strong>Cable car tip:</strong> go at sunset for the best views."},{e:"🥾",t:"<strong>Hiking:</strong> trailheads are reachable by bus from town."}] },
+  { name:"La Rochelle", code:"LRH", country:"France", time:"1h50", budget:"€220-340", bestTime:"May-Sep", worthIt:4, tags:["Coast","Sailing","History"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/LRH.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+la+rochelle&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=La+Rochelle&group_adults=2&order=price", why:"La Rochelle is one of France's prettiest port towns — medieval towers guarding a harbour full of sailing boats.", spots:[{e:"🗼",n:"Old harbour towers",d:"Medieval fortified gateway to the port"},{e:"🏝️",n:"Île de Ré",d:"Bike-friendly island, short causeway drive"},{e:"🦪",n:"Oyster bars",d:"Fresh Atlantic seafood everywhere"}], tips:[{e:"🚲",t:"<strong>Île de Ré tip:</strong> rent bikes, the whole island is flat."},{e:"🦪",t:"<strong>Local speciality:</strong> oysters straight off the boat."}] },
+  { name:"Lourdes", code:"LDE", country:"France", time:"2h00", budget:"€220-340", bestTime:"Apr-Oct", worthIt:3, tags:["Pilgrimage","Mountains","Spiritual"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/LDE.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+lourdes&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Lourdes&group_adults=2&order=price", why:"Lourdes is one of the world's most visited pilgrimage sites, set dramatically beneath the Pyrenees.", spots:[{e:"⛪",n:"Sanctuary of Lourdes",d:"World-famous pilgrimage grotto"},{e:"⛰️",n:"Pyrenees",d:"Mountain scenery right at the town's edge"},{e:"🕯️",n:"Torchlight procession",d:"Nightly candlelit ceremony"}], tips:[{e:"🕯️",t:"<strong>Evening tip:</strong> the torchlight procession happens most nights."},{e:"⛰️",t:"<strong>Day trip:</strong> the Pic du Jer cable car for mountain views."}] },
+  { name:"Nantes", code:"NTE", country:"France", time:"1h55", budget:"€220-340", bestTime:"Apr-Oct", worthIt:4, tags:["Art","Culture","Loire"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/NTE.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+nantes&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Nantes&group_adults=2&order=price", why:"Nantes is one of France's most creative cities — a giant mechanical elephant, striking modern art, and the Loire Valley on its doorstep.", spots:[{e:"🐘",n:"Les Machines de l'île",d:"Giant mechanical elephant and fantastical creatures"},{e:"🏰",n:"Château des Ducs",d:"Dukes of Brittany's moated castle"},{e:"🍷",n:"Loire Valley",d:"Famous chateaux and vineyards nearby"}], tips:[{e:"🐘",t:"<strong>Machines tip:</strong> book the elephant ride in advance in summer."},{e:"🍷",t:"<strong>Muscadet:</strong> the local crisp white wine."}] },
+  { name:"Nimes", code:"FNI", country:"France", time:"2h05", budget:"€220-340", bestTime:"Apr-Oct", worthIt:4, tags:["Roman","History","Provence"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/FNI.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+nimes&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Nimes&group_adults=2&order=price", why:"Nimes has some of the best-preserved Roman monuments outside Italy — an amphitheatre still in use 2000 years later.", spots:[{e:"🏛️",n:"Arena of Nîmes",d:"Roman amphitheatre, still hosts events"},{e:"🏛️",n:"Maison Carrée",d:"Perfectly preserved Roman temple"},{e:"🌉",n:"Pont du Gard",d:"Ancient Roman aqueduct, short drive away"}], tips:[{e:"🏛️",t:"<strong>Arena tip:</strong> check if there's an event on — bullfights and concerts still happen."},{e:"🌉",t:"<strong>Pont du Gard:</strong> swim in the river beneath it in summer."}] },
+  { name:"Toulouse", code:"TLS", country:"France", time:"2h05", budget:"€250-380", bestTime:"Apr-Oct", worthIt:4, tags:["Pink City","Aerospace","Food"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/TLS.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+toulouse&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Toulouse&group_adults=2&order=price", why:"Toulouse's rosy brick buildings earned it 'La Ville Rose' — a lively student city with excellent food and an aerospace history.", spots:[{e:"🏛️",n:"Capitole Square",d:"Grand pink-brick main square"},{e:"",n:"Aeroscopia",d:"Aviation museum, home of Airbus"},{e:"🌉",n:"Garonne riverbanks",d:"Lovely for an evening stroll"}], tips:[{e:"🍷",t:"<strong>Cassoulet:</strong> the hearty local speciality, a must-try."},{e:"🏛️",t:"<strong>Pink hour:</strong> the buildings glow at golden hour."}] },
+  { name:"Hamburg", code:"HAM", country:"Germany", time:"1h40", budget:"€250-380", bestTime:"Apr-Oct", worthIt:4, tags:["Harbour","Nightlife","Music"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/HAM.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+hamburg&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Hamburg&group_adults=2&order=price", why:"Hamburg is Germany's great maritime city — a working harbour, striking modern architecture and legendary nightlife.", spots:[{e:"🏛️",n:"Elbphilharmonie",d:"Stunning modern concert hall on the harbour"},{e:"⚓",n:"Speicherstadt",d:"UNESCO warehouse district on canals"},{e:"🎶",n:"Reeperbahn",d:"Famous nightlife and music district"}], tips:[{e:"⚓",t:"<strong>Harbour tour:</strong> best way to see the Speicherstadt."},{e:"🎶",t:"<strong>Reeperbahn tip:</strong> The Beatles played their early gigs here."}] },
+  { name:"Memmingen (Munich)", code:"FMM", country:"Germany", time:"2h05", budget:"€250-380", bestTime:"Year-round", worthIt:4, tags:["Bavaria","Alps","Beer"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/FMM.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+memmingen+(munich)&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Memmingen+(Munich)&group_adults=2&order=price", why:"Memmingen is Ryanair's gateway to Bavaria — Munich, the Alps and Neuschwanstein Castle are all within reach.", spots:[{e:"🏰",n:"Neuschwanstein Castle",d:"Fairytale castle, Bavaria's icon"},{e:"🍺",n:"Munich beer halls",d:"Oktoberfest's home city, 1h away"},{e:"⛰️",n:"Bavarian Alps",d:"Dramatic mountain scenery"}], tips:[{e:"🚌",t:"<strong>Transfer tip:</strong> Memmingen is ~1h15 from Munich by bus/train."},{e:"🏰",t:"<strong>Neuschwanstein:</strong> book tickets online in advance."}] },
+  { name:"Basel-Mulhouse", code:"BSL", country:"Switzerland", time:"2h00", budget:"€280-420", bestTime:"Apr-Oct", worthIt:4, tags:["Art","Rhine","Three countries"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/BSL.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+basel-mulhouse&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Basel-Mulhouse&group_adults=2&order=price", why:"Basel-Mulhouse sits at the meeting point of Switzerland, France and Germany — art museums, riverside charm and easy access to all three.", spots:[{e:"🎨",n:"Kunstmuseum Basel",d:"One of Europe's oldest public art collections"},{e:"🌊",n:"Rhine riverside",d:"Locals swim downstream with the current in summer"},{e:"🏛️",n:"Old town",d:"Charming medieval streets and squares"}], tips:[{e:"🌊",t:"<strong>Rhine swim:</strong> locals float downstream in a waterproof bag."},{e:"🎨",t:"<strong>Art Basel:</strong> if visiting in June, the world's top art fair is here."}] },
+  { name:"Salzburg", code:"SZG", country:"Austria", time:"2h20", budget:"€280-420", bestTime:"Apr-Oct", worthIt:4, tags:["Mozart","Alps","Baroque"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/SZG.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+salzburg&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Salzburg&group_adults=2&order=price", why:"Salzburg is a baroque gem beneath the Alps — Mozart's birthplace and the setting for The Sound of Music.", spots:[{e:"🏰",n:"Hohensalzburg Fortress",d:"Cliff-top medieval castle overlooking the city"},{e:"🎵",n:"Mozart's birthplace",d:"Museum in the composer's childhood home"},{e:"⛰️",n:"Salzkammergut",d:"Stunning lake district, day trip away"}], tips:[{e:"🎬",t:"<strong>Sound of Music tour:</strong> visit the real filming locations."},{e:"🏰",t:"<strong>Fortress tip:</strong> take the funicular up for the views."}] },
+  { name:"Kosice", code:"KSC", country:"Slovakia", time:"2h35", budget:"€250-380", bestTime:"May-Sep", worthIt:3, tags:["Medieval","Gothic","Underrated"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/KSC.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+kosice&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Kosice&group_adults=2&order=price", why:"Kosice is Slovakia's second city and a genuine hidden gem — a grand gothic cathedral and a walkable, uncrowded old town.", spots:[{e:"⛪",n:"St Elisabeth Cathedral",d:"Slovakia's largest and easternmost gothic cathedral"},{e:"🏛️",n:"Main Street",d:"Elegant, pedestrianised historic centre"},{e:"🎨",n:"Kunsthalle",d:"Contemporary art in a former swimming pool"}], tips:[{e:"💰",t:"<strong>Very affordable:</strong> one of the cheapest city breaks in Europe."},{e:"🚶",t:"<strong>Compact centre:</strong> easily walkable in a day."}] },
+  { name:"Riga", code:"RIX", country:"Latvia", time:"2h50", budget:"€280-420", bestTime:"May-Sep", worthIt:4, tags:["Art Nouveau","Medieval","Baltic"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/RIX.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+riga&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Riga&group_adults=2&order=price", why:"Riga has the finest collection of Art Nouveau architecture in the world, wrapped around a charming medieval old town.", spots:[{e:"🏛️",n:"Art Nouveau district",d:"Ornate facades unlike anywhere else in Europe"},{e:"🏘️",n:"Old Town",d:"Medieval streets, UNESCO listed"},{e:"🛒",n:"Central Market",d:"Housed in former Zeppelin hangars"}], tips:[{e:"🏛️",t:"<strong>Architecture walk:</strong> Alberta iela has the best facades."},{e:"💰",t:"<strong>Great value:</strong> excellent food and drink prices."}] },
+  { name:"Vilnius", code:"VNO", country:"Lithuania", time:"2h55", budget:"€280-420", bestTime:"May-Sep", worthIt:4, tags:["Baroque","Old Town","Underrated"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/VNO.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+vilnius&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Vilnius&group_adults=2&order=price", why:"Vilnius has one of Europe's largest and best-preserved old towns — baroque churches, cobbled streets and almost no crowds.", spots:[{e:"⛪",n:"Old Town",d:"UNESCO-listed, largest baroque old town in Eastern Europe"},{e:"🏛️",n:"Gediminas Tower",d:"Hilltop tower with panoramic city views"},{e:"🎨",n:"Užupis",d:"Self-declared artists' republic, quirky and creative"}], tips:[{e:"💰",t:"<strong>Excellent value:</strong> among the cheapest capitals in the EU."},{e:"🎨",t:"<strong>Užupis tip:</strong> read the district's own quirky constitution posted on a wall."}] },
+  { name:"Kaunas", code:"KUN", country:"Lithuania", time:"2h50", budget:"€250-380", bestTime:"May-Sep", worthIt:3, tags:["Art Deco","Underrated","Culture"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/KUN.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+kaunas&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Kaunas&group_adults=2&order=price", why:"Kaunas is Lithuania's second city, packed with interwar art deco architecture and a lively student energy.", spots:[{e:"🏛️",n:"Laisvės alėja",d:"Grand pedestrian boulevard through the centre"},{e:"🎨",n:"Art Deco district",d:"Europe's largest collection outside Miami"},{e:"⛪",n:"Kaunas Castle",d:"Lithuania's oldest stone castle"}], tips:[{e:"💰",t:"<strong>Very affordable:</strong> genuine budget city break."},{e:"🎨",t:"<strong>Architecture:</strong> a European Capital of Culture pick for a reason."}] },
+  { name:"Stockholm", code:"ARN", country:"Sweden", time:"2h55", budget:"€300-450", bestTime:"May-Sep", worthIt:4, tags:["Islands","Design","Nordic"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/ARN.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+stockholm&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Stockholm&group_adults=2&order=price", why:"Stockholm spreads across 14 islands — a beautifully preserved old town surrounded by water on every side.", spots:[{e:"🏘️",n:"Gamla Stan",d:"Medieval old town on its own island"},{e:"🏛️",n:"Vasa Museum",d:"A 17th-century warship raised from the sea"},{e:"🏝️",n:"Archipelago",d:"Thousands of islands, ferries from the centre"}], tips:[{e:"🚢",t:"<strong>Archipelago tip:</strong> a boat trip is a must, even a short one."},{e:"💰",t:"<strong>Budget note:</strong> Sweden is pricier — plan for it."}] },
+  { name:"Rovaniemi", code:"RVN", country:"Finland", time:"3h20", budget:"€300-450", bestTime:"Nov-Mar", worthIt:5, tags:["Arctic","Santa","Northern Lights"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/RVN.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+rovaniemi&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Rovaniemi&group_adults=2&order=price", why:"Rovaniemi sits right on the Arctic Circle — home of Santa Claus Village and some of Europe's best northern lights viewing.", spots:[{e:"🎅",n:"Santa Claus Village",d:"Officially on the Arctic Circle line"},{e:"🌌",n:"Northern Lights",d:"Best viewed Sept-March away from town lights"},{e:"❄️",n:"Husky safaris",d:"Classic Lapland winter experience"}], tips:[{e:"🌌",t:"<strong>Northern lights:</strong> book a guided chase for the best odds."},{e:"❄️",t:"<strong>Pack warm:</strong> winter temperatures drop well below freezing."}] },
+  { name:"Bucharest", code:"OTP", country:"Romania", time:"3h10", budget:"€250-380", bestTime:"Apr-Oct", worthIt:4, tags:["Grand","History","Underrated"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/OTP.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+bucharest&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Bucharest&group_adults=2&order=price", why:"Bucharest surprises with grand Belle Époque boulevards, one of the world's largest buildings, and a fraction of Western European prices.", spots:[{e:"🏛️",n:"Palace of Parliament",d:"Second-largest administrative building in the world"},{e:"🏛️",n:"Old Town",d:"Lively cobbled streets full of bars and cafes"},{e:"🌳",n:"Herăstrău Park",d:"Large lakeside park for a relaxed afternoon"}], tips:[{e:"💰",t:"<strong>Excellent value:</strong> food, drink and hotels are very affordable."},{e:"🏛️",t:"<strong>Palace tour:</strong> book ahead for the full guided experience."}] },
+  { name:"Cluj-Napoca", code:"CLJ", country:"Romania", time:"2h55", budget:"€250-380", bestTime:"Apr-Oct", worthIt:4, tags:["Student city","Culture","Underrated"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/CLJ.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+cluj-napoca&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Cluj-Napoca&group_adults=2&order=price", why:"Cluj-Napoca is Romania's vibrant student capital — great nightlife, a lovely old centre, and Transylvania's castles nearby.", spots:[{e:"⛪",n:"St Michael's Church",d:"Gothic landmark in the main square"},{e:"🏛️",n:"Botanical Garden",d:"One of the largest in Eastern Europe"},{e:"🏰",n:"Transylvanian castles",d:"Bran and Corvin castles, day trips away"}], tips:[{e:"🍺",t:"<strong>Nightlife:</strong> a big student population means a lively scene."},{e:"🏰",t:"<strong>Dracula's castle:</strong> Bran Castle is a popular day trip."}] },
+  { name:"Iasi", code:"IAS", country:"Romania", time:"3h15", budget:"€250-380", bestTime:"Apr-Oct", worthIt:3, tags:["Culture","Underrated","History"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/IAS.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+iasi&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Iasi&group_adults=2&order=price", why:"Iasi was once Romania's capital and remains its cultural heart — grand churches, a historic university and genuine off-the-radar charm.", spots:[{e:"⛪",n:"Three Hierarchs Church",d:"Intricately carved stone facade"},{e:"🏛️",n:"Palace of Culture",d:"Neo-gothic landmark, now a museum complex"},{e:"🌳",n:"Copou Park",d:"Historic park with Romania's oldest linden tree"}], tips:[{e:"💰",t:"<strong>Very affordable:</strong> one of Romania's best-value cities."},{e:"🚶",t:"<strong>Off the radar:</strong> genuinely local, few tourists."}] },
+  { name:"Sofia", code:"SOF", country:"Bulgaria", time:"3h20", budget:"€250-380", bestTime:"Apr-Oct", worthIt:4, tags:["Balkan","Mountains","Underrated"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/SOF.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+sofia&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Sofia&group_adults=2&order=price", why:"Sofia sits beneath Vitosha Mountain — a walkable old capital mixing Roman ruins, Orthodox cathedrals and easy access to skiing or hiking.", spots:[{e:"⛪",n:"Alexander Nevsky Cathedral",d:"Sofia's iconic golden-domed landmark"},{e:"⛰️",n:"Vitosha Mountain",d:"Hiking or skiing minutes from the city centre"},{e:"🏛️",n:"Roman ruins",d:"Ancient Serdica, uncovered beneath the metro"}], tips:[{e:"⛰️",t:"<strong>Vitosha tip:</strong> reachable by public bus, no car needed."},{e:"💰",t:"<strong>Great value:</strong> one of the EU's cheapest capitals."}] },
+  { name:"Burgas", code:"BOJ", country:"Bulgaria", time:"3h25", budget:"€250-380", bestTime:"Jun-Sep", worthIt:3, tags:["Beach","Black Sea","Budget"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/BOJ.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+burgas&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Burgas&group_adults=2&order=price", why:"Burgas is the gateway to Bulgaria's Black Sea coast — long sandy beaches at a fraction of Western European prices.", spots:[{e:"🏖️",n:"Burgas beaches",d:"Long sandy Black Sea coastline"},{e:"🏘️",n:"Old Town Sozopol",d:"Charming coastal town, short drive away"},{e:"🌳",n:"Sea Garden",d:"Lovely seafront park in the city"}], tips:[{e:"💰",t:"<strong>Excellent value:</strong> Bulgaria's coast is very affordable."},{e:"🏖️",t:"<strong>Best months:</strong> June to September for beach weather."}] },
+  { name:"Barcelona Girona", code:"GRO", country:"Spain", time:"1h50", budget:"€180-280", bestTime:"Apr-Oct", worthIt:4, tags:["Medieval","Catalonia","Underrated"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/GRO.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+barcelona+girona&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Barcelona+Girona&group_adults=2&order=price", why:"Girona's medieval old town, with its colourful riverside houses and ancient cathedral steps, is a Barcelona day trip most tourists miss entirely.", spots:[{e:"⛪",n:"Girona Cathedral",d:"One of the widest gothic naves in the world"},{e:"🏘️",n:"Jewish Quarter",d:"One of Europe's best-preserved medieval Jewish quarters"},{e:"🎬",n:"Game of Thrones sites",d:"Several scenes filmed here"}], tips:[{e:"🚂",t:"<strong>Barcelona day trip:</strong> ~40min by fast train."},{e:"🎬",t:"<strong>GoT tip:</strong> the cathedral steps featured in the show."}] },
+  { name:"Barcelona Reus", code:"REU", country:"Spain", time:"1h55", budget:"€180-280", bestTime:"Apr-Oct", worthIt:3, tags:["Modernisme","Wine","Underrated"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/REU.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+barcelona+reus&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Barcelona+Reus&group_adults=2&order=price", why:"Reus is Gaudí's birthplace and a quieter alternative airport for the Costa Dorada and Tarragona's Roman ruins.", spots:[{e:"🏛️",n:"Gaudí Centre",d:"Interactive museum on the architect's origins"},{e:"🏖️",n:"Costa Dorada",d:"Golden sand beaches, short drive away"},{e:"🏛️",n:"Tarragona",d:"Roman ruins, UNESCO listed, nearby"}], tips:[{e:"🏖️",t:"<strong>Beach access:</strong> good base for the Costa Dorada."},{e:"🏛️",t:"<strong>Tarragona:</strong> some of the best Roman remains outside Italy."}] },
+  { name:"Valencia", code:"VLC", country:"Spain", time:"2h10", budget:"€220-340", bestTime:"Apr-Oct", worthIt:5, tags:["Beach","Architecture","Food"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/VLC.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+valencia&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Valencia&group_adults=2&order=price", why:"Valencia pairs a striking futuristic arts complex with a golden beach and the birthplace of paella — one of Spain's most complete city breaks.", spots:[{e:"🏛️",n:"City of Arts and Sciences",d:"Futuristic complex of museums and aquarium"},{e:"🏖️",n:"Malvarrosa Beach",d:"Golden sand, easy tram from the centre"},{e:"🍚",n:"Paella",d:"Born here — try it at a proper local spot"}], tips:[{e:"🍚",t:"<strong>Paella tip:</strong> the authentic version has rabbit and chicken, not seafood."},{e:"🏛️",t:"<strong>City of Arts:</strong> visit at night when it's lit up."}] },
+  { name:"Santander", code:"SDR", country:"Spain", time:"1h55", budget:"€220-340", bestTime:"Jun-Sep", worthIt:4, tags:["Beach","Coast","Green Spain"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/SDR.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+santander&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Santander&group_adults=2&order=price", why:"Santander is Green Spain's elegant seaside capital — grand beaches, royal history and the dramatic Cantabrian coast nearby.", spots:[{e:"🏖️",n:"El Sardinero",d:"Elegant urban beach with belle-époque buildings"},{e:"🏛️",n:"Palacio de la Magdalena",d:"Former royal summer palace on its own peninsula"},{e:"🏔️",n:"Picos de Europa",d:"Dramatic mountain range, day trip away"}], tips:[{e:"🏖️",t:"<strong>Beach walk:</strong> the promenade along El Sardinero is beautiful."},{e:"🏔️",t:"<strong>Mountains nearby:</strong> Picos de Europa is a rewarding day trip."}] },
+  { name:"Santiago", code:"SCQ", country:"Spain", time:"2h05", budget:"€220-340", bestTime:"Apr-Oct", worthIt:4, tags:["Pilgrimage","Galicia","Food"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/SCQ.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+santiago&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Santiago&group_adults=2&order=price", why:"Santiago de Compostela is the endpoint of the Camino pilgrimage — a beautiful granite old town and Galicia's incredible seafood.", spots:[{e:"⛪",n:"Santiago Cathedral",d:"Endpoint of the Camino de Santiago pilgrimage"},{e:"🏘️",n:"Old Town",d:"UNESCO-listed granite streets and squares"},{e:"🦐",n:"Galician seafood",d:"Some of Spain's best, especially octopus"}], tips:[{e:"🦐",t:"<strong>Local dish:</strong> pulpo a la gallega (Galician-style octopus)."},{e:"⛪",t:"<strong>Cathedral tip:</strong> the pilgrim's mass is a moving experience."}] },
+  { name:"Murcia", code:"RMU", country:"Spain", time:"2h15", budget:"€220-340", bestTime:"Apr-Oct", worthIt:3, tags:["Baroque","Underrated","Coast"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/RMU.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+murcia&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Murcia&group_adults=2&order=price", why:"Murcia is a warm, sunny, largely undiscovered Spanish city with a baroque cathedral and easy access to the Costa Cálida.", spots:[{e:"⛪",n:"Murcia Cathedral",d:"Ornate baroque facade, climbable bell tower"},{e:"🏖️",n:"Costa Cálida",d:"Warm coast, short drive away"},{e:"🏛️",n:"Real Casino",d:"Ornate 19th-century social club, open to visit"}], tips:[{e:"💰",t:"<strong>Great value:</strong> warm weather at lower prices than the coast."},{e:"🏖️",t:"<strong>Beach access:</strong> the Costa Cálida is close by."}] },
+  { name:"Ibiza", code:"IBZ", country:"Spain", time:"2h20", budget:"€250-380", bestTime:"May-Sep", worthIt:5, tags:["Party","Beach","Nightlife"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/IBZ.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+ibiza&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Ibiza&group_adults=2&order=price", why:"Ibiza is the world's most famous party island — legendary clubs by night, stunning beaches and hippy markets by day.", spots:[{e:"🏖️",n:"Playa d'en Bossa",d:"The island's biggest beach club scene"},{e:"🌅",n:"Café del Mar",d:"Iconic sunset spot in San Antonio"},{e:"🛍️",n:"Hippy markets",d:"Es Canar and Las Dalias, boho shopping"}], tips:[{e:"🎶",t:"<strong>Club tip:</strong> book big-name nights in advance, they sell out."},{e:"🏖️",t:"<strong>Quieter side:</strong> the north of the island is calmer and scenic."}] },
+  { name:"Fuerteventura", code:"FUE", country:"Spain", time:"3h40", budget:"€250-380", bestTime:"Year-round", worthIt:4, tags:["Beach","Surf","Canary Islands"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/FUE.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+fuerteventura&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Fuerteventura&group_adults=2&order=price", why:"Fuerteventura has some of Europe's best beaches — vast stretches of pale sand and turquoise water, great year-round climate.", spots:[{e:"🏖️",n:"Corralejo Dunes",d:"Sahara-like dunes meeting turquoise sea"},{e:"🏄",n:"Surfing",d:"World-class waves, especially the north"},{e:"🏝️",n:"Isla de Lobos",d:"Uninhabited islet, boat trips available"}], tips:[{e:"☀️",t:"<strong>Year-round sun:</strong> reliably warm even in winter."},{e:"🏄",t:"<strong>Surf spots:</strong> the north coast has consistent waves."}] },
+  { name:"Milan Bergamo", code:"BGY", country:"Italy", time:"2h35", budget:"€220-340", bestTime:"Apr-Oct", worthIt:4, tags:["Medieval","Lombardy","Underrated"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/BGY.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+milan+bergamo&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Milan+Bergamo&group_adults=2&order=price", why:"Bergamo's walled upper town, perched on a hill above the plains, is one of Italy's most beautiful and least crowded old towns.", spots:[{e:"🏰",n:"Città Alta",d:"Walled medieval upper town on the hill"},{e:"🚡",n:"Funicular",d:"Historic cable car up to the old town"},{e:"🏞️",n:"Lake Como",d:"Stunning lake scenery, short drive away"}], tips:[{e:"🚡",t:"<strong>Città Alta tip:</strong> take the funicular up, walk down."},{e:"🏞️",t:"<strong>Lake Como:</strong> easily reachable for a day trip."}] },
+  { name:"Pisa", code:"PSA", country:"Italy", time:"2h30", budget:"€220-340", bestTime:"Apr-Oct", worthIt:4, tags:["Iconic","Tuscany","History"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/PSA.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+pisa&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Pisa&group_adults=2&order=price", why:"Pisa's Leaning Tower is one of the world's most photographed sights — and a great gateway into the heart of Tuscany.", spots:[{e:"🗼",n:"Leaning Tower",d:"The world-famous tilted bell tower"},{e:"⛪",n:"Piazza dei Miracoli",d:"Cathedral square, UNESCO listed"},{e:"🍷",n:"Tuscan countryside",d:"Vineyards and hill towns nearby"}], tips:[{e:"📸",t:"<strong>Classic photo:</strong> everyone does the 'holding up the tower' shot."},{e:"🍷",t:"<strong>Day trip:</strong> use Pisa as a base for Tuscan hill towns."}] },
+  { name:"Turin", code:"TRN", country:"Italy", time:"2h35", budget:"€220-340", bestTime:"Apr-Oct", worthIt:4, tags:["Baroque","Alps","Chocolate"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/TRN.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+turin&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Turin&group_adults=2&order=price", why:"Turin is one of Italy's most elegant and underrated cities — grand arcaded boulevards, the Alps on the horizon, and Italy's best chocolate.", spots:[{e:"🏛️",n:"Mole Antonelliana",d:"Iconic tower housing the National Cinema Museum"},{e:"☕",n:"Historic cafes",d:"Birthplace of the classic Italian aperitivo"},{e:"⛰️",n:"Alps views",d:"Snow-capped peaks visible from the city"}], tips:[{e:"🍫",t:"<strong>Chocolate tip:</strong> try a bicerin, Turin's signature hot drink."},{e:"☕",t:"<strong>Aperitivo:</strong> one drink often comes with a generous buffet."}] },
+  { name:"Trieste", code:"TRS", country:"Italy", time:"2h55", budget:"€250-380", bestTime:"Apr-Oct", worthIt:4, tags:["Coastal","Austro-Hungarian","Underrated"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/TRS.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+trieste&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Trieste&group_adults=2&order=price", why:"Trieste has a unique Central European feel — grand Habsburg architecture on the Adriatic, and Italy's best coffee culture.", spots:[{e:"🏛️",n:"Piazza Unità d'Italia",d:"One of Europe's largest seafront squares"},{e:"🏰",n:"Miramare Castle",d:"Fairytale castle right on the water"},{e:"☕",n:"Coffee houses",d:"Historic literary cafes, Trieste's specialty"}], tips:[{e:"☕",t:"<strong>Coffee culture:</strong> Trieste takes its coffee very seriously."},{e:"🏰",t:"<strong>Miramare:</strong> stunning at sunset, gardens are free."}] },
+  { name:"Verona", code:"VRN", country:"Italy", time:"2h40", budget:"€250-380", bestTime:"Apr-Oct", worthIt:5, tags:["Romance","Roman","Wine"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/VRN.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+verona&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Verona&group_adults=2&order=price", why:"Verona is Shakespeare's city of star-crossed lovers — a Roman arena still hosting opera, and Valpolicella wine country nearby.", spots:[{e:"🏛️",n:"Arena di Verona",d:"Roman amphitheatre, still hosts opera"},{e:"🏠",n:"Juliet's House",d:"Romeo and Juliet's famous balcony"},{e:"🍷",n:"Valpolicella",d:"Renowned wine region, short drive away"}], tips:[{e:"🎭",t:"<strong>Opera tip:</strong> the summer opera festival in the arena is unforgettable."},{e:"🍷",t:"<strong>Wine tasting:</strong> Valpolicella vineyards welcome day visitors."}] },
+  { name:"Alghero", code:"AHO", country:"Italy", time:"2h55", budget:"€220-340", bestTime:"May-Sep", worthIt:4, tags:["Sardinia","Beach","Catalan"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/AHO.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+alghero&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Alghero&group_adults=2&order=price", why:"Alghero has a unique Catalan heritage on the coast of Sardinia — a walled old town and turquoise water to match anywhere in the Med.", spots:[{e:"🏰",n:"Old Town walls",d:"Catalan-influenced fortified centre"},{e:"🏖️",n:"Le Bombarde",d:"Turquoise water, white sand beach"},{e:"🐚",n:"Neptune's Grotto",d:"Dramatic sea caves, boat trip access"}], tips:[{e:"🗣️",t:"<strong>Local culture:</strong> a Catalan dialect is still spoken here."},{e:"🏖️",t:"<strong>Beach tip:</strong> Le Bombarde has some of Sardinia's clearest water."}] },
+  { name:"Olbia", code:"OLB", country:"Italy", time:"2h50", budget:"€220-340", bestTime:"May-Sep", worthIt:4, tags:["Sardinia","Beach","Costa Smeralda"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/OLB.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+olbia&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Olbia&group_adults=2&order=price", why:"Olbia is the gateway to Sardinia's glamorous Costa Smeralda — dramatic granite coves and some of Europe's most beautiful water.", spots:[{e:"🏖️",n:"Costa Smeralda",d:"Glamorous emerald-water coastline"},{e:"⛵",n:"Porto Cervo",d:"Chic marina town, celebrity favourite"},{e:"🏝️",n:"La Maddalena",d:"Archipelago of stunning islands, boat trips"}], tips:[{e:"⛵",t:"<strong>La Maddalena:</strong> a boat trip here is unforgettable."},{e:"💰",t:"<strong>Budget tip:</strong> Costa Smeralda proper is pricey — nearby beaches are free."}] },
+  { name:"Bari", code:"BRI", country:"Italy", time:"3h00", budget:"€220-340", bestTime:"Apr-Oct", worthIt:4, tags:["Puglia","Old Town","Seafood"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/BRI.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+bari&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Bari&group_adults=2&order=price", why:"Bari is the gateway to Puglia — a maze-like old town by the sea and access to the region's whitewashed trulli villages.", spots:[{e:"🏘️",n:"Bari Vecchia",d:"Maze-like old town, women making pasta in doorways"},{e:"⛪",n:"Basilica di San Nicola",d:"Norman basilica, patron saint of sailors"},{e:"🏘️",n:"Alberobello",d:"Fairytale trulli houses, day trip away"}], tips:[{e:"🍝",t:"<strong>Watch pasta being made:</strong> orecchiette made fresh in the old town streets."},{e:"🏘️",t:"<strong>Alberobello:</strong> the trulli village is a must-see day trip."}] },
+  { name:"Palermo", code:"PMO", country:"Italy", time:"3h05", budget:"€220-340", bestTime:"Apr-Oct", worthIt:5, tags:["Sicily","Markets","History"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/PMO.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+palermo&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Palermo&group_adults=2&order=price", why:"Palermo is Sicily at its most vivid — chaotic street markets, Norman-Arab architecture, and some of Italy's best street food.", spots:[{e:"🏛️",n:"Palermo Cathedral",d:"Stunning mix of Norman, Gothic and Arab styles"},{e:"🛒",n:"Ballarò Market",d:"Sicily's most vibrant street market"},{e:"🍊",n:"Street food",d:"Arancini, panelle and more, everywhere"}], tips:[{e:"🍊",t:"<strong>Street food tour:</strong> Palermo's is considered Italy's best."},{e:"🛒",t:"<strong>Market tip:</strong> Ballarò is loud, chaotic and unmissable."}] },
+  { name:"Zagreb", code:"ZAG", country:"Croatia", time:"2h30", budget:"€250-380", bestTime:"Apr-Oct", worthIt:4, tags:["Christmas Markets","Culture","Underrated"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/ZAG.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+zagreb&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Zagreb&group_adults=2&order=price", why:"Zagreb is Croatia's underrated capital — a charming upper town, quirky museums and one of Europe's best Christmas markets.", spots:[{e:"🏛️",n:"Upper Town",d:"Charming cobbled streets and red-roofed church"},{e:"🎨",n:"Museum of Broken Relationships",d:"Quirky, genuinely moving museum"},{e:"🎄",n:"Christmas market",d:"Repeatedly voted Europe's best"}], tips:[{e:"🎄",t:"<strong>December tip:</strong> the Christmas market is genuinely world-class."},{e:"🎨",t:"<strong>Broken Relationships:</strong> one of the most original museums in Europe."}] },
+  { name:"Tirana", code:"TIA", country:"Albania", time:"3h05", budget:"€200-320", bestTime:"Apr-Oct", worthIt:4, tags:["Colourful","Budget","Underrated"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/TIA.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+tirana&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Tirana&group_adults=2&order=price", why:"Tirana is one of Europe's most surprising capitals — bright, painted communist-era buildings and a genuinely low cost of living.", spots:[{e:"🎨",n:"Colourful facades",d:"Communist blocks painted in bold colours"},{e:"🏛️",n:"Bunk'Art",d:"Cold War bunker turned museum"},{e:"🌳",n:"Grand Park",d:"Large lakeside park in the city centre"}], tips:[{e:"💰",t:"<strong>Extremely affordable:</strong> one of Europe's cheapest capitals."},{e:"🏛️",t:"<strong>Bunk'Art:</strong> a fascinating, slightly eerie museum."}] },
+  { name:"Kos", code:"KGS", country:"Greece", time:"3h35", budget:"€250-380", bestTime:"May-Sep", worthIt:4, tags:["Beach","History","Greek Islands"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/KGS.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+kos&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Kos&group_adults=2&order=price", why:"Kos combines lovely sandy beaches with genuine ancient history, birthplace of Hippocrates, all on a relaxed, less-crowded island.", spots:[{e:"🏖️",n:"Paradise Beach",d:"Soft golden sand and clear water"},{e:"🏛️",n:"Asklepion",d:"Ancient healing sanctuary, Hippocrates' school"},{e:"🚲",n:"Bike-friendly town",d:"Kos Town is flat and easy to cycle"}], tips:[{e:"🚲",t:"<strong>Getting around:</strong> Kos Town is very bike-friendly."},{e:"🏛️",t:"<strong>History tip:</strong> Hippocrates, father of medicine, was born here."}] },
+  { name:"Thessaloniki", code:"SKG", country:"Greece", time:"3h35", budget:"€250-380", bestTime:"Apr-Oct", worthIt:4, tags:["Byzantine","Food","Underrated"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/SKG.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+thessaloniki&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Thessaloniki&group_adults=2&order=price", why:"Thessaloniki is Greece's vibrant second city — Byzantine churches, a lively waterfront and arguably the country's best food scene.", spots:[{e:"🏛️",n:"White Tower",d:"Iconic waterfront landmark and museum"},{e:"⛪",n:"Byzantine churches",d:"Several UNESCO-listed, older than Athens' icons"},{e:"🍽️",n:"Food scene",d:"Widely considered Greece's culinary capital"}], tips:[{e:"🍽️",t:"<strong>Food tip:</strong> the mezze and street food here rival Athens."},{e:"🌊",t:"<strong>Waterfront walk:</strong> the promenade is lovely at sunset."}] },
+  { name:"Rabat", code:"RBA", country:"Morocco", time:"3h30", budget:"€220-340", bestTime:"Mar-May, Sep-Nov", worthIt:4, tags:["Capital","Coastal","Culture"], photo:"https://cdn.jsdelivr.net/gh/irishtriplab/irishtriplab-prices@main/images/RBA.jpg", sky:"https://www.google.com/travel/flights?q=flights+from+dublin+to+rabat&hl=en&gl=IE&curr=EUR", book:"https://www.booking.com/searchresults.html?ss=Rabat&group_adults=2&order=price", why:"Rabat is Morocco's elegant, laid-back capital — a walled medina by the Atlantic, without Marrakesh's crowds or hustle.", spots:[{e:"🏰",n:"Kasbah des Oudayas",d:"Blue-and-white fortified quarter overlooking the sea"},{e:"🕌",n:"Hassan Tower",d:"Unfinished 12th-century minaret and mausoleum"},{e:"🏖️",n:"Rabat beach",d:"Atlantic coastline right by the medina"}], tips:[{e:"🚶",t:"<strong>Relaxed pace:</strong> far calmer and less hassle than Marrakesh."},{e:"🏰",t:"<strong>Kasbah tip:</strong> the blue-and-white streets are stunning for photos."}] },
+];
+
+// Render destination cards
+function getAutoDestinations() {
+  if (!livePrices) return [];
+  var known = {};
+  destinations.forEach(function(d) { known[d.code] = true; });
+  var excluded = { LGW:true, LTN:true }; // Anciens codes fusionnés dans "London", à ne pas recréer
+  var auto = [];
+  Object.keys(livePrices).forEach(function(code) {
+    if (known[code] || excluded[code]) return;
+    var entry = livePrices[code];
+    auto.push({
+      name: entry.name || code,
+      code: code,
+      country: '',
+      time: '',
+      budget: 'Live price',
+      bestTime: 'Check dates on Skyscanner',
+      worthIt: 3,
+      tags: ['New route'],
+      photo: '',
+      sky: 'https://www.skyscanner.ie/transport/flights/dub/' + code.toLowerCase() + '/',
+      book: 'https://www.booking.com/searchresults.html?ss=' + encodeURIComponent(entry.name || code) + '&group_adults=2&order=price',
+      why: 'A new Ryanair route from Dublin — full guide coming soon.',
+      spots: [],
+      tips: []
+    });
+  });
+  return auto;
+}
+
+function renderDestinations() {
+  var grid = document.getElementById('dest-grid');
+  var list = destinations.concat(getAutoDestinations());
+
+  // Filter by search (name or country)
+  var searchInput = document.getElementById('dest-search');
+  var q = searchInput ? searchInput.value.trim().toLowerCase() : '';
+  if (q) {
+    list = list.filter(function(d) {
+      return d.name.toLowerCase().includes(q) || d.country.toLowerCase().includes(q);
+    });
+  }
+
+  // Filter by budget
+  if (curBudget !== 'all') {
+    list = list.filter(function(d) {
+      var deal = bestDeal(d.code);
+      return !deal || deal.price <= curBudget;
+    });
+  }
+
+  // Si un filtre précis est actif (jour/mois/nuits), cacher les destinations sans vraie correspondance
+  // plutôt que d'afficher "Checking prices" (qui est réservé aux nouvelles routes sans aucune donnée)
+  var hasSpecificFilter = (curDay !== 'any' || curMonth !== 'any' || curNights !== 'any');
+  if (hasSpecificFilter) {
+    list = list.filter(function(d) {
+      if (!livePrices || !livePrices[d.code]) return false; // pas de données du tout -> cacher aussi
+      var deal = bestDeal(d.code);
+      return !!deal;
+    });
+  }
+
+  // Sort
+  list.sort(function(a,b) {
+    var da = bestDeal(a.code), db = bestDeal(b.code);
+    if (curSort === 'price-asc') return (da?da.price:9999)-(db?db.price:9999);
+    if (curSort === 'rating') return b.worthIt-a.worthIt;
+    return 0;
+  });
+
+  var el = document.getElementById('dest-count');
+  if (el) el.textContent = list.length + ' destinations';
+
+  var out = '';
+  for (var i=0; i<list.length; i++) {
+    var d = list[i];
+    var deal = bestDeal(d.code);
+    var stars = Array(d.worthIt+1).join('⭐');
+    var tagsHtml = d.tags.map(function(t){ return '<span class="dest-tag">'+t+'</span>'; }).join('');
+    var badge, priceHtml, flightBtn;
+
+    if (deal) {
+      badge = '<span class="live-badge">🟢 Live Ryanair</span>';
+      var outFmt = new Date(deal.dateOut).toLocaleDateString('en-IE',{day:'numeric',month:'short'});
+      var retD = deal.dateIn ? new Date(deal.dateIn) : (()=>{ var dd=new Date(deal.dateOut); dd.setDate(dd.getDate()+parseInt(deal.nights)); return dd; })();
+      var retFmt = retD.toLocaleDateString('en-IE',{day:'numeric',month:'short'});
+      priceHtml = '<div style="display:flex;align-items:baseline;gap:6px;margin-bottom:2px">'
+        +'<span style="font-family:Cormorant Garamond,serif;font-size:38px;font-weight:700;color:var(--green);letter-spacing:-1px;line-height:1">€'+deal.price+'</span>'
+        +'<span style="font-size:11px;color:var(--gray);font-weight:400">return · '+deal.nights+'n</span>'
+        +'</div>'
+        +'<div style="font-size:11px;color:var(--gray);margin-top:1px">📅 '+outFmt+' → '+retFmt+'</div>';
+      flightBtn = '';
+    } else {
+      badge = '<span class="live-badge" style="background:rgba(0,0,0,0.06);color:var(--gray)">🔄 Checking prices</span>';
+      priceHtml = '<span style="font-family:Cormorant Garamond,serif;font-size:15px;font-weight:500;color:var(--gray)">Price updates tonight</span>';
+      flightBtn = '';
+    }
+
+    var safeName = d.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    out += '<div class="dest-card" onclick="openDestinationPopup(\''+safeName+'\')">'
+      +'<div class="dest-img" style="background-image:url(\''+d.photo+'\'),linear-gradient(135deg,#1a3d2e,#2d6e47);background-position:'+(d.photoPos||'center')+',center;background-size:cover,cover">'
+      +'<div class="dest-name">'+d.name+'</div></div>'
+      +'<div class="dest-body">'
+      +'<div class="dest-country">'+d.country+' · '+d.time+'</div>'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">'
+      +'<div>'+badge+'<br>'+priceHtml+'</div>'
+      +'<div title="Worth it score">'+stars+'</div></div>'
+      +'<div style="font-size:10px;color:var(--gray);margin-bottom:8px">🗓️ '+d.bestTime+'</div>'
+      +'<div class="dest-tags">'+tagsHtml+'</div>'
+      +flightBtn
+      +'<button class="dest-discover" onclick="event.stopPropagation();openDestinationPopup(\''+safeName+'\')">🗺️ Discover '+d.name+' →</button>'
+      +'<div style="font-size:9px;color:var(--gray);text-align:center;margin-top:5px">✈ Flights · 🏨 Hotels inside</div>'
+      +'</div></div>';
+  }
+  grid.innerHTML = out;
+}
+
+// ===== ALERT SIGNUP =====
+// Paste a Formspree (or similar) endpoint here once you have one — https://formspree.io is free for this volume.
+const ALERT_ENDPOINT = '';
+
+async function subscribeAlert(code, name) {
+  const input = document.getElementById('alert-input-' + code);
+  const email = input.value.trim();
+  if (!email || !email.includes('@')) {
+    input.style.borderColor = '#e74c3c';
+    return;
+  }
+  const payload = { email: email, destination: name, code: code, subscribedAt: new Date().toISOString() };
+  try {
+    if (ALERT_ENDPOINT) {
+      await fetch(ALERT_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    } else if (window.storage) {
+      const existing = await window.storage.get('alerts').catch(() => null);
+      const list = existing ? JSON.parse(existing.value) : [];
+      list.push(payload);
+      await window.storage.set('alerts', JSON.stringify(list));
+    }
+  } catch (e) { console.log('Alert signup error', e); }
+  const row = input.closest('.alert-row');
+  const confirm = document.getElementById('alert-confirm-' + code);
+  if (row) row.style.display = 'none';
+  if (confirm) confirm.style.display = 'block';
+}
+
+// Build all popups
+function buildPopups() {
+  const container = document.getElementById('popups-container');
+  container.innerHTML = destinations.concat(getAutoDestinations()).map(d => {
+    const id = d.name.toLowerCase().replace(/[^a-z]/g,'');
+    return `
+      <div class="popup-overlay" id="popup-${id}" onclick="closePopup('${id}')">
+        <div class="popup" onclick="event.stopPropagation()">
+          <div class="popup-hero" style="background-image:url('${d.photo}'),linear-gradient(135deg,#1a3d2e,#2d6e47);background-position:${d.photoPos||'center'},center;background-size:cover,cover">
+            <button class="popup-close" onclick="closePopup('${id}')">✕</button>
+            <div class="popup-city">${d.name}</div>
+            <div class="popup-country">${d.country} · ${d.time} nonstop from Dublin</div>
+          </div>
+          <div class="popup-body">
+            <div class="popup-section">
+              <div class="popup-section-title">Why ${d.name}</div>
+              <p class="popup-text">${d.why}</p>
+            </div>
+            <div class="popup-section">
+              <div class="popup-section-title">Must see</div>
+              <div class="spots-grid">${d.spots.map(s=>`<div class="spot"><div class="spot-icon">${s.e}</div><div><div class="spot-name">${s.n}</div><div class="spot-desc">${s.d}</div></div></div>`).join('')}</div>
+            </div>
+            <div class="popup-section">
+              <div class="popup-section-title">Practical tips</div>
+              <div class="tips-list">${d.tips.map(t=>`<div class="tip"><div class="tip-icon">${t.e}</div><div class="tip-text">${t.t}</div></div>`).join('')}</div>
+            </div>
+            <div class="popup-cta" id="cta-${id}">
+              ${(()=>{
+                const deal = bestDeal(d.code);
+                const iataMap = {'London':'lond','Edinburgh':'edi','Glasgow':'gla','Manchester':'man','Liverpool':'lpl','Bristol':'brs','Cardiff':'cwl','Birmingham':'bhx','East Midlands':'ema','Leeds-Bradford':'lba','Newcastle':'ncl','Newquay':'nqy','Brussels':'crl','Brussels Zaventem':'bru','Luxembourg':'lux','Paris':'pari','Nice':'nce','Biarritz':'biq','Carcassonne':'ccf','Grenoble':'gnb','La Rochelle':'lrh','Lourdes':'lde','Nantes':'nte','Nimes':'fni','Toulouse':'tls','Amsterdam':'ams','Berlin':'ber','Cologne':'cgn','Hamburg':'ham','Memmingen (Munich)':'fmm','Basel-Mulhouse':'bsl','Vienna':'vie','Salzburg':'szg','Prague':'prg','Bratislava':'bts','Kosice':'ksc','Budapest':'bud','Warsaw':'wmi','Kraków':'krk','Gdansk':'gdn','Katowice':'ktw','Wroclaw':'wro','Poznan':'poz','Lublin':'luz','Bydgoszcz':'bzg','Szczecin':'szz','Rzeszow':'rze','Lodz':'lcj','Tallinn':'tll','Riga':'rix','Vilnius':'vno','Kaunas':'kun','Stockholm':'arn','Rovaniemi':'rvn','Copenhagen':'cph','Bucharest':'otp','Cluj-Napoca':'clj','Iasi':'ias','Sofia':'sof','Burgas':'boj','Lisbon':'lis','Porto':'opo','Faro / Algarve':'fao','Funchal':'fnc','Malaga':'agp','Barcelona':'bcn','Barcelona Girona':'gro','Barcelona Reus':'reu','Madrid':'mad','Alicante':'alc','Seville':'svq','Valencia':'vlc','Santander':'sdr','Santiago':'scq','Murcia':'rmu','Palma':'pmi','Minorca':'mah','Ibiza':'ibz','Tenerife':'tfs','Lanzarote':'ace','Gran Canaria':'lpa','Fuerteventura':'fue','Milan':'mila','Milan Bergamo':'bgy','Rome':'fco','Naples':'nap','Venice':'vce','Bologna':'blq','Pisa':'psa','Turin':'trn','Trieste':'trs','Verona':'vrn','Cagliari':'cag','Alghero':'aho','Olbia':'olb','Bari':'bri','Brindisi':'bds','Palermo':'pmo','Dubrovnik':'dbv','Split':'spu','Zadar':'zad','Zagreb':'zag','Tirana':'tia','Athens':'ath','Corfu':'cfu','Zakynthos':'zth','Chania':'chq','Rhodes':'rho','Santorini':'jtr','Kos':'kgs','Thessaloniki':'skg','Bodrum':'bjv','Dalaman / Fethiye':'dlm','Paphos':'pfo','Malta':'mla','Marrakesh':'rak','Agadir':'aga','Rabat':'rba'};
+                const iata = iataMap[d.name] || 'anywhere';
+                if (deal && deal.dateOut) {
+                  const outCode = fmtDate(deal.dateOut, 0);
+                  const retD = deal.dateIn ? new Date(deal.dateIn) : (()=>{ const dd=new Date(deal.dateOut); dd.setDate(dd.getDate()+parseInt(deal.nights)); return dd; })();
+                  const retCode = fmtDate(retD.toISOString().split('T')[0], 0);
+                  const checkIn = deal.dateOut.substring(0,10);
+                  const checkOut = retD.toISOString().split('T')[0];
+                  const outFmt = new Date(deal.dateOut).toLocaleDateString('en-IE',{day:'numeric',month:'short'});
+                  const retFmt = retD.toLocaleDateString('en-IE',{day:'numeric',month:'short'});
+                  const skyUrl = 'https://www.skyscanner.ie/transport/flights/dub/'+iata+'/'+outCode+'/'+retCode+'/';
+                  const bookUrl = d.book + '&checkin='+checkIn+'&checkout='+checkOut+'&group_adults=2&no_rooms=1';
+                  return '<a href="'+skyUrl+'" target="_blank" class="cta-sky">€'+deal.price+' · '+outFmt+' → '+retFmt+' · Skyscanner</a>'
+                    + '<a href="'+bookUrl+'" target="_blank" class="cta-book">🏨 Hotels '+outFmt+' → '+retFmt+'</a>';
+                } else {
+                  const skyUrl = 'https://www.skyscanner.ie/transport/flights/dub/'+iata+'/';
+                  return '<a href="'+skyUrl+'" target="_blank" class="cta-sky">Find flights · Skyscanner</a>'
+                    + '<a href="'+d.book+'" target="_blank" class="cta-book">🏨 Find hotels</a>';
+                }
+              })()}
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function openDestinationPopup(name) {
+  const id = name.toLowerCase().replace(/[^a-z]/g,'');
+  const el = document.getElementById('popup-' + id);
+  if (!el) return;
+  const d = destinations.concat(getAutoDestinations()).find(x => x.name === name);
+  if (d) {
+    const im = {'London':'lond','Edinburgh':'edi','Glasgow':'gla','Manchester':'man','Liverpool':'lpl','Bristol':'brs','Cardiff':'cwl','Birmingham':'bhx','East Midlands':'ema','Leeds-Bradford':'lba','Newcastle':'ncl','Newquay':'nqy','Brussels':'crl','Brussels Zaventem':'bru','Luxembourg':'lux','Paris':'pari','Nice':'nce','Biarritz':'biq','Carcassonne':'ccf','Grenoble':'gnb','La Rochelle':'lrh','Lourdes':'lde','Nantes':'nte','Nimes':'fni','Toulouse':'tls','Amsterdam':'ams','Berlin':'ber','Cologne':'cgn','Hamburg':'ham','Memmingen (Munich)':'fmm','Basel-Mulhouse':'bsl','Vienna':'vie','Salzburg':'szg','Prague':'prg','Bratislava':'bts','Kosice':'ksc','Budapest':'bud','Warsaw':'wmi','Kraków':'krk','Gdansk':'gdn','Katowice':'ktw','Wroclaw':'wro','Poznan':'poz','Lublin':'luz','Bydgoszcz':'bzg','Szczecin':'szz','Rzeszow':'rze','Lodz':'lcj','Tallinn':'tll','Riga':'rix','Vilnius':'vno','Kaunas':'kun','Stockholm':'arn','Rovaniemi':'rvn','Copenhagen':'cph','Bucharest':'otp','Cluj-Napoca':'clj','Iasi':'ias','Sofia':'sof','Burgas':'boj','Lisbon':'lis','Porto':'opo','Faro / Algarve':'fao','Funchal':'fnc','Malaga':'agp','Barcelona':'bcn','Barcelona Girona':'gro','Barcelona Reus':'reu','Madrid':'mad','Alicante':'alc','Seville':'svq','Valencia':'vlc','Santander':'sdr','Santiago':'scq','Murcia':'rmu','Palma':'pmi','Minorca':'mah','Ibiza':'ibz','Tenerife':'tfs','Lanzarote':'ace','Gran Canaria':'lpa','Fuerteventura':'fue','Milan':'mila','Milan Bergamo':'bgy','Rome':'fco','Naples':'nap','Venice':'vce','Bologna':'blq','Pisa':'psa','Turin':'trn','Trieste':'trs','Verona':'vrn','Cagliari':'cag','Alghero':'aho','Olbia':'olb','Bari':'bri','Brindisi':'bds','Palermo':'pmo','Dubrovnik':'dbv','Split':'spu','Zadar':'zad','Zagreb':'zag','Tirana':'tia','Athens':'ath','Corfu':'cfu','Zakynthos':'zth','Chania':'chq','Rhodes':'rho','Santorini':'jtr','Kos':'kgs','Thessaloniki':'skg','Bodrum':'bjv','Dalaman / Fethiye':'dlm','Paphos':'pfo','Malta':'mla','Marrakesh':'rak','Agadir':'aga','Rabat':'rba'};
+    const iata = im[d.name] || 'anywhere';
+    const deal = bestDeal(d.code);
+    const ctaDiv = el.querySelector('.popup-cta');
+    if (ctaDiv) {
+      if (deal && deal.dateOut) {
+        const outCode = fmtDate(deal.dateOut, 0);
+        const retD = deal.dateIn ? new Date(deal.dateIn) : (function(){ var dd=new Date(deal.dateOut); dd.setDate(dd.getDate()+parseInt(deal.nights)); return dd; })();
+        const checkIn = deal.dateOut.substring(0,10);
+        const checkOut = retD.toISOString().split('T')[0];
+        const retCode = fmtDate(checkOut, 0);
+        const outFmt = new Date(deal.dateOut).toLocaleDateString('en-IE',{day:'numeric',month:'short'});
+        const retFmt = retD.toLocaleDateString('en-IE',{day:'numeric',month:'short'});
+        const skyUrl = 'https://www.skyscanner.ie/transport/flights/dub/'+iata+'/'+outCode+'/'+retCode+'/';
+        const bookUrl = d.book + '&checkin='+checkIn+'&checkout='+checkOut+'&group_adults=2&no_rooms=1';
+        ctaDiv.innerHTML = '<a href="'+skyUrl+'" target="_blank" class="cta-sky">€'+deal.price+' · '+outFmt+' → '+retFmt+' · Skyscanner</a>'
+          + '<a href="'+bookUrl+'" target="_blank" class="cta-book">🏨 Hotels '+outFmt+' → '+retFmt+'</a>';
+      } else {
+        const skyUrl = 'https://www.skyscanner.ie/transport/flights/dub/'+iata+'/';
+        ctaDiv.innerHTML = '<a href="'+skyUrl+'" target="_blank" class="cta-sky">Find flights · Skyscanner</a>'
+          + '<a href="'+d.book+'" target="_blank" class="cta-book">🏨 Find hotels</a>';
+      }
+    }
+  }
+  el.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function openMarrakeshPopup() {
+  window.open('https://www.skyscanner.ie/transport/flights/dub/rak/260506/260513/','_blank');
+}
+function closePopup(id) {
+  document.getElementById('popup-' + id).classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Map tooltip
+document.querySelectorAll('.map-dot').forEach(dot => {
+  dot.addEventListener('mouseenter', function(e) {
+    const tooltip = document.getElementById('map-tooltip');
+    tooltip.textContent = this.dataset.city;
+    tooltip.style.opacity = '1';
+    tooltip.style.left = (e.offsetX + 10) + 'px';
+    tooltip.style.top = (e.offsetY - 30) + 'px';
+  });
+  dot.addEventListener('mouseleave', function() {
+    document.getElementById('map-tooltip').style.opacity = '0';
+  });
+});
+
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// === PRICES LOGIC ===
+var livePrices = null;
+var IATA = {
+  LON:'lond',EDI:'edi',GLA:'gla',MAN:'man',BHX:'bhx',BRS:'brs',LPL:'lpl',CWL:'cwl',
+  BRU:'bru',PAR:'pari',AMS:'ams',BER:'berl',CGN:'cgn',VIE:'vie',PRG:'prg',
+  WAW:'waw',KRK:'krk',BUD:'bud',BTS:'bts',TLL:'tll',CPH:'cph',
+  LIS:'lis',OPO:'opo',FAO:'fao',AGP:'agp',BCN:'bcn',MAD:'mad',ALC:'alc',
+  SVQ:'svq',PMI:'pmi',MAH:'mah',TFS:'tfs',ACE:'ace',LPA:'lpa',
+  MIL:'mila',ROM:'rome',NAP:'nap',VCE:'vce',BLQ:'blq',CAG:'cag',BDS:'bds',CTA:'cta',
+  NCE:'nce',ATH:'ath',CFU:'cfu',ZTH:'zth',CHQ:'chq',RHO:'rho',JTR:'jtr',
+  DBV:'dbv',SPU:'spu',ZAD:'zad',BJV:'bjv',DLM:'dlm',IST:'ist',
+  PFO:'pfo',MLA:'mla',RAK:'rak',AGA:'aga',FEZ:'fez',FNC:'fnc'
+};
+
+function fmtDate(dateStr, plusDays) {
+  var d = new Date(dateStr);
+  d.setDate(d.getDate() + plusDays);
+  var m = String(d.getMonth()+1).padStart(2,'0');
+  var day = String(d.getDate()).padStart(2,'0');
+  return d.getFullYear() + '' + m + '' + day;
+}
+
+function flightUrl(code, deal) {
+  var iata = IATA[code];
+  if (!iata || !deal || !deal.dateOut) return null;
+  var out = fmtDate(deal.dateOut, 0);
+  var ret = deal.dateIn ? fmtDate(deal.dateIn, 0) : fmtDate(deal.dateOut, parseInt(deal.nights));
+  return 'https://www.skyscanner.ie/transport/flights/dub/' + iata + '/' + out + '/' + ret + '/';
+}
+var curSort = 'price-asc';
+var curBudget = 'all';
+var curNights = 'any';
+var curMonth = 'any';
+var curDay = 'any';
+
+function onSearchInput(v) {
+  var q = v.trim().toLowerCase();
+  var box = document.getElementById('search-suggestions');
+  var clearBtn = document.getElementById('dest-search-clear');
+  if (clearBtn) clearBtn.style.display = v ? 'flex' : 'none';
+
+  renderDestinations(); // filtre la grille en direct
+
+  if (!q) { box.style.display = 'none'; box.innerHTML = ''; return; }
+
+  var matches = destinations.filter(function(d) {
+    return d.name.toLowerCase().includes(q) || d.country.toLowerCase().includes(q);
+  }).slice(0, 8);
+
+  if (matches.length === 0) {
+    box.innerHTML = '<div style="padding:16px;font-size:13px;color:var(--gray)">No destination or country matches "'+v+'"</div>';
+    box.style.display = 'block';
+    return;
+  }
+
+  box.innerHTML = matches.map(function(d) {
+    return '<div onclick="selectSearchResult(\''+d.name.replace(/'/g,"\\\\'")+'\')" '
+      + 'style="padding:14px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);min-height:24px" '
+      + 'onmouseover="this.style.background=\'#f5f5f0\'" onmouseout="this.style.background=\'white\'" ontouchstart="this.style.background=\'#f5f5f0\'">'
+      + '<span><strong style="font-family:Cormorant Garamond,serif;font-size:17px">'+d.name+'</strong> '
+      + '<span style="font-size:12px;color:var(--gray)"> · '+d.country+'</span></span>'
+      + '</div>';
+  }).join('');
+  box.style.display = 'block';
+}
+
+function clearSearch() {
+  var input = document.getElementById('dest-search');
+  input.value = '';
+  input.focus();
+  onSearchInput('');
+}
+
+function selectSearchResult(name) {
+  document.getElementById('dest-search').value = name;
+  document.getElementById('search-suggestions').style.display = 'none';
+  renderDestinations();
+  document.getElementById('destinations').scrollIntoView({behavior:'smooth'});
+}
+
+document.addEventListener('click', function(e) {
+  var wrap = document.querySelector('.search-wrap');
+  if (wrap && !wrap.contains(e.target)) {
+    var box = document.getElementById('search-suggestions');
+    if (box) box.style.display = 'none';
+  }
+});
+
+function doDay(v, btn) {
+  curDay = v;
+  btn.closest('.filter-group').querySelectorAll('.fb').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  renderDestinations();
+  buildPopups();
+}
+
+function doMonth(v, btn) {
+  curMonth = v;
+  btn.closest('.filter-group').querySelectorAll('.fb').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  renderDestinations();
+}
+function doSort(v, btn) {
+  curSort = v;
+  btn.closest('.filter-group').querySelectorAll('.fb').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  renderDestinations();
+}
+function doBudget(v, btn) {
+  curBudget = v;
+  btn.closest('.filter-group').querySelectorAll('.fb').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  renderDestinations();
+}
+function doNights(v, btn) {
+  curNights = v;
+  btn.closest('.filter-group').querySelectorAll('.fb').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  renderDestinations();
+  buildPopups();
+}
+
+function bestDeal(code) {
+  if (!livePrices || !livePrices[code]) return null;
+  var months = livePrices[code].months;
+  if (!months) return null;
+  var options = curNights === 'any' ? ['3','7','14'] : [curNights];
+  var best = null;
+  var mkeys = curMonth === 'any' ? Object.keys(months) : (months[curMonth] ? [curMonth] : []);
+  for (var i=0; i<mkeys.length; i++) {
+    var m = months[mkeys[i]];
+    for (var j=0; j<options.length; j++) {
+      var n = options[j];
+      if (m[n] && m[n].total) {
+        if (curDay !== 'any') {
+          var dOut = m[n].dateOut || m[n].date;
+          if (!dOut || String(new Date(dOut).getDay()) !== curDay) continue;
+        }
+        if (!best || m[n].total < best.price) {
+          best = { price: m[n].total, nights: n, dateOut: m[n].dateOut || m[n].date, dateIn: m[n].dateIn };
+        }
+      }
+    }
+  }
+  return best;
+}
+
+// Init
+(async function() {
+  try {
+    var res = await fetch('https://raw.githubusercontent.com/irishtriplab/irishtriplab-prices/main/prices.json');
+    var data = await res.json();
+    livePrices = data.prices;
+  } catch(e) { console.log('prices unavailable'); }
+  renderDestinations();
+  buildPopups();
+})();
+
+</script>
+</body>
+</html>
