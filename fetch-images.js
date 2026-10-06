@@ -122,7 +122,7 @@ const IMAGES = [
   { code: 'SKG', url: 'https://images.unsplash.com/photo-1613538384222-cd71e8488d7a?w=600&q=80' },
   { code: 'RBA', url: 'https://images.unsplash.com/photo-1702840628874-97ed05f0725b?w=600&q=80' }
 ,
-  { code: 'BEIJING', url: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=800&q=80' },
+  { code: 'SHANGHAI', url: 'https://images.unsplash.com/photo-1506158669146-619067262a00?w=800&q=80' },
   { code: 'WC_MADRID', url: 'https://images.unsplash.com/photo-1725112675082-5fc786ea4269?w=800&q=80' },
   { code: 'WC_PARIS', url: 'https://images.unsplash.com/photo-1583265266785-aab9e443ee68?w=800&q=80' },
   { code: 'WC_GLASGOW', url: 'https://images.unsplash.com/photo-1531152369337-1d0b0b9ef20d?w=800&q=80' },
