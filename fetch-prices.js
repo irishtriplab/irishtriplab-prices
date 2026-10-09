@@ -1,14 +1,12 @@
 const fs = require('fs');
 
 const ORIGIN = 'DUB';
-const NIGHTS = [3, 7, 14];
+const NIGHTS = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]; // toutes les durées de 2 à 14 nuits
 const MONTHS_AHEAD = 4;
 
 const DESTINATIONS = [
   // UK & Ireland
   { code: 'STN', name: 'London' },
-  { code: 'LGW', name: 'London Gatwick' },
-  { code: 'LTN', name: 'London Luton' },
   { code: 'EDI', name: 'Edinburgh' },
   { code: 'GLA', name: 'Glasgow' },
   { code: 'MAN', name: 'Manchester' },
@@ -210,12 +208,17 @@ async function main() {
         const total = Math.round(outPrice + retPrice);
         if (!prices[dest.code].months[month]) prices[dest.code].months[month] = {};
 
-        const existing = prices[dest.code].months[month][nights];
+        // meilleur prix par jour de la semaine de départ : [total, out, ret, dateOut]
+        const dow = new Date(outDate).getDay();
+        if (!prices[dest.code].months[month][nights]) prices[dest.code].months[month][nights] = { byDay: {} };
+        const e0 = prices[dest.code].months[month][nights];
+        if (!e0.byDay[dow] || total < e0.byDay[dow][0]) e0.byDay[dow] = [total, Math.round(outPrice), Math.round(retPrice), outDate];
+        const existing = e0.total !== undefined ? e0 : null;
         if (!existing || total < existing.total) {
-          prices[dest.code].months[month][nights] = {
+          Object.assign(e0, {
             total, out: Math.round(outPrice), ret: Math.round(retPrice),
             dateOut: outDate, dateIn: retDateStr
-          };
+          });
         }
       }
     }
@@ -225,7 +228,7 @@ async function main() {
   }
 
   const output = { updatedAt: new Date().toISOString(), prices };
-  fs.writeFileSync('prices.json', JSON.stringify(output, null, 2));
+  fs.writeFileSync('prices.json', JSON.stringify(output)); // compact : le fichier est 13 durées plus gros qu'avant
   console.log(`\n✅ Done! prices.json updated at ${output.updatedAt}`);
   console.log(`📊 ${Object.keys(prices).length} destinations`);
 }
