@@ -174,11 +174,12 @@ async function main() {
   const prices = {};
 
   for (const dest of DESTINATIONS) {
-    const outPrices = {};
+    const outPrices = {}, outTimes = {}, retTimes = {};
+    const hhmm = d => (typeof d === 'string' && d.length >= 16) ? d.substring(11, 16) : null;
     for (const month of months) {
       const fares = await fetchCheapestPerDay(ORIGIN, dest.code, month);
       for (const f of fares) {
-        if (f.price?.value && !f.soldOut) outPrices[f.day] = f.price.value;
+        if (f.price?.value && !f.soldOut) { outPrices[f.day] = f.price.value; outTimes[f.day] = hhmm(f.departureDate); }
       }
       await sleep(200);
     }
@@ -187,12 +188,14 @@ async function main() {
     for (const month of months) {
       const fares = await fetchCheapestPerDay(dest.code, ORIGIN, month);
       for (const f of fares) {
-        if (f.price?.value && !f.soldOut) retPrices[f.day] = f.price.value;
+        if (f.price?.value && !f.soldOut) { retPrices[f.day] = f.price.value; retTimes[f.day] = hhmm(f.departureDate); }
       }
       await sleep(200);
     }
 
-    prices[dest.code] = { name: dest.name, months: {} };
+    prices[dest.code] = { name: dest.name, months: {}, daily: { out: {}, ret: {} } };
+    for (const d of Object.keys(outPrices)) prices[dest.code].daily.out[d] = [Math.round(outPrices[d]), outTimes[d]];
+    for (const d of Object.keys(retPrices)) prices[dest.code].daily.ret[d] = [Math.round(retPrices[d]), retTimes[d]];
 
     for (const outDate of Object.keys(outPrices).sort()) {
       const outPrice = outPrices[outDate];
